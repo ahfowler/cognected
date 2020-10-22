@@ -174,7 +174,9 @@ function createStudentConnections(studentsList) {
           student.name +
           "'s " +
           grade.assignmentName +
-          " score: " +
+          " score: (" +
+          keyword.keywordName +
+          ") " +
           keyword.grade +
           "%";
         currentConnection.color = computeColor(keyword.grade);
