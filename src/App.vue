@@ -1,75 +1,89 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div>
+    <network ref="network" :nodes="nodes" :edges="edges" :options="options">
+    </network>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import {
+  studentsNodeList,
+  keywordsNodeList,
+  edges,
+} from "./code/parseCanvasData.js";
 
 export default {
   name: "App",
-  components: {
-    HelloWorld,
+  data() {
+    return {
+      nodes: studentsNodeList.concat(keywordsNodeList),
+      edges: edges,
+      options: {
+        nodes: {
+          shape: "circle",
+          borderWidth: 0,
+          font: {
+            color: "white",
+          },
+        },
+        edges: {
+          color: {
+            inherit: "both",
+            opacity: 1,
+          },
+          smooth: true,
+          selectionWidth: 0,
+        },
+        groups: {
+          students: {
+            color: {
+              background: "#E21D1D",
+              border: "#E21D1D",
+              highlight: {
+                background: "#E21D1D",
+                border: "#E21D1D",
+              },
+            },
+          },
+          assignments: {
+            color: {
+              background: "#FCC100",
+              border: "#FCC100",
+              highlight: {
+                background: "#FCC100",
+                border: "#FCC100",
+              },
+            },
+          },
+          keywords: {
+            color: {
+              background: "#174793",
+              border: "#174793",
+              highlight: {
+                background: "#174793",
+                border: "#174793",
+              },
+            },
+          },
+        },
+        physics: {
+          barnesHut: {
+            springConstant: 0.001,
+            avoidOverlap: 1,
+          },
+          maxVelocity: 10,
+        },
+      },
+    };
   },
-  methods: {
-    getGradeData: function () {
-      $.ajax({
-        url:
-          "https://asu.instructure.com/api/v1/courses/" +
-          "18732" +
-          "/assignments?per_page=100",
-        datatype: "jsonp",
-        crossDomain: true,
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader(
-            "Authorization",
-            "Bearer " +
-              "7236~8dQSbbxT2iQeatKfNOJYzWR441OHkkv5CcUOr4sksrHNmdk1SRQoJG5wrut4e0s7"
-          );
-        },
-        success: function (jsondata) {
-          console.log(jsondata);
-        },
-        error: function (xhr, status, error) {
-          console.log(xhr.responseText);
-        },
-      });
-
-      $.ajax({
-        url:
-          "https://asu.instructure.com/api/v1/courses/" +
-          "18732" +
-          "/gradebook_history/feed?per_page=100",
-        datatype: "json",
-        crossDomain: true,
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader(
-            "Authorization",
-            "Bearer " +
-              "7236~8dQSbbxT2iQeatKfNOJYzWR441OHkkv5CcUOr4sksrHNmdk1SRQoJG5wrut4e0s7"
-          );
-        },
-        success: function (jsondata) {
-          console.log(jsondata);
-        },
-        error: function (xhr, status, error) {
-          console.log(xhr.responseText);
-        },
-      });
-    },
-  },
+  mounted: function() {},
 };
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+canvas {
+  height: 95vh !important;
+  background-color: #f8f8f8;
+  padding: 10px;
 }
 </style>

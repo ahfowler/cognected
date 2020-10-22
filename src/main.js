@@ -1,8 +1,14 @@
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from "vue";
+import App from "./App.vue";
+import axios from "axios";
+import { Network } from "vue-vis-network";
 
-Vue.config.productionTip = false
+Vue.component("network", Network);
+
+Vue.config.productionTip = false;
+
+Vue.prototype.$axios = axios;
 
 new Vue({
-  render: h => h(App),
-}).$mount('#app')
+  render: (h) => h(App),
+}).$mount("#app");
