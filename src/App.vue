@@ -1,82 +1,25 @@
 <template>
-  <div>
-    <network ref="network" :nodes="nodes" :edges="edges" :options="options">
-    </network>
+  <div id="app">
+    <LoadingScreen v-if="isLoading"></LoadingScreen>
+    <div id="content" v-if="!isLoading"></div>
   </div>
 </template>
 
 <script>
-import {
-  studentsNodeList,
-  keywordsNodeList,
-  edges,
-} from "./code/parseCanvasData.js";
+// import ClassGraph from "./components/ClassGraph.vue";
+import LoadingScreen from "./components/LoadingScreen.vue";
 
 export default {
   name: "App",
+  components: {
+    // ClassGraph,
+    LoadingScreen,
+  },
   data() {
     return {
-      nodes: studentsNodeList.concat(keywordsNodeList),
-      edges: edges,
-      options: {
-        nodes: {
-          shape: "circle",
-          borderWidth: 0,
-          font: {
-            color: "white",
-          },
-        },
-        edges: {
-          color: {
-            inherit: "both",
-            opacity: 1,
-          },
-          smooth: true,
-          selectionWidth: 0,
-        },
-        groups: {
-          students: {
-            color: {
-              background: "#E21D1D",
-              border: "#E21D1D",
-              highlight: {
-                background: "#E21D1D",
-                border: "#E21D1D",
-              },
-            },
-          },
-          assignments: {
-            color: {
-              background: "#FCC100",
-              border: "#FCC100",
-              highlight: {
-                background: "#FCC100",
-                border: "#FCC100",
-              },
-            },
-          },
-          keywords: {
-            color: {
-              background: "#174793",
-              border: "#174793",
-              highlight: {
-                background: "#174793",
-                border: "#174793",
-              },
-            },
-          },
-        },
-        physics: {
-          barnesHut: {
-            springConstant: 0.001,
-            avoidOverlap: 1,
-          },
-          maxVelocity: 10,
-        },
-      },
+      isLoading: true,
     };
   },
-  mounted: function() {},
 };
 </script>
 
