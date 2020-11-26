@@ -10,8 +10,8 @@
         </div>
       </div>
       <multipane layout="vertical">
-        <div :style="{ width: '50%' }" id="student-view">
-          Pane 1
+        <div :style="{ width: '50%', 'min-width': '1%' }" id="student-view">
+          <StudentView></StudentView>
         </div>
         <multipane-resizer>
           <div id="slider-bar"></div>
@@ -35,8 +35,8 @@
             </div>
           </div>
         </multipane-resizer>
-        <div :style="{ flexGrow: 1 }" id="class-view">
-          Pane 2
+        <div :style="{ flexGrow: 1, 'min-width': '1%' }" id="class-view">
+          <ClassView></ClassView>
         </div>
       </multipane>
     </div>
@@ -44,14 +44,16 @@
 </template>
 
 <script>
-// import ClassGraph from "./components/ClassGraph.vue";
 import LoadingScreen from "./components/LoadingScreen.vue";
+import StudentView from "./components/StudentView.vue";
+import ClassView from "./components/ClassView.vue";
 
 export default {
   name: "App",
   components: {
-    // ClassGraph,
     LoadingScreen,
+    StudentView,
+    ClassView,
   },
   data() {
     return {

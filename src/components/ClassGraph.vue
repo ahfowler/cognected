@@ -3,7 +3,6 @@
     <network ref="network" :nodes="nodes" :edges="edges" :options="options">
     </network>
   </div>
-    
 </template>
 
 <script>
@@ -77,14 +76,17 @@ export default {
         },
       },
     };
-  }
+  },
 };
 </script>
 
 <style scoped>
-canvas {
-  height: 95vh !important;
-  background-color: #f8f8f8;
-  padding: 10px;
+#cognected-graph > div,
+#cognected-graph > div > div {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

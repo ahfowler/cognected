@@ -15,6 +15,7 @@
     "vis-util": "^4.3.4",
     "vue": "^2.6.11",
     "vue-multipane": "^0.9.5",
+    "vue-select": "^3.10.8",
     "vue-vis-network": "^1.0.2"
   },
   "devDependencies": {
