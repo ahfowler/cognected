@@ -110,7 +110,7 @@ export default {
   border: 1px solid #e5e5e5;
   border-radius: 1px;
   height: 30px;
-  width: 100%;
+  width: 95%;
   padding: 5px 10px 5px 10px;
   font-family: "Roboto", sans-serif;
   font-style: normal;
