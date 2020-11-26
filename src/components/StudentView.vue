@@ -68,6 +68,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 97vh;
+  overflow: hidden;
 }
 
 #student-wrapper > h2 {
