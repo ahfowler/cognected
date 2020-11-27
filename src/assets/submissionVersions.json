@@ -11,28 +11,28 @@
     "assignment_name": "Chapter 1 Test",
     "user_name": "Prashant Mokkapati",
     "user_id": "8509",
-    "current_grade": 95.99
+    "current_grade": 85.99
   },
   {
     "assignment_id": "63102",
     "assignment_name": "Chapter 1 Test",
     "user_name": "Aarya Mecwan",
     "user_id": "9574",
-    "current_grade": 75.52
+    "current_grade": 85.52
   },
   {
     "assignment_id": "63102",
     "assignment_name": "Chapter 1 Test",
     "user_name": "Sai Dasari",
     "user_id": "1230",
-    "current_grade": 59.36
+    "current_grade": 89.36
   },
   {
     "assignment_id": "60052",
     "assignment_name": "Chapter 1 Assignment",
     "user_name": "Azaria Fowler",
     "user_id": "2395",
-    "current_grade": 92.14
+    "current_grade": 32.14
   },
   {
     "assignment_id": "60052",
@@ -53,7 +53,7 @@
     "assignment_name": "Chapter 1 Assignment",
     "user_name": "Sai Dasari",
     "user_id": "1230",
-    "current_grade": 82.7
+    "current_grade": 32.7
   },
   {
     "assignment_id": "90388",
@@ -67,21 +67,21 @@
     "assignment_name": "Chapter 2 Assignment",
     "user_name": "Prashant Mokkapati",
     "user_id": "8509",
-    "current_grade": 55.86
+    "current_grade": 75.86
   },
   {
     "assignment_id": "90388",
     "assignment_name": "Chapter 2 Assignment",
     "user_name": "Aarya Mecwan",
     "user_id": "9574",
-    "current_grade": 32.22
+    "current_grade": 72.22
   },
   {
     "assignment_id": "90388",
     "assignment_name": "Chapter 2 Assignment",
     "user_name": "Sai Dasari",
     "user_id": "1230",
-    "current_grade": 90.22
+    "current_grade": 70.22
   },
   {
     "assignment_id": "34554",
@@ -95,7 +95,7 @@
     "assignment_name": "Chapter 2 Test",
     "user_name": "Prashant Mokkapati",
     "user_id": "8509",
-    "current_grade": 89.56
+    "current_grade": 100.56
   },
   {
     "assignment_id": "34554",
@@ -109,6 +109,6 @@
     "assignment_name": "Chapter 2 Test",
     "user_name": "Sai Dasari",
     "user_id": "1230",
-    "current_grade": 99.99
+    "current_grade": 110.00
   }
 ]

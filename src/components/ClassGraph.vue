@@ -1,81 +1,111 @@
 <template>
   <div>
-    <network ref="network" :nodes="nodes" :edges="edges" :options="options">
-    </network>
+    <network
+      ref="network"
+      :nodes="nodes"
+      :edges="edges"
+      :options="options"
+      :events="['click']"
+      @click="myClickCallback"
+    ></network>
   </div>
 </template>
 
 <script>
 // Import keyword nodes and edges from Javascript file.
 import {
-  studentsNodeList,
-  keywordsNodeList,
-  edges,
-} from "../script/example.js";
+  Assignments,
+  Keywords,
+  KeywordIndex,
+  CalcAssignmentListAvg,
+  edgeExists,
+} from "../script/parseCanvasData.js";
 
 export default {
   name: "ClassGraph",
   data() {
     return {
-      nodes: studentsNodeList.concat(keywordsNodeList),
-      edges: edges,
+      courseID: 18732,
+      accessKey:
+        "7236~8dQSbbxT2iQeatKfNOJYzWR441OHkkv5CcUOr4sksrHNmdk1SRQoJG5wrut4e0s7",
+      importedKeywords: Keywords,
+      importedAssignments: Assignments,
+      nodes: [],
+      edges: [],
       options: {
         nodes: {
-          shape: "circle",
-          borderWidth: 0,
-          font: {
-            color: "white",
+          shape: "dot",
+          scaling: {
+            customScalingFunction: function(min, max, total, value) {
+              return value * 0.005;
+            },
+            min: 0,
+            max: 100,
           },
         },
         edges: {
-          color: {
-            inherit: "both",
-            opacity: 1,
-          },
-          smooth: true,
-          selectionWidth: 0,
-        },
-        groups: {
-          students: {
-            color: {
-              background: "#E21D1D",
-              border: "#E21D1D",
-              highlight: {
-                background: "#E21D1D",
-                border: "#E21D1D",
-              },
-            },
-          },
-          assignments: {
-            color: {
-              background: "#FCC100",
-              border: "#FCC100",
-              highlight: {
-                background: "#FCC100",
-                border: "#FCC100",
-              },
-            },
-          },
-          keywords: {
-            color: {
-              background: "#174793",
-              border: "#174793",
-              highlight: {
-                background: "#174793",
-                border: "#174793",
-              },
-            },
-          },
+          smooth: false,
         },
         physics: {
           barnesHut: {
-            springConstant: 0.001,
             avoidOverlap: 1,
+            springConstant: 0.001,
+            centralGravity: 1,
+            gravitationalConstant: -5000,
           },
-          maxVelocity: 10,
+        },
+        interaction: {
+          hover: false,
         },
       },
     };
+  },
+  methods: {
+    myClickCallback() {
+      console.log("hello");
+    },
+    createKeywordNodes() {
+      this.nodes = [];
+      this.importedKeywords.forEach((keyword) => {
+        let nodeJson = {};
+        nodeJson.id = KeywordIndex(keyword.name);
+        nodeJson.title =
+          "<b>" +
+          keyword.name +
+          "</b><br/><b>Class Grade Average: </b>" +
+          keyword.keyword_Avg +
+          "%";
+        nodeJson.value = keyword.keyword_Avg;
+        this.nodes.push(nodeJson);
+      });
+    },
+    createEdges() {
+      console.log(this.importedAssignments);
+      console.log(this.importedKeywords);
+      this.edges = [];
+      this.importedKeywords.forEach((keyword) => {
+        let edgeJson = {};
+        edgeJson.from = KeywordIndex(keyword.name);
+        for (let keywordName in keyword.associatedKeys) {
+          edgeJson.to = KeywordIndex(keywordName);
+          // Calculate the edge average.
+          let edgeAverage = CalcAssignmentListAvg(
+            keyword.associatedKeys[keywordName]
+          );
+          edgeJson.length = (110 / 100) * 100 - edgeAverage; // Highest grade receieved from any assignment.
+          edgeJson.length += 130;
+          edgeJson.title = "<b>Class Grade Average: </b>" + edgeAverage + "%";
+        }
+
+        if (!edgeExists(edgeJson, this.edges)) {
+          this.edges.push(edgeJson);
+        }
+      });
+    },
+  },
+  mounted() {
+    this.createKeywordNodes();
+    this.createEdges();
   },
 };
 </script>
@@ -88,5 +118,9 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.keywordTooltip {
+  background-color: rgba(23, 71, 147, 0.8) !important;
 }
 </style>

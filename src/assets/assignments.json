@@ -2,21 +2,25 @@
   {
     "id": "63102",
     "name": "Chapter 1 Test",
-    "description": "#Substainability #Public_Transportation #Solar_Energy"
+    "description": "#Substainability #Public_Transportation #Environmentalism",
+    "points_possible": 100
   },
   {
     "id": "60052",
     "name": "Chapter 1 Assignment",
-    "description": "#Substainability #Public_Transportation"
+    "description": "#Environmentalism #Solar_Energy #Ecology",
+    "points_possible": 100
   },
   {
     "id": "34554",
     "name": "Chapter 2 Test",
-    "description": "#Environmentalism #Solar_Energy"
+    "description": "#Ecology #Recycling",
+    "points_possible": 100
   },
   {
     "id": "90388",
     "name": "Chapter 2 Assignment",
-    "description": "#Environmentalism #Solar_Energy"
+    "description": "#Ecology #Solar_Energy",
+    "points_possible": 100
   }
 ]
