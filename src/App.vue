@@ -1,45 +1,47 @@
 <template>
   <div id="app">
-    <LoadingScreen v-if="isLoading"></LoadingScreen>
-    <div id="content" v-if="!isLoading">
-      <!-- Top Right Logo -->
-      <div id="top-right-logo">
-        <div id="cognected-title">Cognect<span>Ed</span></div>
-        <div id="cognected-subtitle">
-          The Systems Curriculum Gradebook
-        </div>
-      </div>
-      <multipane layout="vertical">
-        <div :style="{ width: '50%', 'min-width': '1%' }" id="student-view">
-          <StudentView></StudentView>
-        </div>
-        <multipane-resizer>
-          <div id="slider-bar"></div>
-          <div id="slider-icon">
-            <div
-              :style="{
-                'margin-right': this.margin + 'px',
-                transform: 'rotate(-' + this.turn + 'deg)',
-              }"
-            >
-              <div class="slider-arrow"></div>
-            </div>
-            <div class="slider-center"></div>
-            <div
-              :style="{
-                'margin-left': this.margin + 'px',
-                transform: 'rotate(' + this.turn + 'deg)',
-              }"
-            >
-              <div class="slider-arrow"></div>
-            </div>
+    <transition name="fade">
+      <LoadingScreen v-if="this.isLoading"></LoadingScreen>
+      <div id="content" v-if="!this.isLoading">
+        <!-- Top Right Logo -->
+        <div id="top-right-logo">
+          <div id="cognected-title">Cognect<span>Ed</span></div>
+          <div id="cognected-subtitle">
+            The Systems Curriculum Gradebook
           </div>
-        </multipane-resizer>
-        <div :style="{ flexGrow: 1, 'min-width': '1%' }" id="class-view">
-          <ClassView></ClassView>
         </div>
-      </multipane>
-    </div>
+        <multipane layout="vertical">
+          <div :style="{ width: '50%', 'min-width': '1%' }" id="student-view">
+            <StudentView></StudentView>
+          </div>
+          <multipane-resizer>
+            <div id="slider-bar"></div>
+            <div id="slider-icon">
+              <div
+                :style="{
+                  'margin-right': this.margin + 'px',
+                  transform: 'rotate(-' + this.turn + 'deg)',
+                }"
+              >
+                <div class="slider-arrow"></div>
+              </div>
+              <div class="slider-center"></div>
+              <div
+                :style="{
+                  'margin-left': this.margin + 'px',
+                  transform: 'rotate(' + this.turn + 'deg)',
+                }"
+              >
+                <div class="slider-arrow"></div>
+              </div>
+            </div>
+          </multipane-resizer>
+          <div :style="{ flexGrow: 1, 'min-width': '1%' }" id="class-view">
+            <ClassView></ClassView>
+          </div>
+        </multipane>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -57,10 +59,18 @@ export default {
   },
   data() {
     return {
-      isLoading: false,
       turn: 90,
       margin: 10,
+      isLoading: true,
     };
+  },
+  methods: {
+    updateIsLoading() {
+      setTimeout(() => (this.isLoading = false), 3000);
+    },
+  },
+  created() {
+    this.updateIsLoading();
   },
 };
 </script>
@@ -173,5 +183,16 @@ export default {
 
 .multipane {
   width: 100%;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition-delay: 3s;
+  transition: opacity 1s;
+  transition-timing-function: ease-in-out;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

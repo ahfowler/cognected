@@ -32,6 +32,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   height: 97vh;
+  background-color: #ffffff;
 }
 
 #loading-logo {
