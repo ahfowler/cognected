@@ -42,9 +42,18 @@ export default {
             min: 0,
             max: 100,
           },
+          color: {
+            background: "#174793",
+            border: "#174793",
+            highlight: {
+              background: "#174793",
+              border: "#174793",
+            },
+          },
         },
         edges: {
           smooth: false,
+          width: 3,
         },
         physics: {
           barnesHut: {
