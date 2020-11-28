@@ -58,9 +58,8 @@ export default {
         physics: {
           barnesHut: {
             avoidOverlap: 1,
-            springConstant: 0.001,
-            centralGravity: 1,
-            gravitationalConstant: -5000,
+            springConstant: 0.1,
+            centralGravity: 0.5,
           },
         },
         interaction: {
@@ -101,8 +100,7 @@ export default {
           let edgeAverage = CalcAssignmentListAvg(
             keyword.associatedKeys[keywordName]
           );
-          edgeJson.length = (110 / 100) * 100 - edgeAverage; // Highest grade receieved from any assignment.
-          edgeJson.length += 130;
+          edgeJson.length = Math.round(102 - edgeAverage + 1) + 100;
           edgeJson.title = "<b>Class Grade Average: </b>" + edgeAverage + "%";
         }
 

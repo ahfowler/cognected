@@ -1,114 +1,170 @@
 [
   {
     "assignment_id": "63102",
-    "assignment_name": "Chapter 1 Test",
     "user_name": "Azaria Fowler",
     "user_id": "2395",
-    "current_grade": 81.76
+    "current_grade": 91.76
   },
   {
     "assignment_id": "63102",
-    "assignment_name": "Chapter 1 Test",
     "user_name": "Prashant Mokkapati",
     "user_id": "8509",
-    "current_grade": 85.99
+    "current_grade": 95.99
   },
   {
     "assignment_id": "63102",
-    "assignment_name": "Chapter 1 Test",
     "user_name": "Aarya Mecwan",
     "user_id": "9574",
     "current_grade": 85.52
   },
   {
     "assignment_id": "63102",
-    "assignment_name": "Chapter 1 Test",
     "user_name": "Sai Dasari",
     "user_id": "1230",
     "current_grade": 89.36
   },
   {
     "assignment_id": "60052",
-    "assignment_name": "Chapter 1 Assignment",
     "user_name": "Azaria Fowler",
     "user_id": "2395",
-    "current_grade": 32.14
+    "current_grade": 82.14
   },
   {
     "assignment_id": "60052",
-    "assignment_name": "Chapter 1 Assignment",
     "user_name": "Prashant Mokkapati",
     "user_id": "8509",
-    "current_grade": 33.54
+    "current_grade": 93.54
   },
   {
     "assignment_id": "60052",
-    "assignment_name": "Chapter 1 Assignment",
     "user_name": "Aarya Mecwan",
     "user_id": "9574",
-    "current_grade": 37.24
+    "current_grade": 87.24
   },
   {
     "assignment_id": "60052",
-    "assignment_name": "Chapter 1 Assignment",
     "user_name": "Sai Dasari",
     "user_id": "1230",
-    "current_grade": 32.7
+    "current_grade": 72.7
   },
   {
     "assignment_id": "90388",
-    "assignment_name": "Chapter 2 Assignment",
     "user_name": "Azaria Fowler",
     "user_id": "2395",
     "current_grade": 70.14
   },
   {
     "assignment_id": "90388",
-    "assignment_name": "Chapter 2 Assignment",
     "user_name": "Prashant Mokkapati",
     "user_id": "8509",
-    "current_grade": 75.86
+    "current_grade": 95.86
   },
   {
     "assignment_id": "90388",
-    "assignment_name": "Chapter 2 Assignment",
     "user_name": "Aarya Mecwan",
     "user_id": "9574",
     "current_grade": 72.22
   },
   {
     "assignment_id": "90388",
-    "assignment_name": "Chapter 2 Assignment",
     "user_name": "Sai Dasari",
     "user_id": "1230",
     "current_grade": 70.22
   },
   {
     "assignment_id": "34554",
-    "assignment_name": "Chapter 2 Test",
     "user_name": "Azaria Fowler",
     "user_id": "2395",
     "current_grade": 100.0
   },
   {
     "assignment_id": "34554",
-    "assignment_name": "Chapter 2 Test",
     "user_name": "Prashant Mokkapati",
     "user_id": "8509",
     "current_grade": 100.56
   },
   {
     "assignment_id": "34554",
-    "assignment_name": "Chapter 2 Test",
     "user_name": "Aarya Mecwan",
     "user_id": "9574",
     "current_grade": 100.0
   },
   {
     "assignment_id": "34554",
-    "assignment_name": "Chapter 2 Test",
     "user_name": "Sai Dasari",
     "user_id": "1230",
     "current_grade": 110.00
+  },
+  {
+    "assignment_id": "39573",
+    "user_name": "Azaria Fowler",
+    "user_id": "2395",
+    "current_grade": 100.0
+  },
+  {
+    "assignment_id": "39573",
+    "user_name": "Prashant Mokkapati",
+    "user_id": "8509",
+    "current_grade": 96.56
+  },
+  {
+    "assignment_id": "39573",
+    "user_name": "Aarya Mecwan",
+    "user_id": "9574",
+    "current_grade": 100.00
+  },
+  {
+    "assignment_id": "39573",
+    "user_name": "Sai Dasari",
+    "user_id": "1230",
+    "current_grade": 91.39
+  },
+  {
+    "assignment_id": "10373",
+    "user_name": "Azaria Fowler",
+    "user_id": "2395",
+    "current_grade": 99.54
+  },
+  {
+    "assignment_id": "10373",
+    "user_name": "Prashant Mokkapati",
+    "user_id": "8509",
+    "current_grade": 47.56
+  },
+  {
+    "assignment_id": "10373",
+    "user_name": "Aarya Mecwan",
+    "user_id": "9574",
+    "current_grade": 50.22
+  },
+  {
+    "assignment_id": "10373",
+    "user_name": "Sai Dasari",
+    "user_id": "1230",
+    "current_grade": 23.00
+  },
+  {
+    "assignment_id": "09647",
+    "user_name": "Azaria Fowler",
+    "user_id": "2395",
+    "current_grade": 54.0
+  },
+  {
+    "assignment_id": "09647",
+    "user_name": "Prashant Mokkapati",
+    "user_id": "8509",
+    "current_grade": 55.56
+  },
+  {
+    "assignment_id": "09647",
+    "user_name": "Aarya Mecwan",
+    "user_id": "9574",
+    "current_grade": 58.0
+  },
+  {
+    "assignment_id": "09647",
+    "user_name": "Sai Dasari",
+    "user_id": "1230",
+    "current_grade": 51.00
   }
 ]

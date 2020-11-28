@@ -1,26 +1,46 @@
 [
   {
     "id": "63102",
-    "name": "Chapter 1 Test",
-    "description": "#Substainability #Public_Transportation #Environmentalism",
+    "name": "Assignment 1.1: Multi-step equations",
+    "description": "#operations #systems_of_functions #interval",
     "points_possible": 100
   },
   {
     "id": "60052",
-    "name": "Chapter 1 Assignment",
-    "description": "#Environmentalism #Solar_Energy #Ecology",
+    "name": "Assignment 1.2: Work word problems",
+    "description": "#operations #systems_of_functions #nonlinear #linear",
     "points_possible": 100
   },
   {
     "id": "34554",
-    "name": "Chapter 2 Test",
-    "description": "#Ecology #Recycling",
+    "name": "Assignment 1.3: Distance-rate-time word problems",
+    "description": "#operations #average_rate_of_change",
     "points_possible": 100
   },
   {
     "id": "90388",
-    "name": "Chapter 2 Assignment",
-    "description": "#Ecology #Solar_Energy",
+    "name": "Assignment 1.4: Absolute value equations",
+    "description": "#operations #increase #decrease #interval",
+    "points_possible": 100
+  },
+  {
+    "id": "39573",
+    "name": "Assignment 1.5: Review of linear equations",
+    "description": "#linear #operations #increase #decrease #classes_of_functions #interval",
+    "points_possible": 100
+  }
+  ,
+  {
+    "id": "10373",
+    "name": "Assignment 1.6: Graphing absolute value equations",
+    "description": "#linear #operations #classes_of_functions #interval",
+    "points_possible": 100
+  }
+  ,
+  {
+    "id": "09647",
+    "name": "Assignment 1.7: Graphing linear inequalities",
+    "description": "#linear #operations #systems_of_functions #classes_of_functions #interval",
     "points_possible": 100
   }
 ]
