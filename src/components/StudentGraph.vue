@@ -1,7 +1,7 @@
 <template>
   <div>
     <network
-      ref="network"
+      ref="studentNetwork"
       :nodes="nodes"
       :edges="edges"
       :options="options"
@@ -22,7 +22,7 @@ import {
 } from "../script/parseCanvasData.js";
 
 export default {
-  name: "ClassGraph",
+  name: "StudentGraph",
   data() {
     return {
       courseID: 18732,
@@ -147,8 +147,8 @@ export default {
 </script>
 
 <style scoped>
-#cognected-graph > div,
-#cognected-graph > div > div {
+#student-cognected-graph > div,
+#student-cognected-graph > div > div {
   height: 100%;
   width: 100%;
   display: flex;

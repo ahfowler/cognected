@@ -103,11 +103,19 @@ class Keyword {
 //   }
 // }
 
+// class Student {
+//   constructor(name, id) {
+//     this.name = name;
+//     this.id = id;
+//   }
+// }
+
 /* Global Variables */
 var courseAssignmentData;
 var courseGradeData;
 var Assignments = {};
 var Keywords = [];
+var Students = [];
 
 /* Helper Functions */
 
@@ -211,6 +219,9 @@ function ParseGradeJson() {
   if (courseGradeData != undefined) {
     courseGradeData.forEach((item) => {
       Assignments[item.assignment_id].AppendGrade(item);
+      if (!Students.includes(item.user_name)) {
+        Students.push(item.user_name);
+      }
     });
 
     for (let id in Assignments) {
@@ -230,6 +241,7 @@ AjaxCallGrade();
 export {
   Assignments,
   Keywords,
+  Students,
   KeywordIndex,
   CalcAssignmentListAvg,
   edgeExists,

@@ -2,7 +2,7 @@
   {
     "id": "63102",
     "name": "Assignment 1.1: Multi-step equations",
-    "description": "#operations #systems_of_functions #interval",
+    "description": "#systems_of_functions",
     "points_possible": 100
   },
   {
@@ -14,33 +14,19 @@
   {
     "id": "34554",
     "name": "Assignment 1.3: Distance-rate-time word problems",
-    "description": "#operations #average_rate_of_change",
+    "description": "#operations #average #rate #interval",
     "points_possible": 100
   },
   {
     "id": "90388",
     "name": "Assignment 1.4: Absolute value equations",
-    "description": "#operations #increase #decrease #interval",
+    "description": "#operations #increase #decrease #interval #average",
     "points_possible": 100
   },
   {
     "id": "39573",
     "name": "Assignment 1.5: Review of linear equations",
     "description": "#linear #operations #increase #decrease #classes_of_functions #interval",
-    "points_possible": 100
-  }
-  ,
-  {
-    "id": "10373",
-    "name": "Assignment 1.6: Graphing absolute value equations",
-    "description": "#linear #operations #classes_of_functions #interval",
-    "points_possible": 100
-  }
-  ,
-  {
-    "id": "09647",
-    "name": "Assignment 1.7: Graphing linear inequalities",
-    "description": "#linear #operations #systems_of_functions #classes_of_functions #interval",
     "points_possible": 100
   }
 ]
