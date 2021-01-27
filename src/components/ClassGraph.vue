@@ -34,14 +34,20 @@ export default {
       edges: [],
       options: {
         nodes: {
-          shape: "dot",
+          shape: "circle",
           scaling: {
-            customScalingFunction: function(min, max, total, value) {
-              return value * 0.005;
+            label: {
+                enabled: true,
+                min: 10,
+                max: 10
             },
-            min: 0,
-            max: 100,
+            // customScalingFunction: function(min, max, total, value) {
+            //   return value * 0.005;
+            // },
+            // min: 10,
+            // max: 10,
           },
+          //value: 1, 
           color: {
             background: "#174793",
             border: "#174793",
@@ -78,13 +84,16 @@ export default {
       this.importedKeywords.forEach((keyword) => {
         let nodeJson = {};
         nodeJson.id = KeywordIndex(keyword.name);
-        nodeJson.title =
-          "<b>" +
-          keyword.name +
-          "</b><br/><b>Class Grade Average: </b>" +
-          keyword.keyword_Avg +
-          "%";
+
+        nodeJson.label = keyword.name;
+        nodeJson.font = {};
+        nodeJson.font.color = "white"
+        nodeJson.font.strokeWidth = 2
+        nodeJson.font.strokeColor = "black"
+
+        nodeJson.title = "<b>" + keyword.name + "</b><br/><b>Class Grade Average: </b>" + keyword.keyword_Avg + "%";
         nodeJson.value = keyword.keyword_Avg;
+        
         this.nodes.push(nodeJson);
       });
     },
