@@ -19,16 +19,19 @@
             'opened-settings-menu': settingsOpened,
           }"
         >
-          <Tooltip text="Assignments">
+          <Tooltip text="Assignments" @click.native="Assignments_Click">
             <img src="../assets/assignments-icon.png" />
           </Tooltip>
-          <Tooltip text="Categories">
+
+          <Tooltip text="Categories" @click.native="Categories_Click">
             <img src="../assets/categories-icon.png" />
           </Tooltip>
-          <Tooltip text="Students">
+
+          <Tooltip text="Students" @click.native="Students_Click">
             <img src="../assets/students-icon.png" />
           </Tooltip>
-          <Tooltip text="Configure">
+
+          <Tooltip text="Configure" @click.native="Configure_Click">
             <img src="../assets/graph-settings-icon.png" />
           </Tooltip>
         </div>
@@ -52,6 +55,21 @@ export default {
       settingsOpened: false,
     };
   },
+  methods:{
+    Assignments_Click() {
+      console.log("Assignments click");
+      //this.$dialog.show(UserSettings);
+    },
+    Categories_Click() {
+      console.log("Categories click");
+    },
+    Students_Click() {
+      console.log("Students click");
+    },
+    Configure_Click() {
+      console.log("Configure click");
+    },
+  }
 };
 </script>
 

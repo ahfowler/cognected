@@ -6,5 +6,8 @@ module.exports = {
                 args[0].title = "CognectEd";
                 return args;
             })
+    },
+    configureWebpack: config => {
+        devtool: 'source-map'
     }
 }
