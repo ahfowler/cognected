@@ -2,7 +2,8 @@
   <div id="class-view">
     <div class="pane-id">Class View</div>
     <div id="cognected-graph">
-      <ClassGraph></ClassGraph>
+      <UserSettings v-if="this.viewUserSettings" @clicked="SettingsReturn" :canvasURL="this.userData[0]" :token="this.userData[1]"></UserSettings>
+      <ClassGraph v-if="!this.viewUserSettings"></ClassGraph>
       <div
         id="class-settings-menu"
         v-on:click="settingsOpened = !settingsOpened"
@@ -31,7 +32,7 @@
             <img src="../assets/students-icon.png" />
           </Tooltip>
 
-          <Tooltip text="Configure" @click.native="Configure_Click">
+          <Tooltip text="Configure" @click.native="viewUserSettings=!viewUserSettings">
             <img src="../assets/graph-settings-icon.png" />
           </Tooltip>
         </div>
@@ -43,22 +44,25 @@
 <script>
 import ClassGraph from "../components/ClassGraph.vue";
 import Tooltip from "../components/Tooltip.vue";
+import UserSettings from "../components/UserSettings.vue"
 
 export default {
   name: "ClassView",
   components: {
     ClassGraph,
     Tooltip,
+    UserSettings,
   },
   data() {
     return {
       settingsOpened: false,
+      viewUserSettings: false,
+      userData: ['', ''],
     };
   },
   methods:{
     Assignments_Click() {
       console.log("Assignments click");
-      //this.$dialog.show(UserSettings);
     },
     Categories_Click() {
       console.log("Categories click");
@@ -69,6 +73,15 @@ export default {
     Configure_Click() {
       console.log("Configure click");
     },
+    SettingsReturn(value){
+      this.viewUserSettings = false;
+
+      if(value != 'Canceled'){
+        console.log('Return from settings event');
+        this.userData = value;
+        console.log(this.userData);
+      }
+    }
   }
 };
 </script>
