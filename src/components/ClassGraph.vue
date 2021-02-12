@@ -26,22 +26,27 @@ export default {
   data() {
     return {
       courseID: 18732,
-      accessKey:
-        "7236~8dQSbbxT2iQeatKfNOJYzWR441OHkkv5CcUOr4sksrHNmdk1SRQoJG5wrut4e0s7",
+      accessKey: "7236~8dQSbbxT2iQeatKfNOJYzWR441OHkkv5CcUOr4sksrHNmdk1SRQoJG5wrut4e0s7",
       importedKeywords: Keywords,
       importedAssignments: Assignments,
       nodes: [],
       edges: [],
       options: {
         nodes: {
-          shape: "dot",
-          scaling: {
-            customScalingFunction: function(min, max, total, value) {
-              return value * 0.005;
-            },
-            min: 0,
-            max: 100,
-          },
+          shape: "circle",
+          // scaling: {
+          //   // label: {
+          //   //     enabled: true,
+          //   //     min: 10,
+          //   //     max: 10
+          //   // },
+          //   // customScalingFunction: function(min, max, total, value) {
+          //   //   return value * 0.005;
+          //   // },
+          //   // min: 10,
+          //   // max: 10,
+          // },
+          value: 1, 
           color: {
             background: "#174793",
             border: "#174793",
@@ -71,30 +76,50 @@ export default {
   },
   methods: {
     myClickCallback() {
-      console.log("hello");
+      let selectedKeywordNode = this.importedKeywords[this.$refs.network.getSelection().nodes[0]]
+      if(selectedKeywordNode != undefined){
+        console.log("Selected Node: " + selectedKeywordNode.name);
+
+        this.importedKeywords[KeywordIndex(selectedKeywordNode.name)].name = "UPDATED: " + selectedKeywordNode.name;
+        this.createKeywordNodes();
+        this.$refs.network.body.emitter.emit('_dataChanged');
+        this.$refs.network.redraw();
+      }
+
     },
     createKeywordNodes() {
       this.nodes = [];
       this.importedKeywords.forEach((keyword) => {
         let nodeJson = {};
         nodeJson.id = KeywordIndex(keyword.name);
-        nodeJson.title =
-          "<b>" +
-          keyword.name +
-          "</b><br/><b>Class Grade Average: </b>" +
-          keyword.keyword_Avg +
-          "%";
-        nodeJson.value = keyword.keyword_Avg;
+
+        nodeJson.label = keyword.name;
+        nodeJson.font = {};
+        nodeJson.font.color = "white";
+        nodeJson.font.strokeWidth = 2;
+        nodeJson.font.strokeColor = "black";
+
+        nodeJson.scaling = {};
+        nodeJson.scaling.min = keyword.keyword_Avg / 2;
+        nodeJson.scaling.max = keyword.keyword_Avg / 2;
+
+        nodeJson.title = "<b>" + keyword.name + "</b><br/><b>Class Grade Average: </b>" + keyword.keyword_Avg + "%";
+        //nodeJson.value = keyword.keyword_Avg;
+        
         this.nodes.push(nodeJson);
       });
     },
     createEdges() {
-      console.log(this.importedAssignments);
-      console.log(this.importedKeywords);
+      console.log("ASSIGNMENTS: ");
+      console.log(this.importedAssignments)
+      console.log("KEYWORDS: ");
+      console.log(this.importedKeywords)
+      
       this.edges = [];
       this.importedKeywords.forEach((keyword) => {
         let edgeJson = {};
         edgeJson.from = KeywordIndex(keyword.name);
+
         for (let keywordName in keyword.associatedKeys) {
           edgeJson.to = KeywordIndex(keywordName);
           // Calculate the edge average.
