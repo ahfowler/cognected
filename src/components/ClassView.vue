@@ -56,7 +56,7 @@ export default {
   data() {
     return {
       settingsOpened: false,
-      viewUserSettings: false,
+      viewUserSettings: true,
       userData: ['', ''],
     };
   },
