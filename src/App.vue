@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" data-app app-data="true" light>
     <transition name="fade">
       <LoadingScreen v-if="this.isLoading"></LoadingScreen>
       <div id="content" v-if="!this.isLoading">
@@ -67,7 +67,7 @@ export default {
   methods: {
     updateIsLoading() {
       setTimeout(() => (this.isLoading = false), 3000);
-    },
+    }
   },
   created() {
     this.updateIsLoading();
