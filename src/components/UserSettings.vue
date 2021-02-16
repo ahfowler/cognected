@@ -16,15 +16,16 @@
             <div
               id="dropdown-list"
               v-for="course in courses"
-              :key="course.name"
+              :key="course"
             >
               <input
                 name="courseList"
                 type="radio"
-                :id="course.name"
-                :value="course.name"
+                :id="course"
+                :value="course"
+                v-model="currentCourse"
               />
-              <label :for="course.name">{{ course.name }}</label>
+              <label :for="course">{{ course }}</label>
             </div>
           </div>
         </div>
@@ -36,7 +37,7 @@
 </template>
 
 <script>
-import $ from 'jquery'
+import $ from 'jquery';
 
 export default {
   name: "UserSettings",
@@ -44,13 +45,12 @@ export default {
     canvasURL: String,
     token: String,
     course: String,
+    currentCourse: String,
   },
   data() {
       return{
           message: '',
-          courses: [
-            
-        ],
+          courses: [],
       };
   },
   methods: {
@@ -60,12 +60,14 @@ export default {
     },
     ApplyClick(){
       console.log('Apply Click');
-      this.$emit('clicked', [this.canvasURL, this.token, ]);
+      this.$emit('clicked', [this.canvasURL, this.token, this.currentCourse]);
     },
     PopulateCourses(){
+      let context = this
+      context.courses = []
       if(this.canvasURL.includes("instructure.com") && this.token.length > 60){
         var corsAnywhere = "https://salty-atoll-62320.herokuapp.com/"; //NEEDED TO CREATE A 'PROPER' CORS API CALL
-        var enrollmentTypes = ["TeacherEnrollment","TaEnrollment","ObserverEnrollment", "DesignerEnrollment"];
+        var enrollmentTypes = ["StudentEnrollment", "TeacherEnrollment","TaEnrollment","ObserverEnrollment", "DesignerEnrollment"];
 
         //get course data for each enrollment type
         enrollmentTypes.forEach((item) => {
@@ -79,8 +81,11 @@ export default {
             },
             success: function (jsondata) {
               if (jsondata.length != 0) {
-                console.log(jsondata)
-                this.courses.concat(jsondata)
+                jsondata.forEach(element => {
+                  if(element.name != undefined && element.name != null && element.name != ""){
+                    context.courses.push(element.name);
+                  }
+                });
               }
             },
             error: function (xhr) {
