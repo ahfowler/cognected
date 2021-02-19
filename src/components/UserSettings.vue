@@ -1,9 +1,9 @@
 <template>
-    <div>
+    <div >
         <p style="font:">CognectEd User Settings</p>
         <div class="input-group">
             <label id="label">Canvas URL</label>
-            <input placeholder="Institution Canvas URL...  (i.e https://asu.instructure.com/ )" style="width:500px" id="CanvasUrl" v-model="canvasURL" @keyup="PopulateCourses" @paste="PopulateCourses"> 
+            <input placeholder="Institution Canvas URL...  (i.e https://asu.instructure.com/ )" style="min-width:500px;" id="CanvasUrl" v-model="canvasURL" @keyup="PopulateCourses" @paste="PopulateCourses"/> 
         </div>
 
         <div class="input-group">
@@ -15,22 +15,24 @@
           <div class="dropdown-area">
             <div
               id="dropdown-list"
-              v-for="course in courses"
-              :key="course"
+              v-for="(course, i) in courses"
+              :key="i+'-'+course.name"
             >
               <input
                 name="courseList"
                 type="radio"
-                :id="course"
-                :value="course"
+                :id="course.name"
+                :value="course.name"
                 v-model="currentCourse"
               />
-              <label :for="course">{{ course }}</label>
+              <label :for="course.name">{{ course.name }}</label>
             </div>
           </div>
         </div>
 
         <a class="myButton" @click="CancelClick" style="float:left;margin-left:50px">Cancel</a>
+
+        <a class="myButton" href="https://drive.google.com/file/d/1A1CjziR9ubyikiGY9IDMDBHchp1gpLa6/view?usp=sharing" target="_blank">User Guide</a>
 
         <a class="myButton" @click="ApplyClick" style="float:right;margin-right:50px">Apply</a>
     </div>
@@ -42,33 +44,36 @@ import $ from 'jquery';
 export default {
   name: "UserSettings",
   props: {
-    canvasURL: String,
-    token: String,
-    course: String,
-    currentCourse: String,
+    propCanvasURL: String,
+    propToken: String,
   },
   data() {
       return{
           message: '',
           courses: [],
+          currentCourse: '',
+          canvasURL: this.propCanvasURL,
+          token: this.propToken,
       };
   },
   methods: {
     CancelClick(){
-      console.log('Cancel Click');
       this.$emit('clicked', 'Canceled');
     },
     ApplyClick(){
-      console.log('Apply Click');
-      this.$emit('clicked', [this.canvasURL, this.token, this.currentCourse]);
+      if(this.currentCourse != undefined && this.currentCourse != null && this.currentCourse != ''){
+        this.$emit('clicked', [this.canvasURL, this.token, this.GetCourseId(this.currentCourse)]);
+      }
+    },
+    GetCourseId(name){
+      return this.courses.find((course) => course.name == name).id;
     },
     PopulateCourses(){
-      let context = this
-      context.courses = []
       if(this.canvasURL.includes("instructure.com") && this.token.length > 60){
+        let context = this
+        context.courses = []
         var corsAnywhere = "https://salty-atoll-62320.herokuapp.com/"; //NEEDED TO CREATE A 'PROPER' CORS API CALL
         var enrollmentTypes = ["StudentEnrollment", "TeacherEnrollment","TaEnrollment","ObserverEnrollment", "DesignerEnrollment"];
-
         //get course data for each enrollment type
         enrollmentTypes.forEach((item) => {
           $.ajax({
@@ -83,7 +88,7 @@ export default {
               if (jsondata.length != 0) {
                 jsondata.forEach(element => {
                   if(element.name != undefined && element.name != null && element.name != ""){
-                    context.courses.push(element.name);
+                    context.courses.push({name: element.name, id: element.id.toString()});
                   }
                 });
               }
@@ -93,11 +98,13 @@ export default {
             },
           });
         });
-
-        console.log("Getting Classes")
       }
     },
-  }
+
+  },
+  mounted() {
+      this.PopulateCourses()
+  },
 }
 </script>
 

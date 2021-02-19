@@ -6,6 +6,7 @@
       :edges="edges"
       :options="options"
       :events="['click']"
+      v-if="dataReady"
       @click="myClickCallback"
     ></network>
   </div>
@@ -19,18 +20,23 @@ import {
   KeywordIndex,
   CalcAssignmentListAvg,
   edgeExists,
+  AjaxCallAssignments,
 } from "../script/parseCanvasData.js";
 
 export default {
   name: "ClassGraph",
+  props: {
+    courseID: String,
+    token: String,
+    canvasURL: String,
+  },
   data() {
     return {
-      courseID: 18732,
-      accessKey: "7236~8dQSbbxT2iQeatKfNOJYzWR441OHkkv5CcUOr4sksrHNmdk1SRQoJG5wrut4e0s7",
       importedKeywords: Keywords,
       importedAssignments: Assignments,
       nodes: [],
       edges: [],
+      dataReady: false,
       options: {
         nodes: {
           shape: "circle",
@@ -80,10 +86,10 @@ export default {
       if(selectedKeywordNode != undefined){
         console.log("Selected Node: " + selectedKeywordNode.name);
 
-        this.importedKeywords[KeywordIndex(selectedKeywordNode.name)].name = "UPDATED: " + selectedKeywordNode.name;
-        this.createKeywordNodes();
-        this.$refs.network.body.emitter.emit('_dataChanged');
-        this.$refs.network.redraw();
+        // this.importedKeywords[KeywordIndex(selectedKeywordNode.name)].name = "UPDATED: " + selectedKeywordNode.name;
+        // this.createKeywordNodes();
+        // this.$refs.network.body.emitter.emit('_dataChanged');
+        // this.$refs.network.redraw();
       }
 
     },
@@ -135,9 +141,12 @@ export default {
           this.edges.push(edgeJson);
         }
       });
+
+      this.dataReady = true;
     },
   },
-  mounted() {
+  async mounted() {
+    AjaxCallAssignments(this.courseID, this.token, this.canvasURL);
     this.createKeywordNodes();
     this.createEdges();
   },
