@@ -2,7 +2,8 @@
   <div id="class-view">
     <div class="pane-id">Class View</div>
     <div id="cognected-graph">
-      <ClassGraph></ClassGraph>
+      <Categories v-if="showCategories" />
+      <ClassGraph v-if="!showCategories" ></ClassGraph>
       <div
         id="class-settings-menu"
         v-on:click="settingsOpened = !settingsOpened"
@@ -23,7 +24,7 @@
             <img src="../assets/assignments-icon.png" />
           </Tooltip>
           <Tooltip text="Categories">
-            <img src="../assets/categories-icon.png" />
+            <img src="../assets/categories-icon.png" v-on:click="toggleCategories" />
           </Tooltip>
           <Tooltip text="Students">
             <img src="../assets/students-icon.png" />
@@ -40,19 +41,29 @@
 <script>
 import ClassGraph from "../components/ClassGraph.vue";
 import Tooltip from "../components/Tooltip.vue";
+import Categories from "../components/Categories.vue";
+
 
 export default {
   name: "ClassView",
   components: {
     ClassGraph,
     Tooltip,
+    Categories,
   },
   data() {
     return {
       settingsOpened: false,
+      showCategories: false
     };
   },
+  methods: {
+    toggleCategories() {
+      this.showCategories = !this.showCategories;
+    }
+  }
 };
+
 </script>
 
 <style scoped>
