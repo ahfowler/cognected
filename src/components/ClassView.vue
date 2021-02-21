@@ -20,16 +20,18 @@
             'opened-settings-menu': settingsOpened,
           }"
         >
-          <Tooltip text="Assignments">
+          <Tooltip text="Assignments" @click.native="Assignments_Click">
             <img src="../assets/assignments-icon.png" />
           </Tooltip>
           <Tooltip text="Categories">
             <img src="../assets/categories-icon.png" v-on:click="toggleCategories" />
           </Tooltip>
-          <Tooltip text="Students">
+
+          <Tooltip text="Students" @click.native="Students_Click">
             <img src="../assets/students-icon.png" />
           </Tooltip>
-          <Tooltip text="Configure">
+
+          <Tooltip text="Configure" @click.native="viewUserSettings=!viewUserSettings">
             <img src="../assets/graph-settings-icon.png" />
           </Tooltip>
         </div>
@@ -41,25 +43,43 @@
 <script>
 import ClassGraph from "../components/ClassGraph.vue";
 import Tooltip from "../components/Tooltip.vue";
-import Categories from "../components/Categories.vue";
-
+import UserSettings from "../components/UserSettings.vue"
 
 export default {
   name: "ClassView",
   components: {
     ClassGraph,
     Tooltip,
-    Categories,
+    UserSettings,
   },
   data() {
     return {
       settingsOpened: false,
-      showCategories: false
+      viewUserSettings: true,
+      userData: ['', ''],
     };
   },
-  methods: {
-    toggleCategories() {
-      this.showCategories = !this.showCategories;
+  methods:{
+    Assignments_Click() {
+      console.log("Assignments click");
+    },
+    Categories_Click() {
+      console.log("Categories click");
+    },
+    Students_Click() {
+      console.log("Students click");
+    },
+    Configure_Click() {
+      console.log("Configure click");
+    },
+    SettingsReturn(value){
+      this.viewUserSettings = false;
+
+      if(value != 'Canceled'){
+        console.log('Return from settings event');
+        this.userData = value;
+        console.log(this.userData);
+      }
     }
   }
 };
