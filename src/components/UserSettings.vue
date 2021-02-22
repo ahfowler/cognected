@@ -72,7 +72,7 @@ export default {
       if(this.currentCourse != undefined && this.currentCourse != null && this.currentCourse != ''){
         AjaxCallAssignments(this.GetCourseId(this.currentCourse), this.token, this.canvasURL);
         
-        this.checkDataLoading = window.setInterval(this.CheckData, 500)
+        this.checkDataLoading = window.setInterval(this.CheckData, 100)
 
         //this.$emit('clicked', [this.canvasURL, this.token, this.GetCourseId(this.currentCourse)]);
       }
@@ -92,6 +92,7 @@ export default {
     },
     PopulateCourses(){
       if(this.canvasURL.includes("instructure.com") && this.token.length > 60){
+        this.dataLoading = true;
         let context = this
         context.courses = []
         var corsAnywhere = "https://salty-atoll-62320.herokuapp.com/"; //NEEDED TO CREATE A 'PROPER' CORS API CALL
@@ -113,9 +114,12 @@ export default {
                     context.courses.push({name: element.name, id: element.id.toString()});
                   }
                 });
+
+                context.dataLoading = false;
               }
             },
             error: function (xhr) {
+              context.dataLoading = false;
               console.log(xhr.responseText);
             },
           });
