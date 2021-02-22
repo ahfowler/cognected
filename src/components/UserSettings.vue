@@ -73,8 +73,6 @@ export default {
         AjaxCallAssignments(this.GetCourseId(this.currentCourse), this.token, this.canvasURL);
         
         this.checkDataLoading = window.setInterval(this.CheckData, 100)
-
-        //this.$emit('clicked', [this.canvasURL, this.token, this.GetCourseId(this.currentCourse)]);
       }
     },
     CheckData(){
@@ -96,7 +94,7 @@ export default {
         let context = this
         context.courses = []
         var corsAnywhere = "https://salty-atoll-62320.herokuapp.com/"; //NEEDED TO CREATE A 'PROPER' CORS API CALL
-        var enrollmentTypes = ["StudentEnrollment", "TeacherEnrollment","TaEnrollment","ObserverEnrollment", "DesignerEnrollment"];
+        var enrollmentTypes = ["TeacherEnrollment","TaEnrollment","ObserverEnrollment", "DesignerEnrollment"]; //, "StudentEnrollment"]; add if needed in testing
         //get course data for each enrollment type
         enrollmentTypes.forEach((item) => {
           $.ajax({
@@ -114,7 +112,8 @@ export default {
                     context.courses.push({name: element.name, id: element.id.toString()});
                   }
                 });
-
+                
+                context.currentCourse = context.courses[0].name;
                 context.dataLoading = false;
               }
             },
@@ -302,9 +301,10 @@ input {
   box-shadow: rgba(35, 104, 214, 1) 1.5em 0 0 0, rgba(35, 104, 214, 1) 1.1em 1.1em 0 0, rgba(35, 104, 214, 1) 0 1.5em 0 0, rgba(35, 104, 214, 1) -1.1em 1.1em 0 0, rgba(35, 104, 214, 1) -1.5em 0 0 0, rgba(35, 104, 214, 1) -1.1em -1.1em 0 0, rgba(35, 104, 214, 1) 0 -1.5em 0 0, rgba(35, 104, 214, 1) 1.1em -1.1em 0 0;
 }
 
-/* rgba(252, 193, 0, 1)Orange*/
-/* rgba(23, 71, 147, 1)Blue*/
-/* rgba(35, 104, 214, 1)LightBlue*/
+/* rgba(252, 193, 0, 1)  Orange*/
+/* rgba(23, 71, 147, 1)  Blue*/
+/* rgba(0, 0, 0, 1)  Black*/
+/* rgba(35, 104, 214, 1)  LightBlue*/
 
 /* Animation */
 

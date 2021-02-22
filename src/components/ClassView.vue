@@ -84,9 +84,7 @@ export default {
       this.viewUserSettings = false;
 
       if(value != 'Canceled'){
-        console.log('Return from settings event');
         this.userData = value;
-        console.log(this.userData);
       }
     }
   }
