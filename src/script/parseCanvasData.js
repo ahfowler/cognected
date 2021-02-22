@@ -118,6 +118,7 @@ var courseGradeData;
 var Assignments = {};
 var Keywords = [];
 var corsAnywhere = "https://salty-atoll-62320.herokuapp.com/"; //NEEDED TO CREATE A 'PROPER' CORS API CALL
+var dataLoading = false;
 
 /* Helper Functions */
 
@@ -203,9 +204,8 @@ function edgeExists(edge, edges) {
 /* API Call Functions */
 //eslint-disable-next-line
 function AjaxCallAssignments(courseID, accesskey, canvasURL) {
-  console.log(courseID + " " + canvasURL + " " + accesskey);
-
   try {
+    dataLoading = true;
     //Canvas API call for the ASSIGNMENT for the given course
     $.ajax({
       url: corsAnywhere + canvasURL + "/api/v1/courses/" + courseID +"/assignments?per_page=100",
@@ -413,8 +413,16 @@ function ParseGradeJson() {
 
     // console.log("KEYWORD OBJECTS");
     // console.log(Keywords);
+
+    dataLoading = false;
   }
 }
+
+
+function GetDataLoading() {
+  return dataLoading;
+}
+
 
 export {
   Assignments,
@@ -422,5 +430,6 @@ export {
   KeywordIndex,
   CalcAssignmentListAvg,
   edgeExists,
+  GetDataLoading,
   AjaxCallAssignments,
 };

@@ -6,7 +6,6 @@
       :edges="edges"
       :options="options"
       :events="['click']"
-      v-if="dataReady"
       @click="myClickCallback"
     ></network>
   </div>
@@ -20,7 +19,6 @@ import {
   KeywordIndex,
   CalcAssignmentListAvg,
   edgeExists,
-  AjaxCallAssignments,
 } from "../script/parseCanvasData.js";
 
 export default {
@@ -36,7 +34,6 @@ export default {
       importedAssignments: Assignments,
       nodes: [],
       edges: [],
-      dataReady: false,
       options: {
         nodes: {
           shape: "circle",
@@ -141,12 +138,9 @@ export default {
           this.edges.push(edgeJson);
         }
       });
-
-      this.dataReady = true;
     },
   },
-  async mounted() {
-    AjaxCallAssignments(this.courseID, this.token, this.canvasURL);
+  mounted() {
     this.createKeywordNodes();
     this.createEdges();
   },
