@@ -2,8 +2,8 @@
   <div id="class-view">
     <div class="pane-id">Class View</div>
     <div id="cognected-graph">
-      <UserSettings v-if="this.viewUserSettings" @clicked="SettingsReturn" :canvasURL="this.userData[0]" :token="this.userData[1]"></UserSettings>
-      <ClassGraph v-if="!this.viewUserSettings"></ClassGraph>
+      <UserSettings v-if="this.viewUserSettings" @clicked="SettingsReturn" :propCanvasURL="this.userData[0]" :propToken="this.userData[1]"></UserSettings>
+      <ClassGraph v-if="!this.viewUserSettings" :canvasURL="this.userData[0]" :token="this.userData[1]" :courseID="this.userData[2]"></ClassGraph>
       <div
         id="class-settings-menu"
         v-on:click="settingsOpened = !settingsOpened"
@@ -20,20 +20,24 @@
             'opened-settings-menu': settingsOpened,
           }"
         >
-          <Tooltip text="Assignments" @click.native="Assignments_Click">
+          <Tooltip text="Assignments - COMING SOON" @click.native="Assignments_Click">
             <img src="../assets/assignments-icon.png" />
           </Tooltip>
 
-          <Tooltip text="Categories" @click.native="Categories_Click">
+          <Tooltip text="Categories - COMING SOON" @click.native="Categories_Click">
             <img src="../assets/categories-icon.png" />
           </Tooltip>
 
-          <Tooltip text="Students" @click.native="Students_Click">
+          <Tooltip text="Students - COMING SOON" @click.native="Students_Click">
             <img src="../assets/students-icon.png" />
           </Tooltip>
 
           <Tooltip text="Configure" @click.native="viewUserSettings=!viewUserSettings">
             <img src="../assets/graph-settings-icon.png" />
+          </Tooltip>
+
+          <Tooltip text="User Guide" @click.native="UserGuide_Click">
+            <img src="../assets/info-icon.png" />
           </Tooltip>
         </div>
       </div>
@@ -57,7 +61,7 @@ export default {
     return {
       settingsOpened: false,
       viewUserSettings: true,
-      userData: ['', ''],
+      userData: ['', '', ''],
     };
   },
   methods:{
@@ -70,16 +74,17 @@ export default {
     Students_Click() {
       console.log("Students click");
     },
-    Configure_Click() {
-      console.log("Configure click");
+    UserGuide_Click() {
+      Object.assign(document.createElement('a'), {
+        target: '_blank',
+        href: 'https://drive.google.com/file/d/1A1CjziR9ubyikiGY9IDMDBHchp1gpLa6/view?usp=sharing',
+      }).click();
     },
     SettingsReturn(value){
       this.viewUserSettings = false;
 
       if(value != 'Canceled'){
-        console.log('Return from settings event');
         this.userData = value;
-        console.log(this.userData);
       }
     }
   }

@@ -13,6 +13,7 @@
     "cache-loader": "^4.1.0",
     "core-js": "^3.6.5",
     "jest-worker": "^26.6.2",
+    "jquery": "^3.5.1",
     "keycharm": "^0.4.0",
     "moment": "^2.29.1",
     "node-sass": "^5.0.0",
