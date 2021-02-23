@@ -5,7 +5,7 @@
       :nodes="nodes"
       :edges="edges"
       :options="options"
-      :events="['click']"
+      :events="['click', 'doubleClick']"
       @click="myClickCallback"
     ></network>
   </div>
@@ -49,7 +49,7 @@ export default {
           //   // min: 10,
           //   // max: 10,
           // },
-          value: 1, 
+          value: 1,
           color: {
             background: "#174793",
             border: "#174793",
@@ -63,24 +63,45 @@ export default {
           smooth: false,
           width: 3,
         },
+        groups: {
+          one: { color: { background: "#fcc100" } },
+        },
         physics: {
           barnesHut: {
             avoidOverlap: 1,
-            springConstant: 0.001,
-            centralGravity: 1,
-            gravitationalConstant: -5000,
+            springConstant: 0.1,
+            centralGravity: 0.5,
           },
+          maxVelocity: 10,
+          minVelocity: 1,
         },
         interaction: {
           hover: false,
+          selectable: false,
+          selectConnectedEdges: false,
+          // dragNodes: false,
         },
       },
     };
   },
   methods: {
+    formatLabel(label) {
+      let newLabel = "";
+      let words = label.split(" ");
+      if (words.length > 1) {
+        words.forEach((word) => {
+          newLabel += word + "\n";
+        });
+        return newLabel;
+      } else {
+        return label;
+      }
+    },
     myClickCallback() {
-      let selectedKeywordNode = this.importedKeywords[this.$refs.network.getSelection().nodes[0]]
-      if(selectedKeywordNode != undefined){
+      let selectedKeywordNode = this.importedKeywords[
+        this.$refs.network.getSelection().nodes[0]
+      ];
+      if (selectedKeywordNode != undefined) {
         console.log("Selected Node: " + selectedKeywordNode.name);
 
         // this.importedKeywords[KeywordIndex(selectedKeywordNode.name)].name = "UPDATED: " + selectedKeywordNode.name;
@@ -88,7 +109,6 @@ export default {
         // this.$refs.network.body.emitter.emit('_dataChanged');
         // this.$refs.network.redraw();
       }
-
     },
     createKeywordNodes() {
       this.nodes = [];
@@ -106,18 +126,23 @@ export default {
         nodeJson.scaling.min = keyword.keyword_Avg / 2;
         nodeJson.scaling.max = keyword.keyword_Avg / 2;
 
-        nodeJson.title = "<b>" + keyword.name + "</b><br/><b>Class Grade Average: </b>" + keyword.keyword_Avg + "%";
+        nodeJson.title =
+          "<b>" +
+          keyword.name +
+          "</b><br/><b>Class Grade Average: </b>" +
+          keyword.keyword_Avg +
+          "%";
         //nodeJson.value = keyword.keyword_Avg;
-        
+
         this.nodes.push(nodeJson);
       });
     },
     createEdges() {
       console.log("ASSIGNMENTS: ");
-      console.log(this.importedAssignments)
+      console.log(this.importedAssignments);
       console.log("KEYWORDS: ");
-      console.log(this.importedKeywords)
-      
+      console.log(this.importedKeywords);
+
       this.edges = [];
       this.importedKeywords.forEach((keyword) => {
         let edgeJson = {};
@@ -129,8 +154,7 @@ export default {
           let edgeAverage = CalcAssignmentListAvg(
             keyword.associatedKeys[keywordName]
           );
-          edgeJson.length = (110 / 100) * 100 - edgeAverage; // Highest grade receieved from any assignment.
-          edgeJson.length += 130;
+          edgeJson.length = Math.round(102 - edgeAverage + 1) + 100;
           edgeJson.title = "<b>Class Grade Average: </b>" + edgeAverage + "%";
         }
 

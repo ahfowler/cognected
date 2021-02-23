@@ -19,29 +19,98 @@
                 :id="student.name"
                 :value="student.name"
               />
-              <label :for="student.name">{{ student.name }}</label>
-            </div>
+            </Tooltip>
+            <Tooltip text="Assignments">
+              <img src="../assets/assignments-icon.png" />
+            </Tooltip>
+            <Tooltip text="Categories">
+              <img src="../assets/categories-icon.png" />
+            </Tooltip>
+            <Tooltip text="Configure">
+              <img src="../assets/graph-settings-icon.png" />
+            </Tooltip>
           </div>
         </div>
-        <div class="apply-button">Apply</div>
       </div>
-    </div>
+    </transition>
+    <transition name="fade">
+      <div id="student-wrapper" v-show="!applyClicked">
+        <h2>Select a Student:</h2>
+        <div class="dropdown-box">
+          <p>Search for a student or select a name from the drop down list.</p>
+          <div class="dropdown">
+            <input
+              v-model="studentSearch"
+              placeholder="Type a student's name..."
+            />
+            <div class="dropdown-area">
+              <div
+                class="dropdown-message"
+                v-show="studentFilteredList.length == 0"
+              >
+                No students found.
+              </div>
+              <div
+                id="dropdown-list"
+                v-for="student in studentFilteredList"
+                :key="student"
+                v-show="studentFilteredList.length > 0"
+              >
+                <input
+                  name="studentList"
+                  type="radio"
+                  :id="student"
+                  :value="student"
+                  v-model="currentStudent"
+                />
+                <label :for="student">{{ student }}</label>
+              </div>
+            </div>
+          </div>
+          <a
+            class="apply-button"
+            @click="
+              applyClicked = true;
+              reselectStudent = false;
+            "
+            >Apply</a
+          >
+        </div>
+      </div>
+    </transition>
+    <transition name="fade">
+      <div class="overlay" v-show="!applyClicked && reselectStudent"></div>
+    </transition>
   </div>
 </template>
 
 <script>
+import { Students } from "../script/parseCanvasData.js";
+import Tooltip from "../components/Tooltip.vue";
+import StudentGraph from "../components/StudentGraph.vue";
+
 export default {
   name: "StudentView",
+  components: {
+    Tooltip,
+    StudentGraph,
+  },
   data() {
     return {
-      students: [
-        { name: "Azaria Fowler" },
-        { name: "Sai Dasari" },
-        { name: "Albert Einstein" },
-        { name: "Aarya Mecwan" },
-        { name: "Prashant Mokkatappi" },
-      ],
+      applyClicked: false,
+      reselectStudent: false,
+      studentSearch: "",
+      students: Students,
+      currentStudent: "",
+      settingsOpened: false,
     };
+  },
+  computed: {
+    studentFilteredList() {
+      return this.students.filter((student) => {
+        return student.toLowerCase().includes(this.studentSearch.toLowerCase());
+      });
+    },
   },
 };
 </script>
@@ -61,6 +130,19 @@ export default {
   overflow: hidden;
 }
 
+.pane-id > span {
+  color: #000000;
+  margin-left: 10px;
+}
+
+#student-view-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 #student-wrapper {
   text-align: center;
   display: flex;
@@ -68,7 +150,11 @@ export default {
   justify-content: center;
   align-items: center;
   height: 97vh;
+  width: 100%;
+  max-width: 650px;
   overflow: hidden;
+  position: absolute;
+  z-index: 2;
 }
 
 #student-wrapper > h2 {
@@ -128,6 +214,7 @@ export default {
   border: 1px solid #e5e5e5;
   border-radius: 1px;
   max-height: 200px;
+  min-height: 200px;
   overflow-y: scroll;
   width: 100%;
   position: relative;
@@ -142,6 +229,16 @@ export default {
   line-height: 15px;
   display: flex;
   align-items: center;
+}
+
+.dropdown-message {
+  font-family: "Roboto", sans-serif;
+  color: #e5e5e5;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 15px;
+  margin-top: 10px;
 }
 
 #dropdown-list input {
@@ -162,5 +259,88 @@ export default {
   padding: 10px 30px;
   margin-bottom: 25px;
   display: inline-block;
+}
+
+#student-cognected-graph {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 97vh !important;
+  position: absolute;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.collapsed-settings {
+  position: absolute;
+  z-index: 1;
+  bottom: 60px;
+  background: #e5e5e5;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  padding: 10px 15px 10px 15px;
+  min-width: 0px;
+  transition: all 1s;
+}
+
+.opened-settings {
+  position: absolute;
+  z-index: 1;
+  bottom: 60px;
+  background: #e5e5e5;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  padding: 10px 15px 10px 15px;
+  min-width: 50px;
+  transition: all 1s;
+}
+
+.collapsed-settings-menu {
+  display: flex;
+  max-width: 0px;
+  transition: all 1s;
+  overflow: hidden;
+}
+
+.opened-settings-menu {
+  display: flex;
+  max-width: 200px;
+  transition: all 1s;
+  overflow: hidden;
+}
+
+#student-settings-menu > img {
+  width: 20px;
+  height: auto;
+}
+
+.tooltip-box {
+  padding-left: 10px;
+}
+
+.overlay {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.356);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition-delay: 3s;
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
