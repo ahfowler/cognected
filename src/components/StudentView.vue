@@ -19,7 +19,7 @@
                 :id="student.name"
                 :value="student.name"
               />
-            </Tooltip>
+            
             <Tooltip text="Assignments">
               <img src="../assets/assignments-icon.png" />
             </Tooltip>
