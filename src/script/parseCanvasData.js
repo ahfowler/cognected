@@ -124,6 +124,7 @@ var courseAssignmentData;
 var courseGradeData;
 var Assignments = {};
 var Keywords = [];
+var Students = [];
 var corsAnywhere = "https://salty-atoll-62320.herokuapp.com/"; //NEEDED TO CREATE A 'PROPER' CORS API CALL
 var dataLoading = false;
 
