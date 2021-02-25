@@ -25,9 +25,6 @@ export default {
   name: "StudentGraph",
   data() {
     return {
-      courseID: 18732,
-      accessKey:
-        "7236~8dQSbbxT2iQeatKfNOJYzWR441OHkkv5CcUOr4sksrHNmdk1SRQoJG5wrut4e0s7",
       importedKeywords: Keywords,
       importedAssignments: Assignments,
       nodes: [],
@@ -103,12 +100,7 @@ export default {
         let nodeJson = {};
         nodeJson.id = KeywordIndex(keyword.name);
         // nodeJson.label = this.formatLabel(keyword.name);
-        nodeJson.title =
-          "<b>" +
-          keyword.name +
-          "</b><br/><b>Class Grade Average: </b>" +
-          keyword.keyword_Avg +
-          "%";
+        nodeJson.title = "<b>" + keyword.name +"</b><br/><b>Class Grade Average: </b>" + keyword.keyword_Avg +"%";
         nodeJson.value = keyword.keyword_Avg;
         if (keyword.category != null) {
           nodeJson.group = keyword.category.name;
