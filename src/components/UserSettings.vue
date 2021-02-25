@@ -29,6 +29,8 @@
               <label :for="course.name">{{ course.name }}</label>
             </div>
           </div>
+
+          <label id="Errors">{{ errorMessages }}</label>
         </div>
 
         <a class="myButton" @click="CancelClick" style="float:left;margin-left:50px">Cancel</a>
@@ -62,6 +64,7 @@ export default {
           token: this.propToken,
           dataLoading: false,
           checkDataLoading: undefined,
+          errorMessages: '',
       };
   },
   methods: {
@@ -89,7 +92,7 @@ export default {
       return this.courses.find((course) => course.name == name).id;
     },
     PopulateCourses(){
-      if(this.canvasURL.includes("instructure.com") && this.token.length > 60){
+      if(this.canvasURL.includes("https://") && this.token.length > 60){
         this.dataLoading = true;
         let context = this
         context.courses = []
@@ -119,6 +122,7 @@ export default {
             },
             error: function (xhr) {
               context.dataLoading = false;
+              context.errorMessages = "ERROR: " + xhr.responseText;
               console.log(xhr.responseText);
             },
           });
