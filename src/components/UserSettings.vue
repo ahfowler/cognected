@@ -122,7 +122,9 @@ export default {
             },
             error: function (xhr) {
               context.dataLoading = false;
-              context.errorMessages = "ERROR: " + xhr.responseText;
+              if(xhr.responseText.includes("Invalid access token")){
+                context.errorMessages = "ERROR: Invalid Access Token!";
+              }
               console.log(xhr.responseText);
             },
           });
