@@ -50,9 +50,9 @@
     </transition>
     <transition name="fade">
       <div id="student-wrapper" v-show="!applyClicked">
-        <h2>Select a Student:</h2>
+        <h2>WORK IN PROGRESS - Select a Student:</h2>
         <div class="dropdown-box">
-          <p>Search for a student or select a name from the drop down list.</p>
+          <p>Search for a student or select a name from the drop down list. (placeholder data)</p>
           <div class="dropdown">
             <input
               v-model="studentSearch"
