@@ -93,9 +93,10 @@ export default {
     },
     PopulateCourses(){
       if(this.canvasURL.includes("https://") && this.token.length > 60){
+        this.errorMessages = ''
         this.dataLoading = true;
         let context = this
-        context.courses = []
+        this.courses = []
         var corsAnywhere = "https://salty-atoll-62320.herokuapp.com/"; //NEEDED TO CREATE A 'PROPER' CORS API CALL
         var enrollmentTypes = ["TeacherEnrollment","TaEnrollment","ObserverEnrollment", "DesignerEnrollment"]; //, "StudentEnrollment"]; add if needed in testing
         //get course data for each enrollment type
@@ -131,7 +132,15 @@ export default {
         });
       }
     },
+    CourseInList(newCourseName){
+      this.courses.forEach((item) => {
+        if(item.name == newCourseName){
+          return true;
+        }
+      })
 
+      return false;
+    },
   },
   mounted() {
       this.PopulateCourses()
