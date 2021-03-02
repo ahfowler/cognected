@@ -34,18 +34,19 @@ export default {
       importedAssignments: Assignments,
       nodes: [],
       edges: [],
+      nodeClicked: -1,
       options: {
         nodes: {
           shape: "circle",
           // scaling: {
-          //   // label: {
-          //   //     enabled: true,
-          //   //     min: 10,
-          //   //     max: 10
-          //   // },
-          //   // customScalingFunction: function(min, max, total, value) {
-          //   //   return value * 0.005;
-          //   // },
+          //   label: {
+          //       enabled: true,
+          //       min: 10,
+          //       max: 10
+          //   },
+          //   customScalingFunction: function(min, max, total, value) {
+          //     return value * 0.005;
+          //   },
           //   // min: 10,
           //   // max: 10,
           // },
@@ -77,9 +78,9 @@ export default {
         },
         interaction: {
           hover: false,
-          selectable: false,
-          selectConnectedEdges: false,
-          // dragNodes: false,
+          selectable: true,
+          selectConnectedEdges: true,
+          dragNodes: true,
         },
       },
     };
@@ -98,22 +99,52 @@ export default {
       }
     },
     myClickCallback() {
-      let selectedKeywordNode = this.importedKeywords[
-        this.$refs.network.getSelection().nodes[0]
-      ];
+      let selectedKeywordNode = this.importedKeywords[this.$refs.network.getSelection().nodes[0]];
       if (selectedKeywordNode != undefined) {
-        console.log("Selected Node: " + selectedKeywordNode.name);
-
-        // this.importedKeywords[KeywordIndex(selectedKeywordNode.name)].name = "UPDATED: " + selectedKeywordNode.name;
-        // this.createKeywordNodes();
-        // this.$refs.network.body.emitter.emit('_dataChanged');
-        // this.$refs.network.redraw();
+        this.nodeClicked = KeywordIndex(selectedKeywordNode.name);
+        this.createKeywordNodes();
+        this.$refs.network.redraw();
+      }
+      else{
+        this.nodeClicked = -1;
+        this.createKeywordNodes();
+        this.$refs.network.redraw();
       }
     },
     createKeywordNodes() {
       this.nodes = [];
+      let context = this;
       this.importedKeywords.forEach((keyword) => {
         let nodeJson = {};
+        nodeJson.color = {};
+
+        //if there is a node clicked and we are redrawing
+        if(context.nodeClicked != -1){
+          //if the current keyword is the clicked node OR the current keyword has an edge with the selected keyword
+          if(keyword.name == context.importedKeywords[context.nodeClicked].name || this.HasEdge(keyword.name)){
+            nodeJson.color.background = 'rgba(23, 71, 147, 1)'; //will need to change the color to be keyword.category.color; **************
+            nodeJson.color.border = 'rgba(23, 71, 147, 1)';
+            nodeJson.color.highlight = {};
+            nodeJson.color.highlight.background = 'rgba(23, 71, 147, 1)';
+            nodeJson.color.highlight.border = 'rgba(23, 71, 147, 1)';
+          }
+          else
+          {
+            nodeJson.color.background = 'rgba(227, 227, 227, 1)';
+            nodeJson.color.border = 'rgba(227, 227, 227, 1)';
+            nodeJson.color.highlight = {};
+            nodeJson.color.highlight.background = 'rgba(227, 227, 227, 1)';
+            nodeJson.color.highlight.border = 'rgba(227, 227, 227, 1)';
+          }
+        }
+        else{
+            nodeJson.color.background = 'rgba(23, 71, 147, 1)';
+            nodeJson.color.border = 'rgba(23, 71, 147, 1)';
+            nodeJson.color.highlight = {};
+            nodeJson.color.highlight.background = 'rgba(23, 71, 147, 1)';
+            nodeJson.color.highlight.border = 'rgba(23, 71, 147, 1)';
+        }
+        
         nodeJson.id = KeywordIndex(keyword.name);
 
         nodeJson.label = keyword.name;
@@ -138,10 +169,10 @@ export default {
       });
     },
     createEdges() {
-      console.log("ASSIGNMENTS: ");
-      console.log(this.importedAssignments);
-      console.log("KEYWORDS: ");
-      console.log(this.importedKeywords);
+      // console.log("ASSIGNMENTS: ");
+      // console.log(this.importedAssignments);
+      // console.log("KEYWORDS: ");
+      // console.log(this.importedKeywords);
 
       this.edges = [];
       this.importedKeywords.forEach((keyword) => {
@@ -162,6 +193,17 @@ export default {
           this.edges.push(edgeJson);
         }
       });
+    },
+    HasEdge(keyword){
+      var foundEdge = false;
+
+      this.edges.forEach(edge => {
+        if(edge.from == this.nodeClicked && edge.to == KeywordIndex(keyword) || edge.to == this.nodeClicked && edge.from == KeywordIndex(keyword) ){
+          foundEdge = true;
+        }
+      });
+
+      return foundEdge;
     },
   },
   mounted() {
