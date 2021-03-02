@@ -65,6 +65,7 @@ export default {
           dataLoading: false,
           checkDataLoading: undefined,
           errorMessages: '',
+          functionLoading: false,
       };
   },
   methods: {
@@ -92,11 +93,12 @@ export default {
       return this.courses.find((course) => course.name == name).id;
     },
     PopulateCourses(){
-      if(this.canvasURL.includes("https://") && this.token.length > 60){
-        this.errorMessages = ''
+      if(this.canvasURL.includes("https://") && this.token.length > 60 && this.functionLoading == false){
+        this.functionLoading = true;
+        this.errorMessages = '';
         this.dataLoading = true;
-        let context = this
-        this.courses = []
+        let context = this;
+        context.courses = []
         var corsAnywhere = "https://salty-atoll-62320.herokuapp.com/"; //NEEDED TO CREATE A 'PROPER' CORS API CALL
         var enrollmentTypes = ["TeacherEnrollment","TaEnrollment","ObserverEnrollment", "DesignerEnrollment"]; //, "StudentEnrollment"]; add if needed in testing
         //get course data for each enrollment type
@@ -111,6 +113,7 @@ export default {
             },
             success: function (jsondata) {
               if (jsondata.length != 0) {
+                context.courses = []
                 jsondata.forEach(element => {
                   if(element.name != undefined && element.name != null && element.name != ""){
                     context.courses.push({name: element.name, id: element.id.toString()});
@@ -119,14 +122,15 @@ export default {
                 
                 context.currentCourse = context.courses[0].name;
                 context.dataLoading = false;
+                context.functionLoading = false;
               }
             },
             error: function (xhr) {
               context.dataLoading = false;
+              context.functionLoading = false;
               if(xhr.responseText.includes("Invalid access token")){
                 context.errorMessages = "ERROR: Invalid Access Token!";
               }
-              console.log(xhr.responseText);
             },
           });
         });
