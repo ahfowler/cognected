@@ -71,7 +71,7 @@ export default {
           barnesHut: {
             avoidOverlap: 1,
             springConstant: 0.1,
-            centralGravity: 0.6,
+            centralGravity: 1,
           },
           maxVelocity: 2,
           minVelocity: 1,
@@ -80,7 +80,7 @@ export default {
           hover: false,
           selectable: true,
           selectConnectedEdges: true,
-          dragNodes: false,
+          dragNodes: true,
         },
       },
     };
