@@ -44,9 +44,9 @@ export default {
           //       min: 10,
           //       max: 10
           //   },
-          //   customScalingFunction: function(min, max, total, value) {
-          //     return value * 0.005;
-          //   },
+          //   // customScalingFunction: function(min, max, total, value) {
+          //   //   return value * 0.005;
+          //   // },
           //   // min: 10,
           //   // max: 10,
           // },
@@ -71,16 +71,16 @@ export default {
           barnesHut: {
             avoidOverlap: 1,
             springConstant: 0.1,
-            centralGravity: 0.5,
+            centralGravity: 0.6,
           },
-          maxVelocity: 10,
+          maxVelocity: 2,
           minVelocity: 1,
         },
         interaction: {
           hover: false,
           selectable: true,
           selectConnectedEdges: true,
-          dragNodes: true,
+          dragNodes: false,
         },
       },
     };
@@ -106,9 +106,11 @@ export default {
         this.$refs.network.redraw();
       }
       else{
-        this.nodeClicked = -1;
-        this.createKeywordNodes();
-        this.$refs.network.redraw();
+        if(this.nodeClicked != -1){
+          this.nodeClicked = -1;
+          this.createKeywordNodes();
+          this.$refs.network.redraw();
+        }
       }
     },
     createKeywordNodes() {
@@ -117,12 +119,11 @@ export default {
       this.importedKeywords.forEach((keyword) => {
         let nodeJson = {};
         nodeJson.color = {};
-
         //if there is a node clicked and we are redrawing
         if(context.nodeClicked != -1){
           //if the current keyword is the clicked node OR the current keyword has an edge with the selected keyword
           if(keyword.name == context.importedKeywords[context.nodeClicked].name || this.HasEdge(keyword.name)){
-            nodeJson.color.background = 'rgba(23, 71, 147, 1)'; //will need to change the color to be keyword.category.color; **************
+            nodeJson.color.background = 'rgba(23, 71, 147, 1)'; //will need to change the color to be keyword.category.color;
             nodeJson.color.border = 'rgba(23, 71, 147, 1)';
             nodeJson.color.highlight = {};
             nodeJson.color.highlight.background = 'rgba(23, 71, 147, 1)';
@@ -152,8 +153,12 @@ export default {
         nodeJson.font.color = "white";
         nodeJson.font.strokeWidth = 2;
         nodeJson.font.strokeColor = "black";
-
+        
+        nodeJson.value = 1
         nodeJson.scaling = {};
+        // nodeJson.scaling.label = {};
+        // nodeJson.scaling.label.min = 20;
+        // nodeJson.scaling.label.max = 20;
         nodeJson.scaling.min = keyword.keyword_Avg / 2;
         nodeJson.scaling.max = keyword.keyword_Avg / 2;
 
@@ -163,10 +168,12 @@ export default {
           "</b><br/><b>Class Grade Average: </b>" +
           keyword.keyword_Avg +
           "%";
-        //nodeJson.value = keyword.keyword_Avg;
+        nodeJson.value = keyword.keyword_Avg;
 
         this.nodes.push(nodeJson);
       });
+
+      this.createEdges();
     },
     createEdges() {
       // console.log("ASSIGNMENTS: ");
@@ -188,7 +195,7 @@ export default {
           edgeJson.length = Math.round(102 - edgeAverage + 1) + 100;
           edgeJson.title = "<b>Class Grade Average: </b>" + edgeAverage + "%";
         }
-
+5
         if (!edgeExists(edgeJson, this.edges)) {
           this.edges.push(edgeJson);
         }
@@ -208,7 +215,7 @@ export default {
   },
   mounted() {
     this.createKeywordNodes();
-    this.createEdges();
+    //this.createEdges();
   },
 };
 </script>
