@@ -130,7 +130,7 @@ export default {
       userData: ["", "", ""],
       assignmentClicked: false,
       assignmentSearch: "",
-      assignments: Assignments,
+      assignments: Object.values(Assignments),
       currentAssignment: "",
     };
   },
@@ -163,7 +163,7 @@ export default {
   },
   computed: {
     assignmentFilteredList() {
-      return Object.values(this.assignments).filter((assignment) => {
+      return this.assignments.filter((assignment) => {
         return assignment.name
           .toLowerCase()
           .includes(this.assignmentSearch.toLowerCase());
