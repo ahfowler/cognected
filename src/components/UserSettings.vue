@@ -1,48 +1,73 @@
 <template>
-    <div >
-        <div class="loading" v-if="dataLoading">Loading&#8230;</div>
-        <p style="font:">CognectEd User Settings</p>
-        <div class="input-group">
-            <label id="label">Canvas URL</label>
-            <input placeholder="Institution Canvas URL...  (i.e https://asu.instructure.com/ )" style="min-width:500px;" id="CanvasUrl" v-model="canvasURL" @keyup="PopulateCourses" @paste="PopulateCourses"/> 
-        </div>
-
-        <div class="input-group">
-            <label id="label">Token</label>
-            <input placeholder="User Token..." id="Token" v-model="token" @keyup="PopulateCourses" @paste="PopulateCourses"/>
-        </div>
-
-        <div class="dropdown">
-          <div class="dropdown-area">
-            <div
-              id="dropdown-list"
-              v-for="(course, i) in courses"
-              :key="i+'-'+course.name"
-            >
-              <input
-                name="courseList"
-                type="radio"
-                :id="course.name"
-                :value="course.name"
-                v-model="currentCourse"
-              />
-              <label :for="course.name">{{ course.name }}</label>
-            </div>
-          </div>
-
-          <label id="Errors">{{ errorMessages }}</label>
-        </div>
-
-        <a class="myButton" @click="CancelClick" style="float:left;margin-left:50px">Cancel</a>
-
-        <a class="myButton" href="https://drive.google.com/file/d/1A1CjziR9ubyikiGY9IDMDBHchp1gpLa6/view?usp=sharing" target="_blank">User Guide</a>
-
-        <a class="myButton" @click="ApplyClick" style="float:right;margin-right:50px">Apply</a>
+  <div>
+    <div class="loading" v-if="dataLoading">Loading&#8230;</div>
+    <p style="font:">CognectEd User Settings</p>
+    <div class="input-group">
+      <label id="label">Canvas URL</label>
+      <input
+        placeholder="Institution Canvas URL...  (i.e https://asu.instructure.com/ )"
+        style="min-width:500px;"
+        id="CanvasUrl"
+        v-model="canvasURL"
+        @keyup="PopulateCourses"
+        @paste="PopulateCourses"
+      />
     </div>
+
+    <div class="input-group">
+      <label id="label">Token</label>
+      <input
+        placeholder="User Token..."
+        id="Token"
+        v-model="token"
+        @keyup="PopulateCourses"
+        @paste="PopulateCourses"
+      />
+    </div>
+
+    <div class="dropdown">
+      <div class="dropdown-area">
+        <div
+          id="dropdown-list"
+          v-for="(course, i) in courses"
+          :key="i + '-' + course.name"
+        >
+          <input
+            name="courseList"
+            type="radio"
+            :id="course.name"
+            :value="course.name"
+            v-model="currentCourse"
+          />
+          <label :for="course.name">{{ course.name }}</label>
+        </div>
+      </div>
+
+      <label id="Errors">{{ errorMessages }}</label>
+    </div>
+
+    <a class="myButton" @click="CancelClick" style="float:left;margin-left:50px"
+      >Cancel</a
+    >
+
+    <a
+      class="myButton"
+      href="https://drive.google.com/file/d/1A1CjziR9ubyikiGY9IDMDBHchp1gpLa6/view?usp=sharing"
+      target="_blank"
+      >User Guide</a
+    >
+
+    <a
+      class="myButton"
+      @click="ApplyClick"
+      style="float:right;margin-right:50px"
+      >Apply</a
+    >
+  </div>
 </template>
 
 <script>
-import $ from 'jquery';
+import $ from "jquery";
 
 import {
   GetDataLoading,
@@ -56,79 +81,110 @@ export default {
     propToken: String,
   },
   data() {
-      return{
-          message: '',
-          courses: [],
-          currentCourse: '',
-          canvasURL: this.propCanvasURL,
-          token: this.propToken,
-          dataLoading: false,
-          checkDataLoading: undefined,
-          errorMessages: '',
-          functionLoading: false,
-      };
+    return {
+      message: "",
+      courses: [],
+      currentCourse: "",
+      canvasURL: this.propCanvasURL,
+      token: this.propToken,
+      dataLoading: false,
+      checkDataLoading: undefined,
+      errorMessages: "",
+      functionLoading: false,
+    };
   },
   methods: {
-    CancelClick(){
-      this.$emit('clicked', 'Canceled');
+    CancelClick() {
+      this.$emit("clicked", "Canceled");
     },
-    ApplyClick(){
-      if(this.currentCourse != undefined && this.currentCourse != null && this.currentCourse != ''){
-        AjaxCallAssignments(this.GetCourseId(this.currentCourse), this.token, this.canvasURL);
-        
-        this.checkDataLoading = window.setInterval(this.CheckData, 100)
+    ApplyClick() {
+      if (
+        this.currentCourse != undefined &&
+        this.currentCourse != null &&
+        this.currentCourse != ""
+      ) {
+        AjaxCallAssignments(
+          this.GetCourseId(this.currentCourse),
+          this.token,
+          this.canvasURL
+        );
+
+        this.checkDataLoading = window.setInterval(this.CheckData, 100);
       }
     },
-    CheckData(){
-      if(!GetDataLoading()){
+    CheckData() {
+      if (!GetDataLoading()) {
         this.dataLoading = false;
-        clearInterval(this.checkDataLoading)
-        this.$emit('clicked', [this.canvasURL, this.token, this.GetCourseId(this.currentCourse)]);
-      }
-      else{
+        clearInterval(this.checkDataLoading);
+        this.$emit("clicked", [
+          this.canvasURL,
+          this.token,
+          this.GetCourseId(this.currentCourse),
+        ]);
+      } else {
         this.dataLoading = true;
       }
     },
-    GetCourseId(name){
+    GetCourseId(name) {
       return this.courses.find((course) => course.name == name).id;
     },
-    PopulateCourses(){
-      if(this.canvasURL.includes("https://") && this.token.length > 60 && this.functionLoading == false){
+    PopulateCourses() {
+      if (
+        this.canvasURL.includes("https://") &&
+        this.token.length > 60 &&
+        this.functionLoading == false
+      ) {
         this.functionLoading = true;
-        this.errorMessages = '';
+        this.errorMessages = "";
         this.dataLoading = true;
         let context = this;
-        context.courses = []
+        context.courses = [];
         var corsAnywhere = "https://salty-atoll-62320.herokuapp.com/"; //NEEDED TO CREATE A 'PROPER' CORS API CALL
-        var enrollmentTypes = ["TeacherEnrollment","TaEnrollment","ObserverEnrollment", "DesignerEnrollment"]; //, "StudentEnrollment"]; add if needed in testing
+        var enrollmentTypes = [
+          "TeacherEnrollment",
+          "TaEnrollment",
+          "ObserverEnrollment",
+          "DesignerEnrollment",
+        ]; //, "StudentEnrollment"]; add if needed in testing
         //get course data for each enrollment type
         enrollmentTypes.forEach((item) => {
           $.ajax({
-            url:corsAnywhere + this.canvasURL +"/api/v1/courses?enrollment_role=" + item,
+            url:
+              corsAnywhere +
+              this.canvasURL +
+              "/api/v1/courses?enrollment_role=" +
+              item,
             datatype: "json",
             method: "GET",
             headers: {
               "x-requested-with": "xhr",
               Authorization: "Bearer " + this.token,
             },
-            success: function (jsondata) {
+            success: function(jsondata) {
               if (jsondata.length != 0) {
-                context.courses = []
-                jsondata.forEach(element => {
-                  if(element.name != undefined && element.name != null && element.name != ""){
-                    context.courses.push({name: element.name, id: element.id.toString()});
+                context.courses = [];
+                jsondata.forEach((element) => {
+                  if (
+                    element.name != undefined &&
+                    element.name != null &&
+                    element.name != ""
+                  ) {
+                    context.courses.push({
+                      name: element.name,
+                      id: element.id.toString(),
+                    });
                   }
                 });
-                
+
                 context.currentCourse = context.courses[0].name;
                 context.dataLoading = false;
                 context.functionLoading = false;
               }
             },
-            error: function (xhr) {
+            error: function(xhr) {
               context.dataLoading = false;
               context.functionLoading = false;
-              if(xhr.responseText.includes("Invalid access token")){
+              if (xhr.responseText.includes("Invalid access token")) {
                 context.errorMessages = "ERROR: Invalid Access Token!";
               }
             },
@@ -136,24 +192,23 @@ export default {
         });
       }
     },
-    CourseInList(newCourseName){
+    CourseInList(newCourseName) {
       this.courses.forEach((item) => {
-        if(item.name == newCourseName){
+        if (item.name == newCourseName) {
           return true;
         }
-      })
+      });
 
       return false;
     },
   },
   mounted() {
-      this.PopulateCourses()
+    this.PopulateCourses();
   },
-}
+};
 </script>
 
 <style scoped>
-
 p {
   font-family: "K2D", sans-serif;
   font-style: normal;
@@ -188,11 +243,11 @@ input {
   margin: 20px;
 }
 
-.input-group{
-    display:flex; 
-    flex-direction: row; 
-    justify-content: center; 
-    align-items: center
+.input-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 ::placeholder {
@@ -200,24 +255,24 @@ input {
 }
 
 .myButton {
-	background-color:#174793;
-	border-radius:28px;
-	border:1px solid #ffffff;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:"Roboto", sans-serif;
-	font-size:12px;
-	padding:10px 31px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #2f6627;
+  background-color: #174793;
+  border-radius: 28px;
+  border: 1px solid #ffffff;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+  padding: 10px 31px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #2f6627;
 }
 .myButton:hover {
-	background-color:#246bd6;
+  background-color: #246bd6;
 }
 .myButton:active {
-	position:relative;
-	top:1px;
+  position: relative;
+  top: 1px;
 }
 
 .dropdown {
@@ -285,14 +340,14 @@ input {
 
 /* Transparent Overlay */
 .loading:before {
-  content: '';
+  content: "";
   display: block;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .loading:not(:required) {
@@ -304,7 +359,7 @@ input {
 }
 
 .loading:not(:required):after {
-  content: '';
+  content: "";
   display: block;
   font-size: 10px;
   width: 1em;
@@ -316,8 +371,16 @@ input {
   -o-animation: spinner 1500ms infinite linear;
   animation: spinner 1500ms infinite linear;
   border-radius: 0.5em;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
-  box-shadow:rgba(35, 104, 214, 1) 1.5em 0 0 0, rgba(35, 104, 214, 1) 1.1em 1.1em 0 0, rgba(35, 104, 214, 1) 0 1.5em 0 0, rgba(35, 104, 214, 1) -1.1em 1.1em 0 0, rgba(35, 104, 214, 1) -1.5em 0 0 0, rgba(35, 104, 214, 1) -1.1em -1.1em 0 0, rgba(35, 104, 214, 1) 0 -1.5em 0 0, rgba(35, 104, 214, 1) 1.1em -1.1em 0 0;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0,
+    rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0,
+    rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0,
+    rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0,
+    rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+  box-shadow: rgba(35, 104, 214, 1) 1.5em 0 0 0,
+    rgba(35, 104, 214, 1) 1.1em 1.1em 0 0, rgba(35, 104, 214, 1) 0 1.5em 0 0,
+    rgba(35, 104, 214, 1) -1.1em 1.1em 0 0, rgba(35, 104, 214, 1) -1.5em 0 0 0,
+    rgba(35, 104, 214, 1) -1.1em -1.1em 0 0, rgba(35, 104, 214, 1) 0 -1.5em 0 0,
+    rgba(35, 104, 214, 1) 1.1em -1.1em 0 0;
 }
 
 /* Orange   rgba(252, 193, 0, 1) 1.5em 0 0 0, rgba(252, 193, 0, 1) 1.1em 1.1em 0 0, rgba(252, 193, 0, 1) 0 1.5em 0 0, rgba(252, 193, 0, 1) -1.1em 1.1em 0 0, rgba(252, 193, 0, 1) -1.5em 0 0 0, rgba(252, 193, 0, 1) -1.1em -1.1em 0 0, rgba(252, 193, 0, 1) 0 -1.5em 0 0, rgba(252, 193, 0, 1) 1.1em -1.1em 0 0;*/
@@ -391,5 +454,4 @@ input {
     transform: rotate(360deg);
   }
 }
-
 </style>

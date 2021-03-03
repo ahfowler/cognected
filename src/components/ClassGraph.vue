@@ -99,13 +99,14 @@ export default {
       }
     },
     myClickCallback() {
-      let selectedKeywordNode = this.importedKeywords[this.$refs.network.getSelection().nodes[0]];
+      let selectedKeywordNode = this.importedKeywords[
+        this.$refs.network.getSelection().nodes[0]
+      ];
       if (selectedKeywordNode != undefined) {
         this.nodeClicked = KeywordIndex(selectedKeywordNode.name);
         this.createKeywordNodes();
         this.$refs.network.redraw();
-      }
-      else{
+      } else {
         this.nodeClicked = -1;
         this.createKeywordNodes();
         this.$refs.network.redraw();
@@ -119,32 +120,33 @@ export default {
         nodeJson.color = {};
 
         //if there is a node clicked and we are redrawing
-        if(context.nodeClicked != -1){
+        if (context.nodeClicked != -1) {
           //if the current keyword is the clicked node OR the current keyword has an edge with the selected keyword
-          if(keyword.name == context.importedKeywords[context.nodeClicked].name || this.HasEdge(keyword.name)){
-            nodeJson.color.background = 'rgba(23, 71, 147, 1)'; //will need to change the color to be keyword.category.color; **************
-            nodeJson.color.border = 'rgba(23, 71, 147, 1)';
+          if (
+            keyword.name ==
+              context.importedKeywords[context.nodeClicked].name ||
+            this.HasEdge(keyword.name)
+          ) {
+            nodeJson.color.background = "rgba(23, 71, 147, 1)"; //will need to change the color to be keyword.category.color; **************
+            nodeJson.color.border = "rgba(23, 71, 147, 1)";
             nodeJson.color.highlight = {};
-            nodeJson.color.highlight.background = 'rgba(23, 71, 147, 1)';
-            nodeJson.color.highlight.border = 'rgba(23, 71, 147, 1)';
+            nodeJson.color.highlight.background = "rgba(23, 71, 147, 1)";
+            nodeJson.color.highlight.border = "rgba(23, 71, 147, 1)";
+          } else {
+            nodeJson.color.background = "rgba(227, 227, 227, 1)";
+            nodeJson.color.border = "rgba(227, 227, 227, 1)";
+            nodeJson.color.highlight = {};
+            nodeJson.color.highlight.background = "rgba(227, 227, 227, 1)";
+            nodeJson.color.highlight.border = "rgba(227, 227, 227, 1)";
           }
-          else
-          {
-            nodeJson.color.background = 'rgba(227, 227, 227, 1)';
-            nodeJson.color.border = 'rgba(227, 227, 227, 1)';
-            nodeJson.color.highlight = {};
-            nodeJson.color.highlight.background = 'rgba(227, 227, 227, 1)';
-            nodeJson.color.highlight.border = 'rgba(227, 227, 227, 1)';
-          }
+        } else {
+          nodeJson.color.background = "rgba(23, 71, 147, 1)";
+          nodeJson.color.border = "rgba(23, 71, 147, 1)";
+          nodeJson.color.highlight = {};
+          nodeJson.color.highlight.background = "rgba(23, 71, 147, 1)";
+          nodeJson.color.highlight.border = "rgba(23, 71, 147, 1)";
         }
-        else{
-            nodeJson.color.background = 'rgba(23, 71, 147, 1)';
-            nodeJson.color.border = 'rgba(23, 71, 147, 1)';
-            nodeJson.color.highlight = {};
-            nodeJson.color.highlight.background = 'rgba(23, 71, 147, 1)';
-            nodeJson.color.highlight.border = 'rgba(23, 71, 147, 1)';
-        }
-        
+
         nodeJson.id = KeywordIndex(keyword.name);
 
         nodeJson.label = keyword.name;
@@ -194,11 +196,14 @@ export default {
         }
       });
     },
-    HasEdge(keyword){
+    HasEdge(keyword) {
       var foundEdge = false;
 
-      this.edges.forEach(edge => {
-        if(edge.from == this.nodeClicked && edge.to == KeywordIndex(keyword) || edge.to == this.nodeClicked && edge.from == KeywordIndex(keyword) ){
+      this.edges.forEach((edge) => {
+        if (
+          (edge.from == this.nodeClicked && edge.to == KeywordIndex(keyword)) ||
+          (edge.to == this.nodeClicked && edge.from == KeywordIndex(keyword))
+        ) {
           foundEdge = true;
         }
       });

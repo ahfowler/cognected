@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import $ from "jquery";
 
 /* Class Definitions */
 //declaration for the assignment class
@@ -23,9 +23,7 @@ class Assignment {
       var div = document.createElement("div");
       div.innerHTML = desc;
 
-      this.keywords = ParseKeywords(
-        div.textContent || div.innerText || ""
-      );
+      this.keywords = ParseKeywords(div.textContent || div.innerText || "");
 
       //if there were keywords in the description
       if (this.keywords != false) {
@@ -185,29 +183,28 @@ function edgeExists(edge, edges) {
   return answer;
 }
 
-  //Calculates the average of assignments given a list
-  //expects an array of assignment ID's
-  function CalcAssignmentListAvg(assignments) {
-    var total = 0;
-    var notGradedCount = 0;
+//Calculates the average of assignments given a list
+//expects an array of assignment ID's
+function CalcAssignmentListAvg(assignments) {
+  var total = 0;
+  var notGradedCount = 0;
 
-    assignments.forEach((item) => {
-      if (Assignments[item].average != -1) {
-        total += Assignments[item].average;
-      } else {
-        notGradedCount += 1;
-      }
-    });
-
-    var assignmentCount = assignments.length - notGradedCount;
-    var KeywordAvg = -1;
-    if (assignmentCount != 0) {
-      KeywordAvg = parseFloat((total / assignmentCount).toFixed(1));
+  assignments.forEach((item) => {
+    if (Assignments[item].average != -1) {
+      total += Assignments[item].average;
+    } else {
+      notGradedCount += 1;
     }
+  });
 
-    return KeywordAvg;
+  var assignmentCount = assignments.length - notGradedCount;
+  var KeywordAvg = -1;
+  if (assignmentCount != 0) {
+    KeywordAvg = parseFloat((total / assignmentCount).toFixed(1));
   }
 
+  return KeywordAvg;
+}
 
 /* API Call Functions */
 //eslint-disable-next-line
@@ -216,13 +213,18 @@ function AjaxCallAssignments(courseID, accesskey, canvasURL) {
     dataLoading = true;
     //Canvas API call for the ASSIGNMENT for the given course
     $.ajax({
-      url: corsAnywhere + canvasURL + "/api/v1/courses/" + courseID +"/assignments?per_page=100",
+      url:
+        corsAnywhere +
+        canvasURL +
+        "/api/v1/courses/" +
+        courseID +
+        "/assignments?per_page=100",
       datatype: "jsonp",
       headers: {
         Authorization: "Bearer " + accesskey,
         "x-requested-with": "xhr",
       },
-      success: async function (res, status, xhr) {
+      success: async function(res, status, xhr) {
         await sleep(75);
 
         console.log("ASSIGNMENTS");
@@ -230,18 +232,14 @@ function AjaxCallAssignments(courseID, accesskey, canvasURL) {
         courseAssignmentData = res;
 
         if (remainingPages != null) {
-          await ReturnAllRemaining(
-            remainingPages,
-            accesskey,
-            "Assignments"
-          );
+          await ReturnAllRemaining(remainingPages, accesskey, "Assignments");
         }
 
         ParseJsonToAssignment();
 
         AjaxCallGrade(courseID, accesskey, canvasURL);
       },
-      error: function (xhr) {
+      error: function(xhr) {
         console.log(xhr.responseText);
       },
     });
@@ -252,10 +250,11 @@ function AjaxCallAssignments(courseID, accesskey, canvasURL) {
 
 function AjaxCallGrade(courseID, accesskey, canvasURL) {
   try {
-  //Canvas API call for the grade history for the given course
+    //Canvas API call for the grade history for the given course
     $.ajax({
       url:
-        corsAnywhere + canvasURL +
+        corsAnywhere +
+        canvasURL +
         "/api/v1/courses/" +
         courseID +
         "/gradebook_history/feed?per_page=100",
@@ -264,23 +263,19 @@ function AjaxCallGrade(courseID, accesskey, canvasURL) {
         Authorization: "Bearer " + accesskey,
         "x-requested-with": "xhr",
       },
-      success: async function (res, status, xhr) {
+      success: async function(res, status, xhr) {
         await sleep(75);
         console.log("GRADEBOOK HISTORY");
         var remainingPages = xhr.getResponseHeader("link");
         courseGradeData = res;
 
         if (remainingPages != null) {
-          await ReturnAllRemaining(
-            remainingPages,
-            accesskey,
-            "Grades"
-          ).then();
+          await ReturnAllRemaining(remainingPages, accesskey, "Grades").then();
         }
 
         ParseGradeJson();
       },
-      error: function (xhr) {
+      error: function(xhr) {
         console.log(xhr.responseText);
       },
     });
@@ -289,8 +284,8 @@ function AjaxCallGrade(courseID, accesskey, canvasURL) {
   }
 }
 
-  //helper for ParseLinkHead Function
-  //from https://bill.burkecentral.com/2009/10/15/parsing-link-headers-with-javascript-and-java/
+//helper for ParseLinkHead Function
+//from https://bill.burkecentral.com/2009/10/15/parsing-link-headers-with-javascript-and-java/
 function unquote(value) {
   if (value.charAt(0) == '"' && value.charAt(value.length - 1) == '"')
     return value.substring(1, value.length - 1);
@@ -357,7 +352,7 @@ async function ReturnAllRemaining(linkHeader, accesskey, callType) {
         Authorization: "Bearer " + accesskey,
         "x-requested-with": "xhr",
       },
-      success: async function (res, status, xhr) {
+      success: async function(res, status, xhr) {
         await sleep(50);
         remainingPages = xhr.getResponseHeader("link");
 
@@ -377,7 +372,7 @@ async function ReturnAllRemaining(linkHeader, accesskey, callType) {
           linkParser = ParseLinkHead(remainingPages);
         }
       },
-      error: function (xhr) {
+      error: function(xhr) {
         console.log(xhr.responseText);
       },
     });
@@ -419,8 +414,8 @@ function ParseGradeJson() {
       Keywords[i].CalcKeywordAverage();
     }
 
-    // console.log("ASSIGNMENT OBJECTS");
-    // console.log(Assignments);
+    console.log("ASSIGNMENT OBJECTS");
+    console.log(Assignments);
 
     // console.log("KEYWORD OBJECTS");
     // console.log(Keywords);
@@ -429,11 +424,9 @@ function ParseGradeJson() {
   }
 }
 
-
 function GetDataLoading() {
   return dataLoading;
 }
-
 
 export {
   Assignments,
