@@ -48,6 +48,7 @@ import {
   GetDataLoading,
   AjaxCallAssignments,
 } from "../script/parseCanvasData.js";
+import $cookies from 'vue-cookies'
 
 export default {
   name: "UserSettings",
@@ -120,6 +121,9 @@ export default {
                   }
                 });
                 
+                $cookies.set('URL', context.canvasURL);
+                $cookies.set('token', context.token);
+
                 context.currentCourse = context.courses[0].name;
                 context.dataLoading = false;
                 context.functionLoading = false;
@@ -145,9 +149,22 @@ export default {
 
       return false;
     },
+    CheckCookies(){
+      let cookieURL = $cookies.get('URL');
+      let cookieToken = $cookies.get('token');
+
+      if(cookieURL != undefined){
+        this.canvasURL = cookieURL;
+      }
+
+      if(cookieToken != undefined){
+        this.token = cookieToken;
+      }
+    }
   },
   mounted() {
-      this.PopulateCourses()
+    this.CheckCookies();
+    this.PopulateCourses();
   },
 }
 </script>
