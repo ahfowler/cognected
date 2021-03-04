@@ -1,7 +1,7 @@
 <template>
-    <div >
+    <div>
         <div class="loading" v-if="dataLoading">Loading&#8230;</div>
-        <p style="font:">CognectEd User Settings</p>
+        <p>CognectEd User Settings</p>
         <div class="input-group">
             <label id="label">Canvas URL</label>
             <input placeholder="Institution Canvas URL...  (i.e https://asu.instructure.com/ )" style="min-width:500px;" id="CanvasUrl" v-model="canvasURL" @keyup="PopulateCourses" @paste="PopulateCourses"/> 

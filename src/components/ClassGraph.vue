@@ -104,12 +104,16 @@ export default {
         this.nodeClicked = KeywordIndex(selectedKeywordNode.name);
         this.createKeywordNodes();
         this.$refs.network.redraw();
+
+        this.$emit('clicked', [this.nodeClicked, this.importedKeywords[this.nodeClicked], this.importedAssignments]);
       }
       else{
         if(this.nodeClicked != -1){
           this.nodeClicked = -1;
           this.createKeywordNodes();
           this.$refs.network.redraw();
+
+          this.$emit('clicked', [-1, undefined, undefined]);
         }
       }
     },

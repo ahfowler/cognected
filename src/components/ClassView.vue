@@ -3,7 +3,8 @@
     <div class="pane-id">Class View</div>
     <div id="cognected-graph">
       <UserSettings v-if="this.viewUserSettings" @clicked="SettingsReturn" :propCanvasURL="this.userData[0]" :propToken="this.userData[1]"></UserSettings>
-      <ClassGraph v-if="!this.viewUserSettings" :canvasURL="this.userData[0]" :token="this.userData[1]" :courseID="this.userData[2]"></ClassGraph>
+      <NodeInfo v-if="this.nodeClicked != -1 && !this.viewUserSettings" :key="this.nodeClicked" :propkeywordData="this.nodeClickData[1]"></NodeInfo>
+      <ClassGraph v-if="!this.viewUserSettings" @clicked="NodeClickedEvent" :canvasURL="this.userData[0]" :token="this.userData[1]" :courseID="this.userData[2]"></ClassGraph>
       <div
         id="class-settings-menu"
         v-on:click="settingsOpened = !settingsOpened"
@@ -49,6 +50,7 @@
 import ClassGraph from "../components/ClassGraph.vue";
 import Tooltip from "../components/Tooltip.vue";
 import UserSettings from "../components/UserSettings.vue"
+import NodeInfo from "../components/NodeInfo.vue";
 
 export default {
   name: "ClassView",
@@ -56,12 +58,16 @@ export default {
     ClassGraph,
     Tooltip,
     UserSettings,
+    NodeInfo,
   },
   data() {
     return {
       settingsOpened: false,
       viewUserSettings: true,
       userData: ['', '', ''],
+      nodeClicked: -1,
+      nodeClickData: [-1, undefined, undefined],
+      keyword: Object,
     };
   },
   methods:{
@@ -86,6 +92,18 @@ export default {
       if(value != 'Canceled'){
         this.userData = value;
       }
+    },
+    NodeClickedEvent(nodeData){
+      this.nodeClickData = nodeData
+      
+      if(this.nodeClickData[0] != -1){
+        this.keyword = this.nodeClickData[1];
+      }
+      else{
+        this.keyword = undefined;
+      }
+
+      this.nodeClicked = this.nodeClickData[0];
     }
   }
 };
@@ -112,7 +130,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 97vh !important;
+  height: 80vh !important;
 }
 
 .collapsed-settings {

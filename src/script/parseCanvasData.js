@@ -3,13 +3,14 @@ import $ from 'jquery';
 /* Class Definitions */
 //declaration for the assignment class
 class Assignment {
-  constructor(id, name, desc, pts_Possible) {
+  constructor(id, name, desc, pts_Possible, url) {
     this.id = id;
     this.name = name;
     this.desc = desc;
     this.totalPts = pts_Possible;
     this.grades = {};
     this.average = -1;
+    this.url = url
 
     //check if this assignment is extraCredit
     if (this.totalPts == 0) {
@@ -224,8 +225,6 @@ function AjaxCallAssignments(courseID, accesskey, canvasURL) {
       },
       success: async function (res, status, xhr) {
         await sleep(75);
-
-        console.log("ASSIGNMENTS");
         var remainingPages = xhr.getResponseHeader("link");
         courseAssignmentData = res;
 
@@ -266,7 +265,6 @@ function AjaxCallGrade(courseID, accesskey, canvasURL) {
       },
       success: async function (res, status, xhr) {
         await sleep(75);
-        console.log("GRADEBOOK HISTORY");
         var remainingPages = xhr.getResponseHeader("link");
         courseGradeData = res;
 
@@ -363,7 +361,6 @@ async function ReturnAllRemaining(linkHeader, accesskey, callType) {
 
         //make sure that there was a link header in the last call
         if (remainingPages != null && remainingPages != undefined) {
-          console.log("New Page " + callType);
 
           if (callType == "Students") {
             //courseStudentData = courseStudentData.concat(res);
@@ -395,7 +392,8 @@ function ParseJsonToAssignment() {
         item.id,
         item.name,
         item.description,
-        item.points_possible
+        item.points_possible,
+        item.html_url
       );
     });
   }
@@ -444,4 +442,5 @@ export {
   edgeExists,
   GetDataLoading,
   AjaxCallAssignments,
+  Keyword,
 };
