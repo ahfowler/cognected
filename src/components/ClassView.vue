@@ -133,6 +133,13 @@ export default {
   height: 80vh !important;
 }
 
+.input-group{
+    display:flex; 
+    flex-direction: row; 
+    justify-content: center; 
+    align-items: center
+}
+
 .collapsed-settings {
   position: absolute;
   z-index: 1;

@@ -70,7 +70,7 @@ p {
   text-align: left;
   color: #000000;
   display: inline-block;
-  width: 100%;
+  width: 75%;
 }
 
 a {
@@ -82,11 +82,10 @@ a {
   text-align: left;
   color: #0645AD;
   display: inline-block;
-  width: 100%;
+  width: 75%;
   margin-left:35px;
   margin-right:10px;
   margin-bottom:10px;
-  width:100%;
 }
 
 hr{
