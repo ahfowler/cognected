@@ -1,9 +1,9 @@
 <template>
   <div id="class-view">
     <div class="pane-id">Class View</div>
+    <NodeInfo style="z-index:2;position:absolute;" v-if="this.nodeClicked != -1 && !this.viewUserSettings" :key="this.nodeClicked" :propkeywordData="this.nodeClickData[1]"></NodeInfo>
     <div id="cognected-graph">
       <UserSettings v-if="this.viewUserSettings" @clicked="SettingsReturn" :propCanvasURL="this.userData[0]" :propToken="this.userData[1]"></UserSettings>
-      <NodeInfo v-if="this.nodeClicked != -1 && !this.viewUserSettings" :key="this.nodeClicked" :propkeywordData="this.nodeClickData[1]"></NodeInfo>
       <ClassGraph v-if="!this.viewUserSettings" @clicked="NodeClickedEvent" :canvasURL="this.userData[0]" :token="this.userData[1]" :courseID="this.userData[2]"></ClassGraph>
       <div
         id="class-settings-menu"
@@ -131,6 +131,8 @@ export default {
   justify-content: center;
   align-items: center;
   height: 80vh !important;
+  width: 100%;
+  height: 100%;
 }
 
 .input-group{

@@ -1,5 +1,5 @@
 <template>
-    <div class="container" style="margin-top:20%;max-width:75%;">
+    <div class="container">
         <p class="title">{{this.keyword.name}}</p>
         <p class="mini-header">Category</p>
         <br>
@@ -57,8 +57,12 @@ export default {
 
 <style scoped>
 .container{
+    background-color: #ffffff;
     border: 1px solid #e5e5e5;
     border-radius: 1px;
+    margin-top:10%;
+    margin-left:2%;
+    max-width:25%;
 }
 
 p {
