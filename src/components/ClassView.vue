@@ -1,10 +1,26 @@
 <template>
   <div id="class-view">
     <div class="pane-id">Class View</div>
-    <NodeInfo style="z-index:2;position:absolute;" v-if="this.nodeClicked != -1 && !this.viewUserSettings" :key="this.nodeClicked" :propkeywordData="this.nodeClickData[1]"></NodeInfo>
+    <NodeInfo
+      style="z-index:2;position:absolute;"
+      v-if="this.nodeClicked != -1 && !this.viewUserSettings"
+      :key="this.nodeClicked"
+      :propkeywordData="this.nodeClickData[1]"
+    ></NodeInfo>
     <div id="cognected-graph">
-      <UserSettings v-if="this.viewUserSettings" @clicked="SettingsReturn" :propCanvasURL="this.userData[0]" :propToken="this.userData[1]"></UserSettings>
-      <ClassGraph v-if="!this.viewUserSettings" @clicked="NodeClickedEvent" :canvasURL="this.userData[0]" :token="this.userData[1]" :courseID="this.userData[2]"></ClassGraph>
+      <UserSettings
+        v-if="this.viewUserSettings"
+        @clicked="SettingsReturn"
+        :propCanvasURL="this.userData[0]"
+        :propToken="this.userData[1]"
+      ></UserSettings>
+      <ClassGraph
+        v-if="!this.viewUserSettings"
+        @clicked="NodeClickedEvent"
+        :canvasURL="this.userData[0]"
+        :token="this.userData[1]"
+        :courseID="this.userData[2]"
+      ></ClassGraph>
       <div
         id="class-settings-menu"
         v-on:click="settingsOpened = !settingsOpened"
@@ -21,11 +37,17 @@
             'opened-settings-menu': settingsOpened,
           }"
         >
-          <Tooltip text="Assignments - COMING SOON" @click.native="Assignments_Click">
+          <Tooltip
+            text="Assignments - COMING SOON"
+            @click.native="Assignments_Click"
+          >
             <img src="../assets/assignments-icon.png" />
           </Tooltip>
 
-          <Tooltip text="Categories - COMING SOON" @click.native="Categories_Click">
+          <Tooltip
+            text="Categories - COMING SOON"
+            @click.native="Categories_Click"
+          >
             <img src="../assets/categories-icon.png" />
           </Tooltip>
 
@@ -33,7 +55,10 @@
             <img src="../assets/students-icon.png" />
           </Tooltip>
 
-          <Tooltip text="Configure" @click.native="viewUserSettings=!viewUserSettings">
+          <Tooltip
+            text="Configure"
+            @click.native="viewUserSettings = !viewUserSettings"
+          >
             <img src="../assets/graph-settings-icon.png" />
           </Tooltip>
 
@@ -49,7 +74,7 @@
 <script>
 import ClassGraph from "../components/ClassGraph.vue";
 import Tooltip from "../components/Tooltip.vue";
-import UserSettings from "../components/UserSettings.vue"
+import UserSettings from "../components/UserSettings.vue";
 import NodeInfo from "../components/NodeInfo.vue";
 
 export default {
@@ -64,13 +89,13 @@ export default {
     return {
       settingsOpened: false,
       viewUserSettings: true,
-      userData: ['', '', ''],
+      userData: ["", "", ""],
       nodeClicked: -1,
       nodeClickData: [-1, undefined, undefined],
       keyword: Object,
     };
   },
-  methods:{
+  methods: {
     Assignments_Click() {
       console.log("Assignments click");
     },
@@ -81,31 +106,31 @@ export default {
       console.log("Students click");
     },
     UserGuide_Click() {
-      Object.assign(document.createElement('a'), {
-        target: '_blank',
-        href: 'https://drive.google.com/file/d/1A1CjziR9ubyikiGY9IDMDBHchp1gpLa6/view?usp=sharing',
+      Object.assign(document.createElement("a"), {
+        target: "_blank",
+        href:
+          "https://drive.google.com/file/d/1A1CjziR9ubyikiGY9IDMDBHchp1gpLa6/view?usp=sharing",
       }).click();
     },
-    SettingsReturn(value){
+    SettingsReturn(value) {
       this.viewUserSettings = false;
 
-      if(value != 'Canceled'){
+      if (value != "Canceled") {
         this.userData = value;
       }
     },
-    NodeClickedEvent(nodeData){
-      this.nodeClickData = nodeData
-      
-      if(this.nodeClickData[0] != -1){
+    NodeClickedEvent(nodeData) {
+      this.nodeClickData = nodeData;
+
+      if (this.nodeClickData[0] != -1) {
         this.keyword = this.nodeClickData[1];
-      }
-      else{
+      } else {
         this.keyword = undefined;
       }
 
       this.nodeClicked = this.nodeClickData[0];
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -130,16 +155,15 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 80vh !important;
   width: 100%;
-  height: 100%;
+  height: 98vh;
 }
 
-.input-group{
-    display:flex; 
-    flex-direction: row; 
-    justify-content: center; 
-    align-items: center
+.input-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .collapsed-settings {
