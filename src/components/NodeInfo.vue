@@ -3,7 +3,7 @@
         <p class="title">{{this.keyword.name}}</p>
         <p class="mini-header">Category</p>
         <br>
-        <input type="text" class="category-input" v-model="this.category" list="categories" placeholder="Type a category to add...">
+        <input type="text" class="category-input" v-model="this.category" list="categories" placeholder="(WORK IN PROGRESS) Type a category to add...">
         <datalist id="categories">
             <option v-for="cat in this.categoryList" :key="cat">{{cat}}</option>
         </datalist>
