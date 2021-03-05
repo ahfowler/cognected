@@ -10,7 +10,7 @@ class Assignment {
     this.totalPts = pts_Possible;
     this.grades = {};
     this.average = -1;
-    this.url = url
+    this.url = url;
 
     //check if this assignment is extraCredit
     if (this.totalPts == 0) {
@@ -356,7 +356,6 @@ async function ReturnAllRemaining(linkHeader, accesskey, callType) {
 
         //make sure that there was a link header in the last call
         if (remainingPages != null && remainingPages != undefined) {
-
           if (callType == "Students") {
             //courseStudentData = courseStudentData.concat(res);
           } else if (callType == "Grades") {

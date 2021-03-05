@@ -97,16 +97,37 @@
                 >
                   <input
                     name="assignmentList"
-                    type="radio"
+                    type="checkbox"
                     :id="assignment.id"
-                    :value="assignment.id"
-                    v-model="currentAssignment"
+                    v-model="currentAssignment[assignment.id]"
                   />
                   <label :for="assignment.id">{{ assignment.name }}</label>
                 </div>
               </div>
             </div>
+            <div class="selected-items" v-show="selectedAssignments.length > 0">
+              <div
+                id="selected-assignments"
+                v-for="assignment in selectedAssignments"
+                :key="assignment.id"
+              >
+                <a class="selected-assignment">
+                  {{ importedAssignmentsDictionary[assignment].name }}
+                  <div
+                    style="margin-left:5px;"
+                    class="close-assignment"
+                    @click="removeSelectedAssignment(assignment)"
+                  />
+                </a>
+              </div>
+            </div>
             <a class="apply-button" @click="assignmentClicked = false">Apply</a>
+            <a
+              class="clear-button"
+              v-show="selectedAssignments.length > 0"
+              @click="clearSelectedAssignments()"
+              >Clear</a
+            >
           </div>
         </div>
       </div>
@@ -134,13 +155,14 @@ export default {
   },
   data() {
     return {
+      importedAssignmentsDictionary: Assignments,
       settingsOpened: false,
       viewUserSettings: true,
       userData: ["", "", ""],
       assignmentClicked: false,
       assignmentSearch: "",
-      assignments: Object.values(Assignments),
-      currentAssignment: "",
+      assignments: [],
+      currentAssignment: {},
       nodeClicked: -1,
       nodeClickData: [-1, undefined, undefined],
       keyword: Object,
@@ -149,7 +171,7 @@ export default {
   methods: {
     Assignments_Click() {
       this.assignmentClicked = !this.assignmentClicked;
-      // console.log(Object.values(Assignments));
+      this.assignments = Object.values(Assignments);
       console.log("Assignments click");
     },
     Categories_Click() {
@@ -183,6 +205,16 @@ export default {
 
       this.nodeClicked = this.nodeClickData[0];
     },
+    removeSelectedAssignment(assignmentId) {
+      this.currentAssignment[assignmentId] = false;
+      document.getElementById(assignmentId).checked = false;
+    },
+    clearSelectedAssignments() {
+      for (let k in this.currentAssignment) {
+        this.currentAssignment[k] = false;
+        document.getElementById(k).checked = false;
+      }
+    },
   },
   computed: {
     assignmentFilteredList() {
@@ -191,6 +223,15 @@ export default {
           .toLowerCase()
           .includes(this.assignmentSearch.toLowerCase());
       });
+    },
+    selectedAssignments() {
+      let activeAssignments = [];
+      for (let k in this.currentAssignment) {
+        if (this.currentAssignment[k]) {
+          activeAssignments.push(k);
+        }
+      }
+      return activeAssignments;
     },
   },
 };
@@ -300,7 +341,6 @@ export default {
 }
 
 .dropdown-background-box {
-  background-color: #ffffff;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -308,7 +348,6 @@ export default {
   align-items: center;
   overflow: hidden;
   position: absolute;
-  padding: 20px;
 }
 
 .dropdown-background-box > h2 {
@@ -327,7 +366,9 @@ export default {
   border: 1px solid #e5e5e5;
   width: 80%;
   padding: 10px;
-  max-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .dropdown-background-box > .dropdown-box > p {
@@ -414,8 +455,42 @@ export default {
   text-align: center;
   color: #ffffff;
   padding: 10px 30px;
-  margin-bottom: 25px;
-  display: inline-block;
+  margin-bottom: 15px;
+  width: fit-content;
+}
+
+.selected-items {
+  margin-bottom: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 95%;
+}
+
+.selected-assignment {
+  background: #e5e5e5;
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  padding: 5px 8px;
+  border-radius: 8px;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  margin: 5px 5px;
+}
+
+.close-assignment {
+  width: 8px;
+  height: 8px;
+  background: url("../assets/close.png") no-repeat;
+  background-size: cover;
+}
+
+.close-assignment:hover {
+  background: url("../assets/close-red.png") no-repeat;
+  background-size: cover;
 }
 
 .overlay {
@@ -437,5 +512,19 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.clear-button {
+  font-family: "Roboto", sans-serif;
+  color: #000000;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 15px;
+  margin-bottom: 10px;
+}
+
+.clear-button:hover {
+  color: #000000a4;
 }
 </style>
