@@ -23,6 +23,7 @@
     "vis-network": "^8.4.0",
     "vis-util": "^4.3.4",
     "vue": "^2.6.12",
+    "vue-cookies": "^1.7.4",
     "vue-multipane": "^0.9.5",
     "vue-select": "^3.10.8",
     "vue-style-loader": "^4.1.2",

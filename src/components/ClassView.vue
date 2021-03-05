@@ -1,6 +1,12 @@
 <template>
   <div id="class-view">
     <div class="pane-id">Class View</div>
+    <NodeInfo
+      style="z-index:2;position:absolute;"
+      v-if="this.nodeClicked != -1 && !this.viewUserSettings"
+      :key="this.nodeClicked"
+      :propkeywordData="this.nodeClickData[1]"
+    ></NodeInfo>
     <div id="cognected-graph">
       <UserSettings
         v-if="this.viewUserSettings"
@@ -10,6 +16,7 @@
       ></UserSettings>
       <ClassGraph
         v-if="!this.viewUserSettings"
+        @clicked="NodeClickedEvent"
         :canvasURL="this.userData[0]"
         :token="this.userData[1]"
         :courseID="this.userData[2]"
@@ -115,6 +122,7 @@ import ClassGraph from "../components/ClassGraph.vue";
 import Tooltip from "../components/Tooltip.vue";
 import UserSettings from "../components/UserSettings.vue";
 import { Assignments } from "../script/parseCanvasData.js";
+import NodeInfo from "../components/NodeInfo.vue";
 
 export default {
   name: "ClassView",
@@ -122,6 +130,7 @@ export default {
     ClassGraph,
     Tooltip,
     UserSettings,
+    NodeInfo,
   },
   data() {
     return {
@@ -132,6 +141,9 @@ export default {
       assignmentSearch: "",
       assignments: Object.values(Assignments),
       currentAssignment: "",
+      nodeClicked: -1,
+      nodeClickData: [-1, undefined, undefined],
+      keyword: Object,
     };
   },
   methods: {
@@ -159,6 +171,17 @@ export default {
       if (value != "Canceled") {
         this.userData = value;
       }
+    },
+    NodeClickedEvent(nodeData) {
+      this.nodeClickData = nodeData;
+
+      if (this.nodeClickData[0] != -1) {
+        this.keyword = this.nodeClickData[1];
+      } else {
+        this.keyword = undefined;
+      }
+
+      this.nodeClicked = this.nodeClickData[0];
     },
   },
   computed: {
@@ -194,8 +217,15 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 97vh !important;
   width: 100%;
+  height: 98vh;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .collapsed-settings {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="loading" v-if="dataLoading">Loading&#8230;</div>
-    <p style="font:">CognectEd User Settings</p>
+    <p>CognectEd User Settings</p>
     <div class="input-group">
       <label id="label">Canvas URL</label>
       <input
@@ -73,6 +73,7 @@ import {
   GetDataLoading,
   AjaxCallAssignments,
 } from "../script/parseCanvasData.js";
+import $cookies from "vue-cookies";
 
 export default {
   name: "UserSettings",
@@ -176,6 +177,9 @@ export default {
                   }
                 });
 
+                $cookies.set("URL", context.canvasURL);
+                $cookies.set("token", context.token);
+
                 context.currentCourse = context.courses[0].name;
                 context.dataLoading = false;
                 context.functionLoading = false;
@@ -201,8 +205,21 @@ export default {
 
       return false;
     },
+    CheckCookies() {
+      let cookieURL = $cookies.get("URL");
+      let cookieToken = $cookies.get("token");
+
+      if (cookieURL != undefined) {
+        this.canvasURL = cookieURL;
+      }
+
+      if (cookieToken != undefined) {
+        this.token = cookieToken;
+      }
+    },
   },
   mounted() {
+    this.CheckCookies();
     this.PopulateCourses();
   },
 };
