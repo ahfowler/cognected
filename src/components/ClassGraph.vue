@@ -5,8 +5,9 @@
       :nodes="nodes"
       :edges="edges"
       :options="options"
-      :events="['click', 'doubleClick']"
+      :events="['click', 'dragging']"
       @click="myClickCallback"
+      @dragging="myClickCallback"
     ></network>
   </div>
 </template>
