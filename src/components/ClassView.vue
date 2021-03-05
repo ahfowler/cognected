@@ -79,6 +79,7 @@
             </p>
             <div class="dropdown">
               <input
+                id="assignment-search-box"
                 v-model="assignmentSearch"
                 placeholder="Type an assignment's name..."
               />
@@ -209,7 +210,11 @@ export default {
       this.currentAssignment[assignmentId] = false;
       document.getElementById(assignmentId).checked = false;
     },
+    clearSearchBox() {
+      document.getElementById("assignment-search-box").value = "";
+    },
     clearSelectedAssignments() {
+      this.clearSearchBox();
       for (let k in this.currentAssignment) {
         this.currentAssignment[k] = false;
         document.getElementById(k).checked = false;
