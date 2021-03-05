@@ -103,13 +103,13 @@ class Keyword {
   }
 }
 
-// class Category {
-//   constructor(name, color, id) {
-//     this.name = name;
-//     this.color = color;
-//     this.id = id;
-//   }
-// }
+class Category {
+  constructor(name, color, id) {
+    this.name = name;
+    this.color = color;
+    this.id = id;
+  }
+}
 
 // class Student {
 //   constructor(name, id) {
@@ -124,6 +124,7 @@ var courseGradeData;
 var Assignments = {};
 var Keywords = [];
 var Students = [];
+var Categories = [];
 var corsAnywhere = "https://salty-atoll-62320.herokuapp.com/"; //NEEDED TO CREATE A 'PROPER' CORS API CALL
 var dataLoading = false;
 
@@ -409,13 +410,26 @@ function ParseGradeJson() {
 
     for (var i = 0; i < Keywords.length; i++) {
       Keywords[i].CalcKeywordAverage();
+      // Temporary for testing purposes
+      Keywords[i].category = new Category(
+        Math.random()
+          .toString(36)
+          .replace(/[^a-z]+/g, "")
+          .substr(0, 5),
+        "#fcc100",
+        Math.floor(Math.random() * 1000)
+      );
+      Categories.push(Keywords[i].category);
     }
 
     console.log("ASSIGNMENT OBJECTS");
     console.log(Assignments);
 
-    // console.log("KEYWORD OBJECTS");
-    // console.log(Keywords);
+    console.log("KEYWORD OBJECTS");
+    console.log(Keywords);
+
+    console.log("CATEGORIES");
+    console.log(Categories);
 
     dataLoading = false;
   }
@@ -429,6 +443,7 @@ export {
   Assignments,
   Keywords,
   Students,
+  Categories,
   KeywordIndex,
   CalcAssignmentListAvg,
   edgeExists,

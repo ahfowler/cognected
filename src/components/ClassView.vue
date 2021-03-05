@@ -29,7 +29,8 @@
           'opened-settings': settingsOpened,
         }"
       >
-        <img src="../assets/settings-icon.png" />
+        <img src="../assets/settings-icon.png" v-show="!settingsOpened" />
+        <img src="../assets/settings-icon-active.png" v-show="settingsOpened" />
         <div
           class="settings-menu"
           v-bind:class="{
@@ -41,7 +42,14 @@
             text="Assignments - COMING SOON"
             @click.native="Assignments_Click"
           >
-            <img src="../assets/assignments-icon.png" />
+            <img
+              src="../assets/assignments-applied-icon.png"
+              v-show="selectedAssignments.length > 0"
+            />
+            <img
+              src="../assets/assignments-icon.png"
+              v-show="selectedAssignments.length == 0"
+            />
           </Tooltip>
 
           <Tooltip
@@ -69,7 +77,7 @@
       </div>
     </div>
     <transition name="fade">
-      <div id="class-assignment-wrapper" v-show="assignmentClicked">
+      <div class="wrapper" v-show="assignmentClicked">
         <div class="dropdown-background-box">
           <h2>Select an Assignment:</h2>
           <div class="dropdown-box">
@@ -108,15 +116,15 @@
             </div>
             <div class="selected-items" v-show="selectedAssignments.length > 0">
               <div
-                id="selected-assignments"
+                class="selected-item"
                 v-for="assignment in selectedAssignments"
                 :key="assignment.id"
               >
-                <a class="selected-assignment">
+                <a class="selected-item-name">
                   {{ importedAssignmentsDictionary[assignment].name }}
                   <div
                     style="margin-left:5px;"
-                    class="close-assignment"
+                    class="close"
                     @click="removeSelectedAssignment(assignment)"
                   />
                 </a>
@@ -134,7 +142,75 @@
       </div>
     </transition>
     <transition name="fade">
-      <div class="overlay" v-show="assignmentClicked"></div>
+      <div class="wrapper" v-show="categoriesClicked">
+        <div class="dropdown-background-box">
+          <h2>Select a Category:</h2>
+          <div class="dropdown-box">
+            <p>
+              Search for a category or select a category from the drop down
+              list.
+            </p>
+            <div class="dropdown">
+              <input
+                id="category-search-box"
+                v-model="categoriesSearch"
+                placeholder="Type a category name..."
+              />
+              <div class="dropdown-area">
+                <div
+                  class="dropdown-message"
+                  v-show="categoryFilteredList.length == 0"
+                >
+                  No categories found.
+                </div>
+                <div
+                  id="assignment-dropdown-list"
+                  v-for="category in categoryFilteredList"
+                  :key="category.id"
+                  v-show="categoryFilteredList.length > 0"
+                >
+                  <input
+                    name="categoryList"
+                    type="checkbox"
+                    :id="category.id + '-checkbox'"
+                    v-model="currentCategory[category.id]"
+                  />
+                  <label :for="category.id">{{ category.name }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="selected-items" v-show="selectedCategories.length > 0">
+              <div
+                class="selected-item"
+                v-for="category in selectedCategories"
+                :key="category"
+              >
+                <a class="selected-item-name">
+                  {{ findCategoryName(category) }}
+                  <div
+                    style="margin-left:5px;"
+                    class="close"
+                    @click="removeSelectedCategory(category)"
+                  />
+                </a>
+              </div>
+            </div>
+            <a class="apply-button" @click="categoriesClicked = false">Apply</a>
+            <a
+              class="clear-button"
+              v-show="selectedCategories.length > 0"
+              @click="clearSelectedCategories()"
+              >Clear</a
+            >
+          </div>
+        </div>
+      </div>
+    </transition>
+    <transition name="fade">
+      <div
+        class="overlay"
+        v-show="assignmentClicked || categoriesClicked"
+      ></div>
     </transition>
   </div>
 </template>
@@ -143,7 +219,7 @@
 import ClassGraph from "../components/ClassGraph.vue";
 import Tooltip from "../components/Tooltip.vue";
 import UserSettings from "../components/UserSettings.vue";
-import { Assignments } from "../script/parseCanvasData.js";
+import { Assignments, Categories } from "../script/parseCanvasData.js";
 import NodeInfo from "../components/NodeInfo.vue";
 
 export default {
@@ -167,15 +243,20 @@ export default {
       nodeClicked: -1,
       nodeClickData: [-1, undefined, undefined],
       keyword: Object,
+      categoriesClicked: false,
+      categoriesSearch: "",
+      categories: [],
+      currentCategory: {},
     };
   },
   methods: {
     Assignments_Click() {
       this.assignmentClicked = !this.assignmentClicked;
       this.assignments = Object.values(Assignments);
-      console.log("Assignments click");
     },
     Categories_Click() {
+      this.categoriesClicked = !this.categoriesClicked;
+      this.categories = Categories;
       console.log("Categories click");
     },
     Students_Click() {
@@ -210,14 +291,31 @@ export default {
       this.currentAssignment[assignmentId] = false;
       document.getElementById(assignmentId).checked = false;
     },
+    removeSelectedCategory(categoryId) {
+      this.currentCategory[categoryId] = false;
+      console.log(document.getElementById(categoryId + "-checkbox"));
+      document.getElementById(categoryId + "-checkbox").checked = false;
+    },
     clearSearchBox() {
       document.getElementById("assignment-search-box").value = "";
     },
     clearSelectedAssignments() {
-      this.clearSearchBox();
       for (let k in this.currentAssignment) {
         this.currentAssignment[k] = false;
         document.getElementById(k).checked = false;
+      }
+    },
+    clearSelectedCategories() {
+      for (let k in this.currentCategory) {
+        this.currentCategory[k] = false;
+        document.getElementById(k + "-checkbox").checked = false;
+      }
+    },
+    findCategoryName(categoryId) {
+      for (let i = 0; i < this.categories.length; i++) {
+        if (this.categories[i].id == categoryId) {
+          return this.categories[i].name;
+        }
       }
     },
   },
@@ -237,6 +335,22 @@ export default {
         }
       }
       return activeAssignments;
+    },
+    categoryFilteredList() {
+      return this.categories.filter((category) => {
+        return category.name
+          .toLowerCase()
+          .includes(this.categoriesSearch.toLowerCase());
+      });
+    },
+    selectedCategories() {
+      let activeCategories = [];
+      for (let k in this.currentCategory) {
+        if (this.currentCategory[k]) {
+          activeCategories.push(k);
+        }
+      }
+      return activeCategories;
     },
   },
 };
@@ -331,7 +445,7 @@ export default {
   justify-content: center;
 }
 
-#class-assignment-wrapper {
+.wrapper {
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -353,6 +467,7 @@ export default {
   align-items: center;
   overflow: hidden;
   position: absolute;
+  min-width: 70%;
 }
 
 .dropdown-background-box > h2 {
@@ -369,7 +484,6 @@ export default {
 .dropdown-background-box > .dropdown-box {
   background: #ffffff;
   border: 1px solid #e5e5e5;
-  width: 80%;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -391,6 +505,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-width: 95%;
 }
 
 .dropdown input {
@@ -472,7 +587,7 @@ export default {
   width: 95%;
 }
 
-.selected-assignment {
+.selected-item-name {
   background: #e5e5e5;
   font-family: "Roboto", sans-serif;
   font-size: 12px;
@@ -486,14 +601,14 @@ export default {
   margin: 5px 5px;
 }
 
-.close-assignment {
+.close {
   width: 8px;
   height: 8px;
   background: url("../assets/close.png") no-repeat;
   background-size: cover;
 }
 
-.close-assignment:hover {
+.close:hover {
   background: url("../assets/close-red.png") no-repeat;
   background-size: cover;
 }
