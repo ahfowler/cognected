@@ -14,15 +14,17 @@
         <hr/>
 
         <p class="mini-header">Mentioned Assignments</p>
-        <div v-if="assignmentsList != undefined">
-            <div v-for="id in keyword.assignments" :key="id">
+        <br><br>
+        <div v-if="assignmentsList != undefined" style="overflow:auto;max-height:100px;width:100%;margin-bottom:10px;">
+            <div v-for="id in this.keyword.assignments" :key="id">
                 <a :href="assignmentsList[id].url" target="_blank">• {{ assignmentsList[id].name }}</a>
             </div>
         </div>
         <hr/>
 
         <p class="mini-header">Mentioned Keywords</p>
-        <div v-if="keyword != undefined">
+        <br>
+        <div v-if="keyword != undefined" style="overflow:auto;max-height:100px;width:100%;margin-bottom:10px;">
             <div v-for="asKey in Object.keys(keyword.associatedKeys)" :key="asKey">
                 <a style="color:#000000">• {{ asKey }}</a>
             </div>
@@ -51,7 +53,6 @@ export default {
 
     },
     mounted(){
-        this.keyword.assignments = [...new Set(this.keyword.assignments)];
     }
 }
 </script>
