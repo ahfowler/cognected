@@ -3,10 +3,11 @@
         <p class="title">{{this.keyword.name}}</p>
         <p class="mini-header">Category</p>
         <br>
-        <input type="text" class="category-input" v-model="this.category" list="categories" placeholder="(WORK IN PROGRESS) Type a category to add...">
+        <input type="text" class="category-input" v-model="category" list="categories" placeholder="(WORK IN PROGRESS) Type a category to add..." @keyup="CategoryFound">
         <datalist id="categories">
             <option v-for="cat in this.categoryList" :key="cat">{{cat}}</option>
         </datalist>
+        <a style="margin-left:25px;text-decoration:none;" v-if="displayAddCategory" href="#">Create New category called "{{category}}"?</a>
         <hr/>
 
         <p class="mini-header">Keyword Average</p><br>
@@ -46,11 +47,14 @@ export default {
             keyword: this.propkeywordData,
             assignmentsList: Assignments,
             category: '',
-            categoryList: ['ex1','ex2','ex3']
+            categoryList: ['ex1','ex2','ex3'],
+            displayAddCategory: false,
         }
     },
     methods: {
-
+        CategoryFound(){
+            this.displayAddCategory = (this.category.length != 0 && !this.categoryList.includes(this.category))
+        }
     },
     mounted(){
     }
