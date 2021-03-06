@@ -25,17 +25,17 @@
     <p class="mini-header">Mentioned Assignments</p>
     <div v-if="assignmentsList != undefined">
       <div v-for="id in keyword.assignments" :key="id">
-        <a :href="assignmentsList[id].url" target="_blank"
-          >• {{ assignmentsList[id].name }}</a
-        >
+        <a :href="assignmentsList[id].url" target="_blank">{{
+          assignmentsList[id].name
+        }}</a>
       </div>
     </div>
     <hr />
 
     <p class="mini-header">Mentioned Keywords</p>
-    <div v-if="keyword != undefined">
+    <div v-if="keyword != undefined" style="margin-bottom: 10px;">
       <div v-for="asKey in Object.keys(keyword.associatedKeys)" :key="asKey">
-        <a style="color:#000000">• {{ asKey }}</a>
+        <a style="color:#000000; background-color: #fff;">• {{ asKey }}</a>
       </div>
     </div>
   </div>
@@ -100,6 +100,8 @@ a {
   margin-left: 35px;
   margin-right: 10px;
   margin-bottom: 10px;
+  background-color: #eeeeee;
+  padding: 5px;
 }
 
 hr {
