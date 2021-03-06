@@ -51,6 +51,7 @@ export default {
 
     },
     mounted(){
+        this.keyword.assignments = [...new Set(this.keyword.assignments)];
     }
 }
 </script>
