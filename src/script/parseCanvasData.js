@@ -415,6 +415,7 @@ function ParseGradeJson() {
 
     for (var i = 0; i < Keywords.length; i++) {
       Keywords[i].CalcKeywordAverage();
+      Keywords[i].assignments = [...new Set(Keywords[i].assignments)];
     }
 
     // console.log("ASSIGNMENT OBJECTS");
