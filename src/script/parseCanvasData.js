@@ -111,12 +111,12 @@ class Category {
   }
 }
 
-// class Student {
-//   constructor(name, id) {
-//     this.name = name;
-//     this.id = id;
-//   }
-// }
+class Student {
+  constructor(name, id) {
+    this.name = name;
+    this.id = id;
+  }
+}
 
 /* Global Variables */
 var courseAssignmentData;
@@ -124,6 +124,7 @@ var courseGradeData;
 var Assignments = {};
 var Keywords = [];
 var Students = [];
+var StudentObjects = [];
 var Categories = [];
 var corsAnywhere = "https://salty-atoll-62320.herokuapp.com/"; //NEEDED TO CREATE A 'PROPER' CORS API CALL
 var dataLoading = false;
@@ -397,10 +398,12 @@ function ParseJsonToAssignment() {
 //Parse the grade data for the course
 function ParseGradeJson() {
   if (courseGradeData != undefined) {
+    console.log(courseGradeData);
     courseGradeData.forEach((item) => {
       Assignments[item.assignment_id].AppendGrade(item);
       if (!Students.includes(item.user_name)) {
         Students.push(item.user_name);
+        StudentObjects.push(new Student(item.user_name, item.user_id));
       }
     });
 
@@ -443,6 +446,7 @@ export {
   Assignments,
   Keywords,
   Students,
+  StudentObjects,
   Categories,
   KeywordIndex,
   CalcAssignmentListAvg,

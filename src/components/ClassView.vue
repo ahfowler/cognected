@@ -67,7 +67,14 @@
           </Tooltip>
 
           <Tooltip text="Students - COMING SOON" @click.native="Students_Click">
-            <img src="../assets/students-icon.png" />
+            <img
+              src="../assets/students-icon-active.png"
+              v-show="selectedStudents.length > 0"
+            />
+            <img
+              src="../assets/students-icon.png"
+              v-show="selectedStudents.length == 0"
+            />
           </Tooltip>
 
           <Tooltip
@@ -214,9 +221,74 @@
       </div>
     </transition>
     <transition name="fade">
+      <div class="wrapper" v-show="studentsClicked">
+        <div class="dropdown-background-box">
+          <h2>Select Students:</h2>
+          <div class="dropdown-box">
+            <p>
+              Search for a student or select one or more students from the drop
+              down list.
+            </p>
+            <div class="dropdown">
+              <input
+                id="student-search-box"
+                v-model="studentSearch"
+                placeholder="Type a student's name..."
+              />
+              <div class="dropdown-area">
+                <div
+                  class="dropdown-message"
+                  v-show="studentFilteredList.length == 0"
+                >
+                  No students found.
+                </div>
+                <div
+                  id="assignment-dropdown-list"
+                  v-for="student in studentFilteredList"
+                  :key="student.id"
+                  v-show="studentFilteredList.length > 0"
+                >
+                  <input
+                    name="studentList"
+                    type="checkbox"
+                    :id="student.id + '-checkbox'"
+                    v-model="currentStudent[student.id]"
+                  />
+                  <label :for="student.id">{{ student.name }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="selected-items" v-show="selectedStudents.length > 0">
+              <div
+                class="selected-item"
+                v-for="student in selectedStudents"
+                :key="student"
+              >
+                <a class="selected-item-name">
+                  {{ findStudentName(student) }}
+                  <div
+                    style="margin-left:5px;"
+                    class="close"
+                    @click="removeSelectedStudent(student)"
+                  />
+                </a>
+              </div>
+            </div>
+            <a class="apply-button" @click="studentsClicked = false">Apply</a>
+            <a
+              class="clear-button"
+              v-show="selectedStudents.length > 0"
+              @click="clearSelectedStudents()"
+              >Clear</a
+            >
+          </div>
+        </div>
+      </div>
+    </transition>
+    <transition name="fade">
       <div
         class="overlay"
-        v-show="assignmentClicked || categoriesClicked"
+        v-show="assignmentClicked || categoriesClicked || studentsClicked"
       ></div>
     </transition>
   </div>
@@ -226,7 +298,11 @@
 import ClassGraph from "../components/ClassGraph.vue";
 import Tooltip from "../components/Tooltip.vue";
 import UserSettings from "../components/UserSettings.vue";
-import { Assignments, Categories } from "../script/parseCanvasData.js";
+import {
+  Assignments,
+  Categories,
+  StudentObjects,
+} from "../script/parseCanvasData.js";
 import NodeInfo from "../components/NodeInfo.vue";
 
 export default {
@@ -254,6 +330,10 @@ export default {
       categoriesSearch: "",
       categories: [],
       currentCategory: {},
+      studentsClicked: false,
+      studentSearch: "",
+      students: [],
+      currentStudent: {},
     };
   },
   methods: {
@@ -264,9 +344,10 @@ export default {
     Categories_Click() {
       this.categoriesClicked = !this.categoriesClicked;
       this.categories = Categories;
-      console.log("Categories click");
     },
     Students_Click() {
+      this.studentsClicked = !this.studentsClicked;
+      this.students = StudentObjects;
       console.log("Students click");
     },
     UserGuide_Click() {
@@ -300,8 +381,11 @@ export default {
     },
     removeSelectedCategory(categoryId) {
       this.currentCategory[categoryId] = false;
-      console.log(document.getElementById(categoryId + "-checkbox"));
       document.getElementById(categoryId + "-checkbox").checked = false;
+    },
+    removeSelectedStudent(studentId) {
+      this.currentStudent[studentId] = false;
+      document.getElementById(studentId + "-checkbox").checked = false;
     },
     clearSearchBox() {
       document.getElementById("assignment-search-box").value = "";
@@ -318,10 +402,23 @@ export default {
         document.getElementById(k + "-checkbox").checked = false;
       }
     },
+    clearSelectedStudents() {
+      for (let k in this.currentStudent) {
+        this.currentStudent[k] = false;
+        document.getElementById(k + "-checkbox").checked = false;
+      }
+    },
     findCategoryName(categoryId) {
       for (let i = 0; i < this.categories.length; i++) {
         if (this.categories[i].id == categoryId) {
           return this.categories[i].name;
+        }
+      }
+    },
+    findStudentName(studentId) {
+      for (let i = 0; i < this.students.length; i++) {
+        if (this.students[i].id == studentId) {
+          return this.students[i].name;
         }
       }
     },
@@ -358,6 +455,22 @@ export default {
         }
       }
       return activeCategories;
+    },
+    studentFilteredList() {
+      return this.students.filter((student) => {
+        return student.name
+          .toLowerCase()
+          .includes(this.studentSearch.toLowerCase());
+      });
+    },
+    selectedStudents() {
+      let activeStudents = [];
+      for (let k in this.currentStudent) {
+        if (this.currentStudent[k]) {
+          activeStudents.push(k);
+        }
+      }
+      return activeStudents;
     },
   },
 };
