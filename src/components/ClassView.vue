@@ -2,7 +2,7 @@
   <div id="class-view">
     <div class="pane-id">Class View</div>
     <NodeInfo
-      style="z-index:2;position:absolute;"
+      style="z-index:2;"
       v-if="this.nodeClicked != -1 && !this.viewUserSettings"
       :key="this.nodeClicked"
       :propkeywordData="this.nodeClickData[1]"
