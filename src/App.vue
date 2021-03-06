@@ -11,7 +11,7 @@
           </div>
         </div>
         <multipane layout="vertical">
-          <div :style="{ width: '20%', 'min-width': '15%' }" id="student-view">
+          <div :style="{ width: '40%', 'min-width': '0%' }" id="student-view">
             <StudentView></StudentView>
           </div>
           <multipane-resizer>
@@ -67,7 +67,7 @@ export default {
   methods: {
     updateIsLoading() {
       setTimeout(() => (this.isLoading = false), 3000);
-    }
+    },
   },
   created() {
     this.updateIsLoading();

@@ -1,12 +1,14 @@
 <template>
-  <div>
+  <div
+    style="width: 70%; display: inline-block;
+    float: none;"
+  >
     <div class="loading" v-if="dataLoading">Loading&#8230;</div>
     <p>CognectEd User Settings</p>
     <div class="input-group">
       <label id="label">Canvas URL</label>
       <input
-        placeholder="Institution Canvas URL...  (i.e https://asu.instructure.com/ )"
-        style="min-width:500px;"
+        placeholder="Institution Canvas URL... (i.e https://asu.instructure.com/ )"
         id="CanvasUrl"
         v-model="canvasURL"
         @keyup="PopulateCourses"
@@ -25,44 +27,47 @@
       />
     </div>
 
-    <div class="dropdown">
-      <div class="dropdown-area">
-        <div
-          id="dropdown-list"
-          v-for="(course, i) in courses"
-          :key="i + '-' + course.name"
-        >
-          <input
-            name="courseList"
-            type="radio"
-            :id="course.name"
-            :value="course.name"
-            v-model="currentCourse"
-          />
-          <label :for="course.name">{{ course.name }}</label>
+    <h3>Registered Courses</h3>
+    <div class="course-group">
+      <div class="dropdown">
+        <div class="dropdown-area">
+          <div
+            id="dropdown-list"
+            v-for="(course, i) in courses"
+            :key="i + '-' + course.name"
+          >
+            <input
+              name="courseList"
+              type="radio"
+              :id="course.name"
+              :value="course.name"
+              v-model="currentCourse"
+            />
+            <label :for="course.name">{{ course.name }}</label>
+          </div>
         </div>
+
+        <label id="Errors">{{ errorMessages }}</label>
       </div>
 
-      <label id="Errors">{{ errorMessages }}</label>
+      <div class="buttons-area">
+        <a
+          class="myButton"
+          @click="CancelClick"
+          style="background-color: #f3442c;"
+          >Cancel</a
+        >
+
+        <a
+          class="myButton"
+          href="https://drive.google.com/file/d/1A1CjziR9ubyikiGY9IDMDBHchp1gpLa6/view?usp=sharing"
+          target="_blank"
+          >User Guide</a
+        >
+
+        <a class="myButton" @click="ApplyClick">Apply</a>
+      </div>
     </div>
-
-    <a class="myButton" @click="CancelClick" style="float:left;margin-left:50px"
-      >Cancel</a
-    >
-
-    <a
-      class="myButton"
-      href="https://drive.google.com/file/d/1A1CjziR9ubyikiGY9IDMDBHchp1gpLa6/view?usp=sharing"
-      target="_blank"
-      >User Guide</a
-    >
-
-    <a
-      class="myButton"
-      @click="ApplyClick"
-      style="float:right;margin-right:50px"
-      >Apply</a
-    >
   </div>
 </template>
 
@@ -237,6 +242,17 @@ p {
   margin-bottom: 25px;
 }
 
+h3 {
+  font-family: "K2D", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 26px;
+  text-align: center;
+  color: #000000;
+  margin-top: 50px;
+}
+
 label {
   font-family: "K2D", sans-serif;
   font-style: normal;
@@ -244,25 +260,33 @@ label {
   font-size: 15px;
   color: black;
   left: 20px;
+  padding: 0px 10px;
 }
 
 input {
   border: 1px solid #e5e5e5;
   border-radius: 1px;
+  min-width: 80%;
   height: 30px;
-  width: 95%;
   padding: 5px 10px 5px 10px;
   font-family: "Roboto", sans-serif;
   font-style: normal;
   font-weight: 300;
   font-size: 15px;
   line-height: 15px;
-  margin: 20px;
+  margin: 10px 0px;
 }
 
 .input-group {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.course-group {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -284,6 +308,7 @@ input {
   text-decoration: none;
   text-shadow: 0px 1px 0px #2f6627;
 }
+
 .myButton:hover {
   background-color: #246bd6;
 }
@@ -292,18 +317,25 @@ input {
   top: 1px;
 }
 
+.buttons-area {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
 .dropdown {
   margin: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 .dropdown input {
   border: 1px solid #e5e5e5;
   border-radius: 1px;
   height: 30px;
-  width: 95%;
   padding: 5px 10px 5px 10px;
   font-family: "Roboto", sans-serif;
   font-style: normal;
@@ -337,7 +369,8 @@ input {
 }
 
 #dropdown-list input {
-  width: 8%;
+  max-width: 8%;
+  min-width: 8%;
   margin: 10px 15px 10px 10px;
 }
 

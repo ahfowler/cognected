@@ -56,7 +56,14 @@
             text="Categories - COMING SOON"
             @click.native="Categories_Click"
           >
-            <img src="../assets/categories-icon.png" />
+            <img
+              src="../assets/categories-icon-active.png"
+              v-show="selectedCategories.length > 0"
+            />
+            <img
+              src="../assets/categories-icon.png"
+              v-show="selectedCategories.length == 0"
+            />
           </Tooltip>
 
           <Tooltip text="Students - COMING SOON" @click.native="Students_Click">
