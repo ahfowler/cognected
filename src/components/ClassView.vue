@@ -348,7 +348,6 @@ export default {
     Students_Click() {
       this.studentsClicked = !this.studentsClicked;
       this.students = StudentObjects;
-      console.log("Students click");
     },
     UserGuide_Click() {
       Object.assign(document.createElement("a"), {

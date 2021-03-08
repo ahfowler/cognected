@@ -6,13 +6,20 @@
     <input
       type="text"
       class="category-input"
-      v-model="this.category"
+      v-model="category"
       list="categories"
       placeholder="(WORK IN PROGRESS) Type a category to add..."
+      @keyup="CategoryFound"
     />
     <datalist id="categories">
       <option v-for="cat in this.categoryList" :key="cat">{{ cat }}</option>
     </datalist>
+    <a
+      style="margin-left:25px;text-decoration:none;"
+      v-if="displayAddCategory"
+      href="#"
+      >Create New category called "{{ category }}"?</a
+    >
     <hr />
 
     <p class="mini-header">Keyword Average</p>
@@ -23,19 +30,27 @@
     <hr />
 
     <p class="mini-header">Mentioned Assignments</p>
-    <div v-if="assignmentsList != undefined">
-      <div v-for="id in keyword.assignments" :key="id">
-        <a :href="assignmentsList[id].url" target="_blank">{{
-          assignmentsList[id].name
-        }}</a>
+    <br /><br />
+    <div
+      v-if="assignmentsList != undefined"
+      style="overflow:auto;max-height:100px;width:100%;margin-bottom:10px;"
+    >
+      <div v-for="id in this.keyword.assignments" :key="id">
+        <a :href="assignmentsList[id].url" target="_blank"
+          >• {{ assignmentsList[id].name }}</a
+        >
       </div>
     </div>
     <hr />
 
     <p class="mini-header">Mentioned Keywords</p>
-    <div v-if="keyword != undefined" style="margin-bottom: 10px;">
+    <br />
+    <div
+      v-if="keyword != undefined"
+      style="overflow:auto;max-height:100px;width:100%;margin-bottom:10px;"
+    >
       <div v-for="asKey in Object.keys(keyword.associatedKeys)" :key="asKey">
-        <a style="color:#000000; background-color: #fff;">• {{ asKey }}</a>
+        <a style="color:#000000">• {{ asKey }}</a>
       </div>
     </div>
   </div>
@@ -55,9 +70,15 @@ export default {
       assignmentsList: Assignments,
       category: "",
       categoryList: ["ex1", "ex2", "ex3"],
+      displayAddCategory: false,
     };
   },
-  methods: {},
+  methods: {
+    CategoryFound() {
+      this.displayAddCategory =
+        this.category.length != 0 && !this.categoryList.includes(this.category);
+    },
+  },
   mounted() {},
 };
 </script>

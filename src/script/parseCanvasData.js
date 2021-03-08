@@ -423,6 +423,7 @@ function ParseGradeJson() {
         Math.floor(Math.random() * 1000)
       );
       Categories.push(Keywords[i].category);
+      Keywords[i].assignments = [...new Set(Keywords[i].assignments)];
     }
 
     console.log("ASSIGNMENT OBJECTS");
