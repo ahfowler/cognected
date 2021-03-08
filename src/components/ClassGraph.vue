@@ -32,6 +32,7 @@ export default {
   data() {
     return {
       importedKeywords: Keywords,
+      filteredKeywords: Keywords,
       importedAssignments: Assignments,
       nodes: [],
       edges: [],
@@ -125,7 +126,7 @@ export default {
     createKeywordNodes() {
       this.nodes = [];
       let context = this;
-      this.importedKeywords.forEach((keyword) => {
+      this.filteredKeywords.forEach((keyword) => {
         let nodeJson = {};
         nodeJson.color = {};
         //if there is a node clicked and we are redrawing
@@ -161,7 +162,7 @@ export default {
         nodeJson.label = keyword.name;
         nodeJson.font = {};
         nodeJson.font.color = "white";
-        nodeJson.font.strokeWidth = 2;
+        nodeJson.font.strokeWidth = 1;
         nodeJson.font.strokeColor = "black";
 
         nodeJson.value = 1;
@@ -229,6 +230,34 @@ export default {
   mounted() {
     this.createKeywordNodes();
     //this.createEdges();
+    this.$root.$on("applyAssignments", (selectedAssignments) => {
+      console.log("worked: " + selectedAssignments);
+      if (selectedAssignments.length > 0) {
+        this.filteredKeywords = [];
+
+        this.importedKeywords.forEach((keyword) => {
+          let containedAssignment = false;
+
+          selectedAssignments.forEach((assignment) => {
+            if (keyword.assignments.includes(parseInt(assignment))) {
+              containedAssignment = true;
+              // console.log(keyword.name + " has " + assignment);
+            }
+          });
+
+          if (containedAssignment) {
+            this.filteredKeywords.push(keyword);
+            // console.log(keyword.name + " was in the filter");
+          }
+        });
+
+        this.createKeywordNodes();
+      } else {
+        // Reset the graph
+        this.filteredKeywords = this.importedKeywords;
+        this.createKeywordNodes();
+      }
+    });
   },
 };
 </script>

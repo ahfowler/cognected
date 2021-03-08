@@ -144,7 +144,7 @@
                 </a>
               </div>
             </div>
-            <a class="apply-button" @click="assignmentClicked = false">Apply</a>
+            <a class="apply-button" @click="applyAssignments()">Apply</a>
             <a
               class="clear-button"
               v-show="selectedAssignments.length > 0"
@@ -420,6 +420,10 @@ export default {
           return this.students[i].name;
         }
       }
+    },
+    applyAssignments() {
+      this.assignmentClicked = false;
+      this.$root.$emit("applyAssignments", this.selectedAssignments);
     },
   },
   computed: {
