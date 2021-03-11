@@ -411,17 +411,29 @@ function ParseGradeJson() {
       Assignments[id].CalcAssignmentAverage();
     }
 
+    // Temporary for testing purposes
     let categories = [
-      ["tests", Math.floor(Math.random() * 1000)],
-      ["homework", Math.floor(Math.random() * 1000)],
-      ["extra credit", Math.floor(Math.random() * 1000)],
+      ["Category One", Math.floor(Math.random() * 1000), "#FCC100"],
+      ["Category Two", Math.floor(Math.random() * 1000), "#B80025"],
+      ["Category Three", Math.floor(Math.random() * 1000), "#174793"],
     ];
+    // Delete aftwerwards!
 
     for (var i = 0; i < Keywords.length; i++) {
       Keywords[i].CalcKeywordAverage();
+
       // Temporary for testing purposes
       let category = categories[Math.floor(Math.random() * categories.length)];
-      Keywords[i].category = new Category(category[0], "#fcc100", category[1]);
+      Keywords[i].category = new Category(
+        category[0],
+        category[2],
+        category[1]
+      );
+      // Delete afterwards!
+
+      // Uncomment this afterwards, default category
+      // Keywords[i].category = new Category("Uncategorized", "#174793", 0);
+
       Categories.push(Keywords[i].category);
 
       Keywords[i].assignments = [...new Set(Keywords[i].assignments)];
@@ -435,12 +447,12 @@ function ParseGradeJson() {
 
     console.log("CATEGORIES");
     const seen = new Set();
-    console.log(Categories);
     Categories = Categories.filter((el) => {
       const duplicate = seen.has(el.id);
       seen.add(el.id);
       return !duplicate;
     });
+    console.log(Categories);
 
     dataLoading = false;
   }

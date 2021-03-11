@@ -41,18 +41,6 @@ export default {
       options: {
         nodes: {
           shape: "circle",
-          // scaling: {
-          //   label: {
-          //       enabled: true,
-          //       min: 10,
-          //       max: 10
-          //   },
-          //   // customScalingFunction: function(min, max, total, value) {
-          //   //   return value * 0.005;
-          //   // },
-          //   // min: 10,
-          //   // max: 10,
-          // },
           value: 1,
           color: {
             background: "#174793",
@@ -66,6 +54,9 @@ export default {
         edges: {
           smooth: false,
           width: 3,
+          color: {
+            inherit: "both",
+          },
         },
         groups: {
           one: { color: { background: "#fcc100" } },
@@ -138,11 +129,11 @@ export default {
               context.importedKeywords[context.nodeClicked].name ||
             this.HasEdge(keyword.name)
           ) {
-            nodeJson.color.background = "rgba(23, 71, 147, 1)"; //will need to change the color to be keyword.category.color;
-            nodeJson.color.border = "rgba(23, 71, 147, 1)";
+            nodeJson.color.background = keyword.category.color; //will need to change the color to be keyword.category.color;
+            nodeJson.color.border = keyword.category.color;
             nodeJson.color.highlight = {};
-            nodeJson.color.highlight.background = "rgba(23, 71, 147, 1)";
-            nodeJson.color.highlight.border = "rgba(23, 71, 147, 1)";
+            nodeJson.color.highlight.background = keyword.category.color;
+            nodeJson.color.highlight.border = keyword.category.color;
           } else {
             nodeJson.color.background = "rgba(227, 227, 227, 1)";
             nodeJson.color.border = "rgba(227, 227, 227, 1)";
@@ -151,11 +142,11 @@ export default {
             nodeJson.color.highlight.border = "rgba(227, 227, 227, 1)";
           }
         } else {
-          nodeJson.color.background = "rgba(23, 71, 147, 1)";
-          nodeJson.color.border = "rgba(23, 71, 147, 1)";
+          nodeJson.color.background = keyword.category.color;
+          nodeJson.color.border = keyword.category.color;
           nodeJson.color.highlight = {};
-          nodeJson.color.highlight.background = "rgba(23, 71, 147, 1)";
-          nodeJson.color.highlight.border = "rgba(23, 71, 147, 1)";
+          nodeJson.color.highlight.background = keyword.category.color;
+          nodeJson.color.highlight.border = keyword.category.color;
         }
 
         nodeJson.id = KeywordIndex(keyword.name);
