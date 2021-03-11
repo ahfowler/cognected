@@ -32,7 +32,8 @@ export default {
   data() {
     return {
       importedKeywords: Keywords,
-      filteredKeywords: Keywords,
+      selectedAssignments: [],
+      selectedCategories: [],
       importedAssignments: Assignments,
       nodes: [],
       edges: [],
@@ -231,33 +232,62 @@ export default {
     this.createKeywordNodes();
     //this.createEdges();
     this.$root.$on("applyAssignments", (selectedAssignments) => {
-      console.log("worked: " + selectedAssignments);
-      if (selectedAssignments.length > 0) {
-        this.filteredKeywords = [];
-
-        this.importedKeywords.forEach((keyword) => {
-          let containedAssignment = false;
-
-          selectedAssignments.forEach((assignment) => {
-            if (keyword.assignments.includes(parseInt(assignment))) {
-              containedAssignment = true;
-              // console.log(keyword.name + " has " + assignment);
-            }
-          });
-
-          if (containedAssignment) {
-            this.filteredKeywords.push(keyword);
-            // console.log(keyword.name + " was in the filter");
-          }
-        });
-
-        this.createKeywordNodes();
-      } else {
-        // Reset the graph
-        this.filteredKeywords = this.importedKeywords;
-        this.createKeywordNodes();
-      }
+      this.selectedAssignments = selectedAssignments;
+      this.createKeywordNodes();
     });
+
+    this.$root.$on("applyCategories", (selectedCategories) => {
+      this.selectedCategories = selectedCategories;
+      this.createKeywordNodes();
+    });
+  },
+  computed: {
+    filterStructure() {
+      let filterJSON = {};
+      filterJSON.assignments = this.selectedAssignments;
+      filterJSON.categories = this.selectedCategories;
+      return filterJSON;
+    },
+    filteredKeywords() {
+      let filters = ["assignments", "categories"];
+      let selectedAssignments = this.selectedAssignments;
+
+      if (
+        this.filterStructure.assignments.length > 0 ||
+        this.filterStructure.categories.length > 0
+      ) {
+        return this.importedKeywords.filter(function(keyword) {
+          for (let j = 0; j < filters.length; j++) {
+            let keywordFound = (function(
+              filterName,
+              keyword,
+              selectedAssignments
+            ) {
+              if (filterName == "assignments") {
+                for (let i = 0; i < selectedAssignments.length; i++) {
+                  if (
+                    keyword.assignments.includes(
+                      parseInt(selectedAssignments[i])
+                    )
+                  ) {
+                    return false;
+                  }
+                }
+                return true;
+              }
+            })(filters[j], keyword, selectedAssignments);
+
+            // For each filter parameter...
+            if (filters[j] == "assignments" && keywordFound) {
+              return false; // Doesn't match filter.
+            }
+          }
+          return true;
+        });
+      } else {
+        return this.importedKeywords;
+      }
+    },
   },
 };
 </script>

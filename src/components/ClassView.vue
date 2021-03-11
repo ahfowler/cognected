@@ -209,7 +209,7 @@
                 </a>
               </div>
             </div>
-            <a class="apply-button" @click="categoriesClicked = false">Apply</a>
+            <a class="apply-button" @click="applyCategories()">Apply</a>
             <a
               class="clear-button"
               v-show="selectedCategories.length > 0"
@@ -424,6 +424,10 @@ export default {
     applyAssignments() {
       this.assignmentClicked = false;
       this.$root.$emit("applyAssignments", this.selectedAssignments);
+    },
+    applyCategories() {
+      this.categoriesClicked = false;
+      this.$root.$emit("applyCategories", this.selectedCategories);
     },
   },
   computed: {
