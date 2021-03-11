@@ -251,6 +251,7 @@ export default {
     filteredKeywords() {
       let filters = ["assignments", "categories"];
       let selectedAssignments = this.selectedAssignments;
+      let selectedCategories = this.selectedCategories;
 
       if (
         this.filterStructure.assignments.length > 0 ||
@@ -261,25 +262,43 @@ export default {
             let keywordFound = (function(
               filterName,
               keyword,
-              selectedAssignments
+              selectedAssignments,
+              selectedCategories
             ) {
               if (filterName == "assignments") {
-                for (let i = 0; i < selectedAssignments.length; i++) {
-                  if (
-                    keyword.assignments.includes(
-                      parseInt(selectedAssignments[i])
-                    )
-                  ) {
-                    return false;
+                if (selectedAssignments.length > 0) {
+                  for (let i = 0; i < selectedAssignments.length; i++) {
+                    if (
+                      keyword.assignments.includes(
+                        parseInt(selectedAssignments[i])
+                      )
+                    ) {
+                      return false;
+                    }
                   }
+                  return true;
+                } else {
+                  return false;
                 }
-                return true;
+              } else if (filterName == "categories") {
+                if (selectedCategories.length > 0) {
+                  for (let i = 0; i < selectedCategories.length; i++) {
+                    if (keyword.category.id == selectedCategories[i]) {
+                      return false;
+                    }
+                  }
+                  return true;
+                } else {
+                  return false;
+                }
               }
-            })(filters[j], keyword, selectedAssignments);
+            })(filters[j], keyword, selectedAssignments, selectedCategories);
 
             // For each filter parameter...
             if (filters[j] == "assignments" && keywordFound) {
               return false; // Doesn't match filter.
+            } else if (filters[j] == "categories" && keywordFound) {
+              return false;
             }
           }
           return true;
