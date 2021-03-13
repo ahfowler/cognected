@@ -412,27 +412,27 @@ function ParseGradeJson() {
     }
 
     // Temporary for testing purposes
-    let categories = [
-      ["Category One", Math.floor(Math.random() * 1000), "#FCC100"],
-      ["Category Two", Math.floor(Math.random() * 1000), "#B80025"],
-      ["Category Three", Math.floor(Math.random() * 1000), "#174793"],
-    ];
+    // let categories = [
+    //   ["Category One", Math.floor(Math.random() * 1000), "#FCC100"],
+    //   ["Category Two", Math.floor(Math.random() * 1000), "#B80025"],
+    //   ["Category Three", Math.floor(Math.random() * 1000), "#174793"],
+    // ];
     // Delete aftwerwards!
 
     for (var i = 0; i < Keywords.length; i++) {
       Keywords[i].CalcKeywordAverage();
 
       // Temporary for testing purposes
-      let category = categories[Math.floor(Math.random() * categories.length)];
-      Keywords[i].category = new Category(
-        category[0],
-        category[2],
-        category[1]
-      );
+      // let category = categories[Math.floor(Math.random() * categories.length)];
+      // Keywords[i].category = new Category(
+      //   category[0],
+      //   category[2],
+      //   category[1]
+      // );
       // Delete afterwards!
 
       // Uncomment this afterwards, default category
-      // Keywords[i].category = new Category("Uncategorized", "#174793", 0);
+      Keywords[i].category = new Category("Uncategorized", "#174793", 0);
 
       Categories.push(Keywords[i].category);
 
