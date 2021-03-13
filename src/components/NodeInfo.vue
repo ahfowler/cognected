@@ -121,7 +121,6 @@ a {
   margin-left: 35px;
   margin-right: 10px;
   margin-bottom: 10px;
-  background-color: #eeeeee;
   padding: 5px;
 }
 
