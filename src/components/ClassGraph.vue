@@ -162,8 +162,8 @@ export default {
         // nodeJson.scaling.label = {};
         // nodeJson.scaling.label.min = 20;
         // nodeJson.scaling.label.max = 20;
-        nodeJson.scaling.min = keyword.keyword_Avg / 2;
-        nodeJson.scaling.max = keyword.keyword_Avg / 2;
+        nodeJson.scaling.min = Math.pow(keyword.keyword_Avg / 2, 2.1) * 0.017;
+        nodeJson.scaling.max = Math.pow(keyword.keyword_Avg / 2, 2.1) * 0.017;
 
         nodeJson.title =
           "<b>" +
