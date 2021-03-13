@@ -32,6 +32,8 @@ export default {
   data() {
     return {
       importedKeywords: Keywords,
+      selectedAssignments: [],
+      selectedCategories: [],
       importedAssignments: Assignments,
       nodes: [],
       edges: [],
@@ -39,18 +41,6 @@ export default {
       options: {
         nodes: {
           shape: "circle",
-          // scaling: {
-          //   label: {
-          //       enabled: true,
-          //       min: 10,
-          //       max: 10
-          //   },
-          //   // customScalingFunction: function(min, max, total, value) {
-          //   //   return value * 0.005;
-          //   // },
-          //   // min: 10,
-          //   // max: 10,
-          // },
           value: 1,
           color: {
             background: "#174793",
@@ -64,6 +54,9 @@ export default {
         edges: {
           smooth: false,
           width: 3,
+          color: {
+            inherit: "both",
+          },
         },
         groups: {
           one: { color: { background: "#fcc100" } },
@@ -100,66 +93,71 @@ export default {
       }
     },
     myClickCallback() {
-      let selectedKeywordNode = this.importedKeywords[this.$refs.network.getSelection().nodes[0]];
+      let selectedKeywordNode = this.importedKeywords[
+        this.$refs.network.getSelection().nodes[0]
+      ];
       if (selectedKeywordNode != undefined) {
         this.nodeClicked = KeywordIndex(selectedKeywordNode.name);
         this.createKeywordNodes();
         this.$refs.network.redraw();
-
-        this.$emit('clicked', [this.nodeClicked, this.importedKeywords[this.nodeClicked], this.importedAssignments]);
-      }
-      else{
-        if(this.nodeClicked != -1){
+        this.$emit("clicked", [
+          this.nodeClicked,
+          this.importedKeywords[this.nodeClicked],
+          this.importedAssignments,
+        ]);
+      } else {
+        if (this.nodeClicked != -1) {
           this.nodeClicked = -1;
           this.createKeywordNodes();
           this.$refs.network.redraw();
 
-          this.$emit('clicked', [-1, undefined, undefined]);
+          this.$emit("clicked", [-1, undefined, undefined]);
         }
       }
     },
     createKeywordNodes() {
       this.nodes = [];
       let context = this;
-      this.importedKeywords.forEach((keyword) => {
+      this.filteredKeywords.forEach((keyword) => {
         let nodeJson = {};
         nodeJson.color = {};
         //if there is a node clicked and we are redrawing
-        if(context.nodeClicked != -1){
+        if (context.nodeClicked != -1) {
           //if the current keyword is the clicked node OR the current keyword has an edge with the selected keyword
-          if(keyword.name == context.importedKeywords[context.nodeClicked].name || this.HasEdge(keyword.name)){
-            nodeJson.color.background = 'rgba(23, 71, 147, 1)'; //will need to change the color to be keyword.category.color;
-            nodeJson.color.border = 'rgba(23, 71, 147, 1)';
+          if (
+            keyword.name ==
+              context.importedKeywords[context.nodeClicked].name ||
+            this.HasEdge(keyword.name)
+          ) {
+            nodeJson.color.background = keyword.category.color; //will need to change the color to be keyword.category.color;
+            nodeJson.color.border = keyword.category.color;
             nodeJson.color.highlight = {};
-            nodeJson.color.highlight.background = 'rgba(23, 71, 147, 1)';
-            nodeJson.color.highlight.border = 'rgba(23, 71, 147, 1)';
+            nodeJson.color.highlight.background = keyword.category.color;
+            nodeJson.color.highlight.border = keyword.category.color;
+          } else {
+            nodeJson.color.background = "rgba(227, 227, 227, 1)";
+            nodeJson.color.border = "rgba(227, 227, 227, 1)";
+            nodeJson.color.highlight = {};
+            nodeJson.color.highlight.background = "rgba(227, 227, 227, 1)";
+            nodeJson.color.highlight.border = "rgba(227, 227, 227, 1)";
           }
-          else
-          {
-            nodeJson.color.background = 'rgba(227, 227, 227, 1)';
-            nodeJson.color.border = 'rgba(227, 227, 227, 1)';
-            nodeJson.color.highlight = {};
-            nodeJson.color.highlight.background = 'rgba(227, 227, 227, 1)';
-            nodeJson.color.highlight.border = 'rgba(227, 227, 227, 1)';
-          }
+        } else {
+          nodeJson.color.background = keyword.category.color;
+          nodeJson.color.border = keyword.category.color;
+          nodeJson.color.highlight = {};
+          nodeJson.color.highlight.background = keyword.category.color;
+          nodeJson.color.highlight.border = keyword.category.color;
         }
-        else{
-            nodeJson.color.background = 'rgba(23, 71, 147, 1)';
-            nodeJson.color.border = 'rgba(23, 71, 147, 1)';
-            nodeJson.color.highlight = {};
-            nodeJson.color.highlight.background = 'rgba(23, 71, 147, 1)';
-            nodeJson.color.highlight.border = 'rgba(23, 71, 147, 1)';
-        }
-        
+
         nodeJson.id = KeywordIndex(keyword.name);
 
         nodeJson.label = keyword.name;
         nodeJson.font = {};
         nodeJson.font.color = "white";
-        nodeJson.font.strokeWidth = 2;
+        nodeJson.font.strokeWidth = 1;
         nodeJson.font.strokeColor = "black";
-        
-        nodeJson.value = 1
+
+        nodeJson.value = 1;
         nodeJson.scaling = {};
         // nodeJson.scaling.label = {};
         // nodeJson.scaling.label.min = 20;
@@ -200,17 +198,20 @@ export default {
           edgeJson.length = Math.round(102 - edgeAverage + 1) + 100;
           edgeJson.title = "<b>Class Grade Average: </b>" + edgeAverage + "%";
         }
-5
+        5;
         if (!edgeExists(edgeJson, this.edges)) {
           this.edges.push(edgeJson);
         }
       });
     },
-    HasEdge(keyword){
+    HasEdge(keyword) {
       var foundEdge = false;
 
-      this.edges.forEach(edge => {
-        if(edge.from == this.nodeClicked && edge.to == KeywordIndex(keyword) || edge.to == this.nodeClicked && edge.from == KeywordIndex(keyword) ){
+      this.edges.forEach((edge) => {
+        if (
+          (edge.from == this.nodeClicked && edge.to == KeywordIndex(keyword)) ||
+          (edge.to == this.nodeClicked && edge.from == KeywordIndex(keyword))
+        ) {
           foundEdge = true;
         }
       });
@@ -221,6 +222,82 @@ export default {
   mounted() {
     this.createKeywordNodes();
     //this.createEdges();
+    this.$root.$on("applyAssignments", (selectedAssignments) => {
+      this.selectedAssignments = selectedAssignments;
+      this.createKeywordNodes();
+    });
+
+    this.$root.$on("applyCategories", (selectedCategories) => {
+      this.selectedCategories = selectedCategories;
+      this.createKeywordNodes();
+    });
+  },
+  computed: {
+    filterStructure() {
+      let filterJSON = {};
+      filterJSON.assignments = this.selectedAssignments;
+      filterJSON.categories = this.selectedCategories;
+      return filterJSON;
+    },
+    filteredKeywords() {
+      let filters = ["assignments", "categories"];
+      let selectedAssignments = this.selectedAssignments;
+      let selectedCategories = this.selectedCategories;
+
+      if (
+        this.filterStructure.assignments.length > 0 ||
+        this.filterStructure.categories.length > 0
+      ) {
+        return this.importedKeywords.filter(function(keyword) {
+          for (let j = 0; j < filters.length; j++) {
+            let keywordFound = (function(
+              filterName,
+              keyword,
+              selectedAssignments,
+              selectedCategories
+            ) {
+              if (filterName == "assignments") {
+                if (selectedAssignments.length > 0) {
+                  for (let i = 0; i < selectedAssignments.length; i++) {
+                    if (
+                      keyword.assignments.includes(
+                        parseInt(selectedAssignments[i])
+                      )
+                    ) {
+                      return false;
+                    }
+                  }
+                  return true;
+                } else {
+                  return false;
+                }
+              } else if (filterName == "categories") {
+                if (selectedCategories.length > 0) {
+                  for (let i = 0; i < selectedCategories.length; i++) {
+                    if (keyword.category.id == selectedCategories[i]) {
+                      return false;
+                    }
+                  }
+                  return true;
+                } else {
+                  return false;
+                }
+              }
+            })(filters[j], keyword, selectedAssignments, selectedCategories);
+
+            // For each filter parameter...
+            if (filters[j] == "assignments" && keywordFound) {
+              return false; // Doesn't match filter.
+            } else if (filters[j] == "categories" && keywordFound) {
+              return false;
+            }
+          }
+          return true;
+        });
+      } else {
+        return this.importedKeywords;
+      }
+    },
   },
 };
 </script>

@@ -52,7 +52,10 @@
       <div id="student-wrapper" v-show="!applyClicked">
         <h2>WORK IN PROGRESS - Select a Student:</h2>
         <div class="dropdown-box">
-          <p>Search for a student or select a name from the drop down list. (placeholder data)</p>
+          <p>
+            Search for a student or select a name from the drop down list.
+            (placeholder data)
+          </p>
           <div class="dropdown">
             <input
               v-model="studentSearch"
@@ -244,6 +247,8 @@ export default {
   line-height: 15px;
   display: flex;
   align-items: center;
+  text-align: left;
+  padding-right: 10px;
 }
 
 .dropdown-message {
@@ -257,7 +262,8 @@ export default {
 }
 
 #dropdown-list input {
-  width: 8%;
+  max-width: 8%;
+  min-width: 8%;
   margin: 10px 15px 10px 10px;
 }
 
@@ -352,7 +358,7 @@ export default {
 .fade-enter-active,
 .fade-leave-active {
   transition-delay: 3s;
-  transition: opacity 0.5s;
+  transition: opacity 0.8s;
 }
 .fade-enter,
 .fade-leave-to {

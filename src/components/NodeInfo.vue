@@ -1,74 +1,99 @@
 <template>
-    <div class="container">
-        <p class="title">{{this.keyword.name}}</p>
-        <p class="mini-header">Category</p>
-        <br>
-        <input type="text" class="category-input" v-model="category" list="categories" placeholder="(WORK IN PROGRESS) Type a category to add..." @keyup="CategoryFound">
-        <datalist id="categories">
-            <option v-for="cat in this.categoryList" :key="cat">{{cat}}</option>
-        </datalist>
-        <a style="margin-left:25px;text-decoration:none;" v-if="displayAddCategory" href="#">Create New category called "{{category}}"?</a>
-        <hr/>
+  <div class="container">
+    <p class="title">{{ this.keyword.name }}</p>
+    <p class="mini-header">Category</p>
+    <br />
+    <input
+      type="text"
+      class="category-input"
+      v-model="category"
+      list="categories"
+      placeholder="(WORK IN PROGRESS) Type a category to add..."
+      @keyup="CategoryFound"
+    />
+    <datalist id="categories">
+      <option v-for="cat in this.categoryList" :key="cat">{{ cat }}</option>
+    </datalist>
+    <a
+      style="margin-left:25px;text-decoration:none;"
+      v-if="displayAddCategory"
+      href="#"
+      >Create New category called "{{ category }}"?</a
+    >
+    <hr />
 
-        <p class="mini-header">Keyword Average</p><br>
-        <p style="margin-left:25px;margin-top:5px;margin-bottom:5px">Average Grade: {{this.keyword.keyword_Avg.toString()}}%</p>
-        <hr/>
+    <p class="mini-header">Keyword Average</p>
+    <br />
+    <p style="margin-left:25px;margin-top:5px;margin-bottom:5px">
+      Average Grade: {{ this.keyword.keyword_Avg.toString() }}%
+    </p>
+    <hr />
 
-        <p class="mini-header">Mentioned Assignments</p>
-        <br><br>
-        <div v-if="assignmentsList != undefined" style="overflow:auto;max-height:100px;width:100%;margin-bottom:10px;">
-            <div v-for="id in this.keyword.assignments" :key="id">
-                <a :href="assignmentsList[id].url" target="_blank">• {{ assignmentsList[id].name }}</a>
-            </div>
-        </div>
-        <hr/>
-
-        <p class="mini-header">Mentioned Keywords</p>
-        <br>
-        <div v-if="keyword != undefined" style="overflow:auto;max-height:100px;width:100%;margin-bottom:10px;">
-            <div v-for="asKey in Object.keys(keyword.associatedKeys)" :key="asKey">
-                <a style="color:#000000">• {{ asKey }}</a>
-            </div>
-        </div>
+    <p class="mini-header">Mentioned Assignments</p>
+    <br /><br />
+    <div
+      v-if="assignmentsList != undefined"
+      style="overflow:auto;max-height:100px;width:100%;margin-bottom:10px;"
+    >
+      <div v-for="id in this.keyword.assignments" :key="id">
+        <a :href="assignmentsList[id].url" target="_blank"
+          >• {{ assignmentsList[id].name }}</a
+        >
+      </div>
     </div>
+    <hr />
+
+    <p class="mini-header">Mentioned Keywords</p>
+    <br />
+    <div
+      v-if="keyword != undefined"
+      style="overflow:auto;max-height:100px;width:100%;margin-bottom:10px;"
+    >
+      <div v-for="asKey in Object.keys(keyword.associatedKeys)" :key="asKey">
+        <a style="color:#000000">• {{ asKey }}</a>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-
-import {Assignments} from "../script/parseCanvasData.js";
+import { Assignments } from "../script/parseCanvasData.js";
 
 export default {
-    name: "NodeInfo",
-    props: {
-        propkeywordData: Object,
+  name: "NodeInfo",
+  props: {
+    propkeywordData: Object,
+  },
+  data() {
+    return {
+      keyword: this.propkeywordData,
+      assignmentsList: Assignments,
+      category: "",
+      categoryList: ["ex1", "ex2", "ex3"],
+      displayAddCategory: false,
+    };
+  },
+  methods: {
+    CategoryFound() {
+      this.displayAddCategory =
+        this.category.length != 0 && !this.categoryList.includes(this.category);
     },
-    data () {
-        return{
-            keyword: this.propkeywordData,
-            assignmentsList: Assignments,
-            category: '',
-            categoryList: ['ex1','ex2','ex3'],
-            displayAddCategory: false,
-        }
-    },
-    methods: {
-        CategoryFound(){
-            this.displayAddCategory = (this.category.length != 0 && !this.categoryList.includes(this.category))
-        }
-    },
-    mounted(){
-    }
-}
+  },
+  mounted() {},
+};
 </script>
 
 <style scoped>
-.container{
-    background-color: #ffffff;
-    border: 1px solid #e5e5e5;
-    border-radius: 1px;
-    margin-top:10%;
-    margin-left:2%;
-    max-width:25%;
+.container {
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 1px;
+  max-width: 35%;
+  max-height: 70%;
+  position: absolute;
+  overflow-y: scroll;
+  top: 70px;
+  left: 30px;
 }
 
 p {
@@ -90,81 +115,83 @@ a {
   font-size: 16px;
   line-height: 18px;
   text-align: left;
-  color: #0645AD;
+  color: #0645ad;
   display: inline-block;
   width: 75%;
-  margin-left:35px;
-  margin-right:10px;
-  margin-bottom:10px;
+  margin-left: 35px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background-color: #eeeeee;
+  padding: 5px;
 }
 
-hr{
-    background-color: #E3E3E3;
-    border-color:#E3E3E3;
-    color: #E3E3E3;
-    margin-right:25px;
-    margin-left:25px
+hr {
+  background-color: #e3e3e3;
+  border-color: #e3e3e3;
+  color: #e3e3e3;
+  margin-right: 25px;
+  margin-left: 25px;
 }
 
-.category-input{
+.category-input {
   font-family: "K2D", sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
   line-height: 18px;
   text-align: left;
-  width:75%;
+  width: 75%;
   color: #000000;
-  margin-right:25px;
-  margin-left:25px;
+  margin-right: 25px;
+  margin-left: 25px;
   margin-bottom: 5px;
 }
 
-.mini-header{
-  float:left;
+.mini-header {
+  float: left;
   display: inline;
-  margin-left:25px;
-  margin-bottom:5px;
-  font-weight:bold;
+  margin-left: 25px;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
-.title{
+.title {
   font-family: "K2D", sans-serif;
   font-style: normal;
   font-weight: bold;
   font-size: 20px;
   line-height: 26px;
   color: #000000;
-  float:left;
-  margin-left:25px;
-  margin-bottom:5px;
+  float: left;
+  margin-left: 25px;
+  margin-bottom: 5px;
 }
 
-.inline-group{
-    display:flex; 
-    flex-direction: row; 
-    align-items: center
+.inline-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .closeButton {
-	background-color:#000000;
-	border-radius:42px;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:8px;
-	padding:5px 7px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #ffffff;
-    float:right;
-    margin-top:10px;
-    margin-right:5px;
+  background-color: #000000;
+  border-radius: 42px;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 8px;
+  padding: 5px 7px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #ffffff;
+  float: right;
+  margin-top: 10px;
+  margin-right: 5px;
 }
 .closeButton:hover {
-	background-color:#ff4242;
+  background-color: #ff4242;
 }
 .closeButton:active {
-	position:relative;
-	top:1px;
+  position: relative;
+  top: 1px;
 }
 </style>

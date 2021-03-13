@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import $ from "jquery";
 
 /* Class Definitions */
 //declaration for the assignment class
@@ -10,7 +10,7 @@ class Assignment {
     this.totalPts = pts_Possible;
     this.grades = {};
     this.average = -1;
-    this.url = url
+    this.url = url;
 
     //check if this assignment is extraCredit
     if (this.totalPts == 0) {
@@ -24,9 +24,7 @@ class Assignment {
       var div = document.createElement("div");
       div.innerHTML = desc;
 
-      this.keywords = ParseKeywords(
-        div.textContent || div.innerText || ""
-      );
+      this.keywords = ParseKeywords(div.textContent || div.innerText || "");
 
       //if there were keywords in the description
       if (this.keywords != false) {
@@ -105,20 +103,20 @@ class Keyword {
   }
 }
 
-// class Category {
-//   constructor(name, color, id) {
-//     this.name = name;
-//     this.color = color;
-//     this.id = id;
-//   }
-// }
+class Category {
+  constructor(name, color, id) {
+    this.name = name;
+    this.color = color;
+    this.id = id;
+  }
+}
 
-// class Student {
-//   constructor(name, id) {
-//     this.name = name;
-//     this.id = id;
-//   }
-// }
+class Student {
+  constructor(name, id) {
+    this.name = name;
+    this.id = id;
+  }
+}
 
 /* Global Variables */
 var courseAssignmentData;
@@ -126,6 +124,8 @@ var courseGradeData;
 var Assignments = {};
 var Keywords = [];
 var Students = [];
+var StudentObjects = [];
+var Categories = [];
 var corsAnywhere = "https://salty-atoll-62320.herokuapp.com/"; //NEEDED TO CREATE A 'PROPER' CORS API CALL
 var dataLoading = false;
 
@@ -186,29 +186,28 @@ function edgeExists(edge, edges) {
   return answer;
 }
 
-  //Calculates the average of assignments given a list
-  //expects an array of assignment ID's
-  function CalcAssignmentListAvg(assignments) {
-    var total = 0;
-    var notGradedCount = 0;
+//Calculates the average of assignments given a list
+//expects an array of assignment ID's
+function CalcAssignmentListAvg(assignments) {
+  var total = 0;
+  var notGradedCount = 0;
 
-    assignments.forEach((item) => {
-      if (Assignments[item].average != -1) {
-        total += Assignments[item].average;
-      } else {
-        notGradedCount += 1;
-      }
-    });
-
-    var assignmentCount = assignments.length - notGradedCount;
-    var KeywordAvg = -1;
-    if (assignmentCount != 0) {
-      KeywordAvg = parseFloat((total / assignmentCount).toFixed(1));
+  assignments.forEach((item) => {
+    if (Assignments[item].average != -1) {
+      total += Assignments[item].average;
+    } else {
+      notGradedCount += 1;
     }
+  });
 
-    return KeywordAvg;
+  var assignmentCount = assignments.length - notGradedCount;
+  var KeywordAvg = -1;
+  if (assignmentCount != 0) {
+    KeywordAvg = parseFloat((total / assignmentCount).toFixed(1));
   }
 
+  return KeywordAvg;
+}
 
 /* API Call Functions */
 //eslint-disable-next-line
@@ -217,30 +216,31 @@ function AjaxCallAssignments(courseID, accesskey, canvasURL) {
     dataLoading = true;
     //Canvas API call for the ASSIGNMENT for the given course
     $.ajax({
-      url: corsAnywhere + canvasURL + "/api/v1/courses/" + courseID +"/assignments?per_page=100",
+      url:
+        corsAnywhere +
+        canvasURL +
+        "/api/v1/courses/" +
+        courseID +
+        "/assignments?per_page=100",
       datatype: "jsonp",
       headers: {
         Authorization: "Bearer " + accesskey,
         "x-requested-with": "xhr",
       },
-      success: async function (res, status, xhr) {
+      success: async function(res, status, xhr) {
         await sleep(75);
         var remainingPages = xhr.getResponseHeader("link");
         courseAssignmentData = res;
 
         if (remainingPages != null) {
-          await ReturnAllRemaining(
-            remainingPages,
-            accesskey,
-            "Assignments"
-          );
+          await ReturnAllRemaining(remainingPages, accesskey, "Assignments");
         }
 
         ParseJsonToAssignment();
 
         AjaxCallGrade(courseID, accesskey, canvasURL);
       },
-      error: function (xhr) {
+      error: function(xhr) {
         console.log(xhr.responseText);
       },
     });
@@ -251,10 +251,11 @@ function AjaxCallAssignments(courseID, accesskey, canvasURL) {
 
 function AjaxCallGrade(courseID, accesskey, canvasURL) {
   try {
-  //Canvas API call for the grade history for the given course
+    //Canvas API call for the grade history for the given course
     $.ajax({
       url:
-        corsAnywhere + canvasURL +
+        corsAnywhere +
+        canvasURL +
         "/api/v1/courses/" +
         courseID +
         "/gradebook_history/feed?per_page=100",
@@ -263,22 +264,18 @@ function AjaxCallGrade(courseID, accesskey, canvasURL) {
         Authorization: "Bearer " + accesskey,
         "x-requested-with": "xhr",
       },
-      success: async function (res, status, xhr) {
+      success: async function(res, status, xhr) {
         await sleep(75);
         var remainingPages = xhr.getResponseHeader("link");
         courseGradeData = res;
 
         if (remainingPages != null) {
-          await ReturnAllRemaining(
-            remainingPages,
-            accesskey,
-            "Grades"
-          ).then();
+          await ReturnAllRemaining(remainingPages, accesskey, "Grades").then();
         }
 
         ParseGradeJson();
       },
-      error: function (xhr) {
+      error: function(xhr) {
         console.log(xhr.responseText);
       },
     });
@@ -287,8 +284,8 @@ function AjaxCallGrade(courseID, accesskey, canvasURL) {
   }
 }
 
-  //helper for ParseLinkHead Function
-  //from https://bill.burkecentral.com/2009/10/15/parsing-link-headers-with-javascript-and-java/
+//helper for ParseLinkHead Function
+//from https://bill.burkecentral.com/2009/10/15/parsing-link-headers-with-javascript-and-java/
 function unquote(value) {
   if (value.charAt(0) == '"' && value.charAt(value.length - 1) == '"')
     return value.substring(1, value.length - 1);
@@ -355,13 +352,12 @@ async function ReturnAllRemaining(linkHeader, accesskey, callType) {
         Authorization: "Bearer " + accesskey,
         "x-requested-with": "xhr",
       },
-      success: async function (res, status, xhr) {
+      success: async function(res, status, xhr) {
         await sleep(50);
         remainingPages = xhr.getResponseHeader("link");
 
         //make sure that there was a link header in the last call
         if (remainingPages != null && remainingPages != undefined) {
-
           if (callType == "Students") {
             //courseStudentData = courseStudentData.concat(res);
           } else if (callType == "Grades") {
@@ -374,7 +370,7 @@ async function ReturnAllRemaining(linkHeader, accesskey, callType) {
           linkParser = ParseLinkHead(remainingPages);
         }
       },
-      error: function (xhr) {
+      error: function(xhr) {
         console.log(xhr.responseText);
       },
     });
@@ -402,10 +398,12 @@ function ParseJsonToAssignment() {
 //Parse the grade data for the course
 function ParseGradeJson() {
   if (courseGradeData != undefined) {
+    console.log(courseGradeData);
     courseGradeData.forEach((item) => {
       Assignments[item.assignment_id].AppendGrade(item);
       if (!Students.includes(item.user_name)) {
         Students.push(item.user_name);
+        StudentObjects.push(new Student(item.user_name, item.user_id));
       }
     });
 
@@ -413,31 +411,63 @@ function ParseGradeJson() {
       Assignments[id].CalcAssignmentAverage();
     }
 
+    // Temporary for testing purposes
+    // let categories = [
+    //   ["Category One", Math.floor(Math.random() * 1000), "#FCC100"],
+    //   ["Category Two", Math.floor(Math.random() * 1000), "#B80025"],
+    //   ["Category Three", Math.floor(Math.random() * 1000), "#174793"],
+    // ];
+    // Delete aftwerwards!
+
     for (var i = 0; i < Keywords.length; i++) {
       Keywords[i].CalcKeywordAverage();
+
+      // Temporary for testing purposes
+      // let category = categories[Math.floor(Math.random() * categories.length)];
+      // Keywords[i].category = new Category(
+      //   category[0],
+      //   category[2],
+      //   category[1]
+      // );
+      // Delete afterwards!
+
+      // Uncomment this afterwards, default category
+      Keywords[i].category = new Category("Uncategorized", "#174793", 0);
+
+      Categories.push(Keywords[i].category);
+
       Keywords[i].assignments = [...new Set(Keywords[i].assignments)];
     }
 
-    // console.log("ASSIGNMENT OBJECTS");
-    // console.log(Assignments);
+    console.log("ASSIGNMENT OBJECTS");
+    console.log(Assignments);
 
-    // console.log("KEYWORD OBJECTS");
-    // console.log(Keywords);
+    console.log("KEYWORD OBJECTS");
+    console.log(Keywords);
+
+    console.log("CATEGORIES");
+    const seen = new Set();
+    Categories = Categories.filter((el) => {
+      const duplicate = seen.has(el.id);
+      seen.add(el.id);
+      return !duplicate;
+    });
+    console.log(Categories);
 
     dataLoading = false;
   }
 }
 
-
 function GetDataLoading() {
   return dataLoading;
 }
-
 
 export {
   Assignments,
   Keywords,
   Students,
+  StudentObjects,
+  Categories,
   KeywordIndex,
   CalcAssignmentListAvg,
   edgeExists,
