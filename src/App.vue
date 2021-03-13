@@ -11,7 +11,7 @@
           </div>
         </div>
         <multipane layout="vertical">
-          <div :style="{ width: '40%', 'min-width': '0%' }" id="student-view">
+          <div :style="{ width: '30%', 'min-width': '0%' }" id="student-view">
             <StudentView></StudentView>
           </div>
           <multipane-resizer>
