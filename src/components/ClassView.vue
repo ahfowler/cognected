@@ -38,10 +38,7 @@
             'opened-settings-menu': settingsOpened,
           }"
         >
-          <Tooltip
-            text="Assignments - COMING SOON"
-            @click.native="Assignments_Click"
-          >
+          <Tooltip text="Assignments" @click.native="Assignments_Click">
             <img
               src="../assets/assignments-applied-icon.png"
               v-show="selectedAssignments.length > 0"
@@ -52,10 +49,7 @@
             />
           </Tooltip>
 
-          <Tooltip
-            text="Categories - COMING SOON"
-            @click.native="Categories_Click"
-          >
+          <Tooltip text="Categories" @click.native="Categories_Click">
             <img
               src="../assets/categories-icon-active.png"
               v-show="selectedCategories.length > 0"
