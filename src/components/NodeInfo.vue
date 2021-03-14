@@ -91,7 +91,7 @@ export default {
   max-width: 35%;
   max-height: 70%;
   position: absolute;
-  overflow-y: scroll;
+  overflow-y: auto;
   top: 70px;
   left: 30px;
 }
