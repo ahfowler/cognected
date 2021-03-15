@@ -355,6 +355,7 @@ export default {
 
       if (value != "Canceled") {
         this.userData = value;
+        this.$root.$emit("updateStudentGraph", value);
       }
     },
     NodeClickedEvent(nodeData) {

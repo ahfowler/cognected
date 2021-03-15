@@ -2,14 +2,21 @@
   <div id="student-view-content">
     <div class="pane-id">
       Student View
-      <span v-show="applyClicked || reselectStudent">{{ currentStudent }}</span>
+      <span v-show="applyClicked || reselectStudent">{{
+        currentStudent.name
+      }}</span>
     </div>
     <transition name="fade">
       <div
         id="student-cognected-graph"
         v-show="applyClicked || reselectStudent"
       >
-        <StudentGraph></StudentGraph>
+        <StudentGraph
+          :canvasURL="this.userData[0]"
+          :token="this.userData[1]"
+          :courseID="this.userData[2]"
+          :selectedStudent="this.currentStudent"
+        ></StudentGraph>
         <div
           id="student-settings-menu"
           v-on:click="settingsOpened = !settingsOpened"
@@ -28,11 +35,16 @@
           >
             <Tooltip text="Students">
               <img
+                src="../assets/students-icon-active.png"
+                v-show="currentStudent.name != ''"
                 @click="
                   applyClicked = false;
                   reselectStudent = true;
                 "
+              />
+              <img
                 src="../assets/students-icon.png"
+                v-show="currentStudent.name == ''"
               />
             </Tooltip>
             <Tooltip text="Assignments">
@@ -54,7 +66,6 @@
         <div class="dropdown-box">
           <p>
             Search for a student or select a name from the drop down list.
-            (placeholder data)
           </p>
           <div class="dropdown">
             <input
@@ -71,28 +82,21 @@
               <div
                 id="dropdown-list"
                 v-for="student in studentFilteredList"
-                :key="student"
+                :key="student.id"
                 v-show="studentFilteredList.length > 0"
               >
                 <input
                   name="studentList"
                   type="radio"
-                  :id="student"
+                  :id="student.id"
                   :value="student"
                   v-model="currentStudent"
                 />
-                <label :for="student">{{ student }}</label>
+                <label :for="student.id">{{ student.name }}</label>
               </div>
             </div>
           </div>
-          <a
-            class="apply-button"
-            @click="
-              applyClicked = true;
-              reselectStudent = false;
-            "
-            >Apply</a
-          >
+          <a class="apply-button" @click="this.applyStudent">Apply</a>
         </div>
       </div>
     </transition>
@@ -103,7 +107,10 @@
 </template>
 
 <script>
-import { Students } from "../script/parseCanvasData.js";
+import {
+  StudentObjects,
+  ParseGradeJsonRespectToStudent,
+} from "../script/parseCanvasDataForStudent.js";
 import Tooltip from "../components/Tooltip.vue";
 import StudentGraph from "../components/StudentGraph.vue";
 
@@ -115,20 +122,36 @@ export default {
   },
   data() {
     return {
+      userData: ["", "", ""],
       applyClicked: false,
       reselectStudent: false,
       studentSearch: "",
-      students: Students,
-      currentStudent: "",
+      students: StudentObjects,
+      currentStudent: { name: "", id: "" },
       settingsOpened: false,
     };
   },
   computed: {
     studentFilteredList() {
       return this.students.filter((student) => {
-        return student.toLowerCase().includes(this.studentSearch.toLowerCase());
+        return student.name
+          .toLowerCase()
+          .includes(this.studentSearch.toLowerCase());
       });
     },
+  },
+  methods: {
+    applyStudent() {
+      this.applyClicked = true;
+      this.reselectStudent = false;
+      ParseGradeJsonRespectToStudent(this.currentStudent.id);
+      this.$root.$emit("studentApplied");
+    },
+  },
+  mounted() {
+    this.$root.$on("updateStudentGraph", (value) => {
+      this.userData = value;
+    });
   },
 };
 </script>
