@@ -54,7 +54,6 @@
         <div class="dropdown-box">
           <p>
             Search for a student or select a name from the drop down list.
-            (placeholder data)
           </p>
           <div class="dropdown">
             <input

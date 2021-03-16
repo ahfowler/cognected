@@ -8,11 +8,11 @@
       class="category-input"
       v-model="category"
       list="categories"
-      placeholder="(WORK IN PROGRESS) Type a category to add..."
-      @keyup="CategoryFound"
+      placeholder="Type a category to add..."
+      @change="CategoryFound"
     />
     <datalist id="categories">
-      <option v-for="cat in this.categoryList" :key="cat">{{ cat }}</option>
+      <option v-for="cat in this.categoryList" :key="cat.name">{{ cat.name }}</option>
     </datalist>
     <a
       style="margin-left:25px;text-decoration:none;"
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { Assignments } from "../script/parseCanvasData.js";
+import { Assignments, Categories, EditKeywordCategory} from "../script/parseCanvasData.js";
 
 export default {
   name: "NodeInfo",
@@ -69,17 +69,25 @@ export default {
       keyword: this.propkeywordData,
       assignmentsList: Assignments,
       category: "",
-      categoryList: ["ex1", "ex2", "ex3"],
+      categoryList: Categories,
       displayAddCategory: false,
     };
   },
   methods: {
     CategoryFound() {
-      this.displayAddCategory =
-        this.category.length != 0 && !this.categoryList.includes(this.category);
+      this.displayAddCategory = this.category.length != 0 && !this.categoryList.some(cat => cat.name == this.category);
+
+      if(this.categoryList.some(cat => cat.name == this.category)){
+        EditKeywordCategory(this.keyword.name, this.category)
+      }
     },
   },
-  mounted() {},
+  mounted() {
+    this.categoryList = Categories;
+
+    if(this.keyword.category.name != "Uncategorized")
+    this.category = this.keyword.category.name
+  },
 };
 </script>
 

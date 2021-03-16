@@ -398,7 +398,7 @@ function ParseJsonToAssignment() {
 //Parse the grade data for the course
 function ParseGradeJson() {
   if (courseGradeData != undefined) {
-    console.log(courseGradeData);
+    //console.log(courseGradeData);
     courseGradeData.forEach((item) => {
       Assignments[item.assignment_id].AppendGrade(item);
       if (!Students.includes(item.user_name)) {
@@ -439,23 +439,39 @@ function ParseGradeJson() {
       Keywords[i].assignments = [...new Set(Keywords[i].assignments)];
     }
 
-    console.log("ASSIGNMENT OBJECTS");
-    console.log(Assignments);
+    // console.log("ASSIGNMENT OBJECTS");
+    // console.log(Assignments);
 
-    console.log("KEYWORD OBJECTS");
-    console.log(Keywords);
+    // console.log("KEYWORD OBJECTS");
+    // console.log(Keywords);
 
-    console.log("CATEGORIES");
+    //console.log("CATEGORIES");
     const seen = new Set();
     Categories = Categories.filter((el) => {
       const duplicate = seen.has(el.id);
       seen.add(el.id);
       return !duplicate;
     });
-    console.log(Categories);
+    //console.log(Categories);
 
     dataLoading = false;
   }
+}
+
+function AddCategory(name, color) {
+  Categories.push(new Category(name, color, Categories.length))
+}
+
+function RemoveCategory(name) {
+  let catIndex = Categories.map((category) => { return category.name }).indexOf(name);
+  Categories = Categories.splice(catIndex, catIndex)
+}
+
+function EditKeywordCategory(keyword, category) {
+  let keyIndex = Keywords.findIndex(key => key.name == keyword);
+  let catIndex = Categories.map((category) => { return category.name }).indexOf(category);
+
+  Keywords[keyIndex].category = Categories[catIndex];
 }
 
 function GetDataLoading() {
@@ -473,5 +489,7 @@ export {
   edgeExists,
   GetDataLoading,
   AjaxCallAssignments,
-  Keyword,
+  AddCategory,
+  RemoveCategory,
+  EditKeywordCategory,
 };

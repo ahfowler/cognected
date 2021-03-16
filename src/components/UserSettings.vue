@@ -1,10 +1,9 @@
 <template>
   <div
-    style="width: 70%; display: inline-block;
-    float: none;"
+    style="width: 70%; display: inline-block; float:none; overflow-x:hidden; overflow-y:auto;"
   >
     <div class="loading" v-if="dataLoading">Loading&#8230;</div>
-    <p>CognectEd User Settings</p>
+    <p class="title" style="margin-top:20%;margin-bottom:1%">CognectEd User Settings</p>
     <div class="input-group">
       <label id="label">Canvas URL</label>
       <input
@@ -52,9 +51,8 @@
 
       <div class="buttons-area">
         <a
-          class="myButton"
+          class="myDeleteButton"
           @click="CancelClick"
-          style="background-color: #f3442c;"
           >Cancel</a
         >
 
@@ -68,6 +66,10 @@
         <a class="myButton" @click="ApplyClick">Apply</a>
       </div>
     </div>
+
+    <hr /> <br> <br>
+
+    <CategoryController v-if="this.hasCategories"></CategoryController>
   </div>
 </template>
 
@@ -80,11 +82,17 @@ import {
 } from "../script/parseCanvasData.js";
 import $cookies from "vue-cookies";
 
+import CategoryController from "../components/CategoryController.vue"
+
 export default {
   name: "UserSettings",
+  components: {
+    CategoryController,
+  },
   props: {
     propCanvasURL: String,
     propToken: String,
+    propHasCategories: Boolean,
   },
   data() {
     return {
@@ -97,6 +105,7 @@ export default {
       checkDataLoading: undefined,
       errorMessages: "",
       functionLoading: false,
+      hasCategories: this.propHasCategories,
     };
   },
   methods: {
@@ -242,6 +251,16 @@ p {
   margin-bottom: 25px;
 }
 
+.title {
+  font-family: "K2D", sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 26px;
+  color: #000000;
+  margin-bottom: 5px;
+}
+
 h3 {
   font-family: "K2D", sans-serif;
   font-style: normal;
@@ -313,6 +332,28 @@ input {
   background-color: #246bd6;
 }
 .myButton:active {
+  position: relative;
+  top: 1px;
+}
+
+.myDeleteButton {
+  background-color: #f3442c;
+  border-radius: 28px;
+  border: 1px solid #ffffff;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+  padding: 10px 31px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #2f6627;
+}
+
+.myDeleteButton:hover {
+  background-color: #ee6250;
+}
+.myDeleteButton:active {
   position: relative;
   top: 1px;
 }
