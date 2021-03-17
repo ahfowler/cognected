@@ -4,7 +4,7 @@
   >
     <div class="loading" v-if="dataLoading">Loading&#8230;</div>
     <p class="title" style="margin-top:20%;margin-bottom:1%">CognectEd User Settings</p>
-    <div class="input-group">
+    <div class="input-group" style="margin-right: 25px;">
       <label id="label">Canvas URL</label>
       <input
         placeholder="Institution Canvas URL... (i.e https://asu.instructure.com/ )"
@@ -15,7 +15,7 @@
       />
     </div>
 
-    <div class="input-group">
+    <div class="input-group" style="margin-right: 25px;">
       <label id="label">Token</label>
       <input
         placeholder="User Token..."
@@ -27,7 +27,7 @@
     </div>
 
     <h3>Registered Courses</h3>
-    <div class="course-group">
+    <div class="course-group" style="margin-right: 25px;">
       <div class="dropdown">
         <div class="dropdown-area">
           <div
@@ -238,6 +238,14 @@ export default {
 </script>
 
 <style scoped>
+hr {
+  background-color: #e3e3e3;
+  border-color: #e3e3e3;
+  color: #e3e3e3;
+  margin-right: 25px;
+  margin-left: 25px;
+}
+
 p {
   font-family: "K2D", sans-serif;
   font-style: normal;

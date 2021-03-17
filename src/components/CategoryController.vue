@@ -4,13 +4,17 @@
     <br />
 
     <h3>Add New Category</h3>
-     <ColorPicker class="pagination" :disabled="false" startColor="#ff0000" v-model="categoryColor"></ColorPicker>
-    <input
-      type="text"
-      class="category-input"
-      v-model="categoryName"
-      placeholder="Type the category name ... "
-    />
+    <ColorPicker class="pagination" :disabled="false" startColor="#ff0000" v-model="categoryColor"></ColorPicker>
+    <div class="input-group">
+      <label style="width:10%;margin:2%;">Category Name</label>
+      <input
+        type="text"
+        class="category-input"
+        v-model="categoryName"
+        placeholder="Type the category name ... "
+      />
+    </div>
+
 
     <a class="myApplyButton" @click="AddCat" style="text-align:center; max-width:100px">Add Category</a>
 
@@ -114,6 +118,37 @@ a {
   margin-right: 10px;
   margin-bottom: 10px;
   padding: 5px;
+}
+
+input {
+  border: 1px solid #e5e5e5;
+  border-radius: 1px;
+  min-width: 80%;
+  height: 30px;
+  padding: 5px 10px 5px 10px;
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 15px;
+  margin: 10px 0px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+label {
+  font-family: "K2D", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 15px;
+  color: black;
+  left: 20px;
+  padding: 0px 10px;
 }
 
 hr {

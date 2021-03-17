@@ -440,18 +440,24 @@ function ParseGradeJson() {
 
 function AddCategory(name, color) {
   Categories.push(new Category(name, color, Categories.length));
-  
-  console.log(Categories);
 }
 
 function RemoveCategory(name) {
   let catIndex = Categories.map((category) => { return category.name }).indexOf(name);
   Categories.splice(catIndex, 1);
+  
+  ResetCategoryID();
 
   for (var i = 0; i < Keywords.length; i++){
     if (Keywords[i].category.name == name) {
       Keywords[i].category = Categories[0];
     }
+  }
+}
+
+function ResetCategoryID() {
+  for (var i = 0; i < Categories.length; i++){
+      Categories[i].id = i;
   }
 }
 

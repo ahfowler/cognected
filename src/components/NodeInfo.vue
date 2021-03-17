@@ -14,12 +14,6 @@
     <datalist id="categories">
       <option v-for="cat in this.categoryList" :key="cat.name">{{ cat.name }}</option>
     </datalist>
-    <a
-      style="margin-left:25px;text-decoration:none;"
-      v-if="displayAddCategory"
-      href="#"
-      >Create New category called "{{ category }}"?</a
-    >
     <hr />
 
     <p class="mini-header">Keyword Average</p>
@@ -43,7 +37,7 @@
     </div>
     <hr />
 
-    <p class="mini-header">Mentioned Keywords</p>
+    <p class="mini-header">Connected Keywords</p>
     <br />
     <div
       v-if="keyword != undefined"
@@ -75,8 +69,6 @@ export default {
   },
   methods: {
     CategoryFound() {
-      this.displayAddCategory = this.category.length != 0 && !this.categoryList.some(cat => cat.name == this.category);
-
       if(this.categoryList.some(cat => cat.name == this.category)){
         EditKeywordCategory(this.keyword.name, this.category)
       }
@@ -84,9 +76,6 @@ export default {
   },
   mounted() {
     this.categoryList = Categories;
-
-    if(this.keyword.category.name != "Uncategorized")
-    this.category = this.keyword.category.name
   },
 };
 </script>
