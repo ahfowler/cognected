@@ -47,6 +47,7 @@ import {    Categories,
             RemoveCategory } from "../script/parseCanvasData.js";
 
 import ColorPicker from 'vue-color-picker-wheel';
+import $cookies from "vue-cookies";
 
 export default {
   name: "CategoryControl",
@@ -63,15 +64,22 @@ export default {
   },
   methods: {
     AddCat(){
-        if(this.categoryName.length != 0){
-            AddCategory(this.categoryName, this.categoryColor)
-        }
+      if(this.categoryName.length != 0){
+          AddCategory(this.categoryName, this.categoryColor);
+          this.categoryList = Categories;
+          $cookies.set("Categories", JSON.stringify(this.categoryList));
+      }
     },
     DeleteCat(){
+      if(this.categoryToRemove != "Uncategorized"){
         RemoveCategory(this.categoryToRemove)
+        this.categoryList = Categories;
+        $cookies.set("Categories", JSON.stringify(this.categoryList));
+      }
     },
   },
   mounted() {
+    this.categoryList = Categories;
   },
 };
 </script>

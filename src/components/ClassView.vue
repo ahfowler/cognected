@@ -13,7 +13,6 @@
         @clicked="SettingsReturn"
         :propCanvasURL="this.userData[0]"
         :propToken="this.userData[1]"
-        :propHasCategories="this.categories.length != 0"
         style="margin-bottom:8%;margin-top:5%"
       ></UserSettings>
       <ClassGraph
@@ -176,7 +175,7 @@
                 <div
                   id="assignment-dropdown-list"
                   v-for="category in categoryFilteredList"
-                  :key="category.id+'-'+category.name"
+                  :key="category.id"
                   v-show="categoryFilteredList.length > 0"
                 >
                   <input
@@ -193,7 +192,7 @@
               <div
                 class="selected-item"
                 v-for="category in selectedCategories"
-                :key="category.id+'-'+category.name"
+                :key="category.id"
               >
                 <a class="selected-item-name">
                   {{ findCategoryName(category) }}

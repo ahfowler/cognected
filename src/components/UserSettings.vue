@@ -69,7 +69,7 @@
 
     <hr /> <br> <br>
 
-    <CategoryController v-if="this.hasCategories"></CategoryController>
+    <CategoryController/>
   </div>
 </template>
 
@@ -92,7 +92,6 @@ export default {
   props: {
     propCanvasURL: String,
     propToken: String,
-    propHasCategories: Boolean,
   },
   data() {
     return {
@@ -105,7 +104,6 @@ export default {
       checkDataLoading: undefined,
       errorMessages: "",
       functionLoading: false,
-      hasCategories: this.propHasCategories,
     };
   },
   methods: {

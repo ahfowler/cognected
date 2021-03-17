@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <p class="title">{{ this.keyword.name }}</p>
-    <p class="mini-header">Category</p>
+    <p class="mini-header">Category - {{this.keyword.category.name}}</p>
     <br />
     <input
       type="text"

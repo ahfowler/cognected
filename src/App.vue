@@ -49,6 +49,8 @@
 import LoadingScreen from "./components/LoadingScreen.vue";
 import StudentView from "./components/StudentView.vue";
 import ClassView from "./components/ClassView.vue";
+import { SetCategoryList } from "./script/parseCanvasData.js"
+import $cookies from "vue-cookies";
 
 export default {
   name: "App",
@@ -71,6 +73,11 @@ export default {
   },
   created() {
     this.updateIsLoading();
+
+    let cookieCategories = $cookies.get("Categories");
+    if(cookieCategories.toString() != "undefined"){
+        SetCategoryList(cookieCategories);
+      }
   },
 };
 </script>
