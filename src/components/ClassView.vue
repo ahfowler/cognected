@@ -29,8 +29,16 @@
           'opened-settings': settingsOpened,
         }"
       >
-        <img src="../assets/settings-icon.png" v-show="!settingsOpened" />
-        <img src="../assets/settings-icon-active.png" v-show="settingsOpened" />
+        <img
+          src="../assets/settings-icon.png"
+          v-show="!settingsOpened"
+          style="cursor: pointer;"
+        />
+        <img
+          src="../assets/settings-icon-active.png"
+          v-show="settingsOpened"
+          style="cursor: pointer;"
+        />
         <div
           class="settings-menu"
           v-bind:class="{
@@ -42,10 +50,12 @@
             <img
               src="../assets/assignments-applied-icon.png"
               v-show="selectedAssignments.length > 0"
+              style="cursor: pointer;"
             />
             <img
               src="../assets/assignments-icon.png"
               v-show="selectedAssignments.length == 0"
+              style="cursor: pointer;"
             />
           </Tooltip>
 
@@ -53,10 +63,12 @@
             <img
               src="../assets/categories-icon-active.png"
               v-show="selectedCategories.length > 0"
+              style="cursor: pointer;"
             />
             <img
               src="../assets/categories-icon.png"
               v-show="selectedCategories.length == 0"
+              style="cursor: pointer;"
             />
           </Tooltip>
 
@@ -64,10 +76,12 @@
             <img
               src="../assets/students-icon-active.png"
               v-show="selectedStudents.length > 0"
+              style="cursor: pointer;"
             />
             <img
               src="../assets/students-icon.png"
               v-show="selectedStudents.length == 0"
+              style="cursor: pointer;"
             />
           </Tooltip>
 
@@ -75,11 +89,14 @@
             text="Configure"
             @click.native="viewUserSettings = !viewUserSettings"
           >
-            <img src="../assets/graph-settings-icon.png" />
+            <img
+              src="../assets/graph-settings-icon.png"
+              style="cursor: pointer;"
+            />
           </Tooltip>
 
           <Tooltip text="User Guide" @click.native="UserGuide_Click">
-            <img src="../assets/info-icon.png" />
+            <img src="../assets/info-icon.png" style="cursor: pointer;" />
           </Tooltip>
         </div>
       </div>
@@ -139,6 +156,7 @@
               </div>
             </div>
             <a class="apply-button" @click="applyAssignments()">Apply</a>
+            <a class="cancel-button" @click="cancelSelection()">Cancel</a>
             <a
               class="clear-button"
               v-show="selectedAssignments.length > 0"
@@ -204,6 +222,7 @@
               </div>
             </div>
             <a class="apply-button" @click="applyCategories()">Apply</a>
+            <a class="cancel-button" @click="cancelSelection()">Cancel</a>
             <a
               class="clear-button"
               v-show="selectedCategories.length > 0"
@@ -269,6 +288,7 @@
               </div>
             </div>
             <a class="apply-button" @click="studentsClicked = false">Apply</a>
+            <a class="cancel-button" @click="cancelSelection()">Cancel</a>
             <a
               class="clear-button"
               v-show="selectedStudents.length > 0"
@@ -423,6 +443,11 @@ export default {
     applyCategories() {
       this.categoriesClicked = false;
       this.$root.$emit("applyCategories", this.selectedCategories);
+    },
+    cancelSelection() {
+      this.assignmentClicked = false;
+      this.categoriesClicked = false;
+      this.studentsClicked = false;
     },
   },
   computed: {
@@ -699,6 +724,7 @@ export default {
   padding: 10px 30px;
   margin-bottom: 15px;
   width: fit-content;
+  cursor: pointer;
 }
 
 .selected-items {
@@ -733,6 +759,7 @@ export default {
 .close:hover {
   background: url("../assets/close-red.png") no-repeat;
   background-size: cover;
+  cursor: pointer;
 }
 
 .overlay {
@@ -768,5 +795,21 @@ export default {
 
 .clear-button:hover {
   color: #000000a4;
+  cursor: pointer;
+}
+
+.cancel-button {
+  font-family: "Roboto", sans-serif;
+  color: #000000;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 15px;
+  margin-bottom: 10px;
+}
+
+.cancel-button:hover {
+  color: #f3442c;
+  cursor: pointer;
 }
 </style>
