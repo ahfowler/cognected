@@ -1,11 +1,10 @@
 <template>
   <div
-    style="width: 70%; display: inline-block;
-    float: none;"
+    style="width: 70%; display: inline-block; float:none; overflow-x:hidden; overflow-y:auto;"
   >
     <div class="loading" v-if="dataLoading">Loading&#8230;</div>
-    <p>CognectEd User Settings</p>
-    <div class="input-group">
+    <p class="title" style="margin-top:20%;margin-bottom:1%">CognectEd User Settings</p>
+    <div class="input-group" style="margin-right: 25px;">
       <label id="label">Canvas URL</label>
       <input
         placeholder="Institution Canvas URL... (i.e https://asu.instructure.com/ )"
@@ -16,7 +15,7 @@
       />
     </div>
 
-    <div class="input-group">
+    <div class="input-group" style="margin-right: 25px;">
       <label id="label">Token</label>
       <input
         placeholder="User Token..."
@@ -28,7 +27,7 @@
     </div>
 
     <h3>Registered Courses</h3>
-    <div class="course-group">
+    <div class="course-group" style="margin-right: 25px;">
       <div class="dropdown">
         <div class="dropdown-area">
           <div
@@ -52,9 +51,8 @@
 
       <div class="buttons-area">
         <a
-          class="myButton"
+          class="myDeleteButton"
           @click="CancelClick"
-          style="background-color: #f3442c;"
           >Cancel</a
         >
 
@@ -68,6 +66,10 @@
         <a class="myButton" @click="ApplyClick">Apply</a>
       </div>
     </div>
+
+    <hr /> <br> <br>
+
+    <CategoryController/>
   </div>
 </template>
 
@@ -81,8 +83,13 @@ import {
 import { AjaxCallAssignments as studentAjaxCall } from "../script/parseCanvasDataForStudent.js";
 import $cookies from "vue-cookies";
 
+import CategoryController from "../components/CategoryController.vue"
+
 export default {
   name: "UserSettings",
+  components: {
+    CategoryController,
+  },
   props: {
     propCanvasURL: String,
     propToken: String,
@@ -238,6 +245,14 @@ export default {
 </script>
 
 <style scoped>
+hr {
+  background-color: #e3e3e3;
+  border-color: #e3e3e3;
+  color: #e3e3e3;
+  margin-right: 25px;
+  margin-left: 25px;
+}
+
 p {
   font-family: "K2D", sans-serif;
   font-style: normal;
@@ -247,6 +262,16 @@ p {
   text-align: center;
   color: #000000;
   margin-bottom: 25px;
+}
+
+.title {
+  font-family: "K2D", sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 26px;
+  color: #000000;
+  margin-bottom: 5px;
 }
 
 h3 {
@@ -320,6 +345,28 @@ input {
   background-color: #246bd6;
 }
 .myButton:active {
+  position: relative;
+  top: 1px;
+}
+
+.myDeleteButton {
+  background-color: #f3442c;
+  border-radius: 28px;
+  border: 1px solid #ffffff;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+  padding: 10px 31px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #2f6627;
+}
+
+.myDeleteButton:hover {
+  background-color: #ee6250;
+}
+.myDeleteButton:active {
   position: relative;
   top: 1px;
 }

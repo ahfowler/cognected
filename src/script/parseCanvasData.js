@@ -126,6 +126,7 @@ var Keywords = [];
 var Students = [];
 var StudentObjects = [];
 var Categories = [];
+Categories.push(new Category("Uncategorized", "#174793", 0));
 var corsAnywhere = "https://salty-atoll-62320.herokuapp.com/"; //NEEDED TO CREATE A 'PROPER' CORS API CALL
 var dataLoading = false;
 
@@ -242,10 +243,12 @@ function AjaxCallAssignments(courseID, accesskey, canvasURL) {
       },
       error: function(xhr) {
         console.log(xhr.responseText);
+        dataLoading = false;
       },
     });
   } catch (e) {
     console.log(e);
+    dataLoading = false;
   }
 }
 
@@ -277,10 +280,12 @@ function AjaxCallGrade(courseID, accesskey, canvasURL) {
       },
       error: function(xhr) {
         console.log(xhr.responseText);
+        dataLoading = false;
       },
     });
   } catch (e) {
     console.log(e);
+    dataLoading = false;
   }
 }
 
@@ -372,6 +377,7 @@ async function ReturnAllRemaining(linkHeader, accesskey, callType) {
       },
       error: function(xhr) {
         console.log(xhr.responseText);
+        dataLoading = false;
       },
     });
 
@@ -398,7 +404,7 @@ function ParseJsonToAssignment() {
 //Parse the grade data for the course
 function ParseGradeJson() {
   if (courseGradeData != undefined) {
-    console.log(courseGradeData);
+    //console.log(courseGradeData);
     courseGradeData.forEach((item) => {
       Assignments[item.assignment_id].AppendGrade(item);
       if (!Students.includes(item.user_name)) {
@@ -411,51 +417,72 @@ function ParseGradeJson() {
       Assignments[id].CalcAssignmentAverage();
     }
 
-    // Temporary for testing purposes
-    // let categories = [
-    //   ["Category One", Math.floor(Math.random() * 1000), "#FCC100"],
-    //   ["Category Two", Math.floor(Math.random() * 1000), "#B80025"],
-    //   ["Category Three", Math.floor(Math.random() * 1000), "#174793"],
-    // ];
-    // Delete aftwerwards!
-
     for (var i = 0; i < Keywords.length; i++) {
       Keywords[i].CalcKeywordAverage();
 
-      // Temporary for testing purposes
-      // let category = categories[Math.floor(Math.random() * categories.length)];
-      // Keywords[i].category = new Category(
-      //   category[0],
-      //   category[2],
-      //   category[1]
-      // );
-      // Delete afterwards!
-
-      // Uncomment this afterwards, default category
-      Keywords[i].category = new Category("Uncategorized", "#174793", 0);
-
-      Categories.push(Keywords[i].category);
+      Keywords[i].category = Categories[0];
 
       Keywords[i].assignments = [...new Set(Keywords[i].assignments)];
     }
 
-    console.log("ASSIGNMENT OBJECTS");
-    console.log(Assignments);
+    // console.log("ASSIGNMENT OBJECTS");
+    // console.log(Assignments);
 
-    console.log("KEYWORD OBJECTS");
-    console.log(Keywords);
+    // console.log("KEYWORD OBJECTS");
+    // console.log(Keywords);
 
-    console.log("CATEGORIES");
-    const seen = new Set();
-    Categories = Categories.filter((el) => {
-      const duplicate = seen.has(el.id);
-      seen.add(el.id);
-      return !duplicate;
-    });
-    console.log(Categories);
+    //console.log("CATEGORIES");
+    //console.log(Categories);
 
     dataLoading = false;
   }
+}
+
+function AddCategory(name, color) {
+  Categories.push(new Category(name, color, Categories.length));
+}
+
+function RemoveCategory(name) {
+  let catIndex = Categories.map((category) => { return category.name }).indexOf(name);
+  Categories.splice(catIndex, 1);
+  
+  ResetCategoryID();
+
+  for (var i = 0; i < Keywords.length; i++){
+    if (Keywords[i].category.name == name) {
+      Keywords[i].category = Categories[0];
+    }
+  }
+}
+
+function ResetCategoryID() {
+  for (var i = 0; i < Categories.length; i++){
+      Categories[i].id = i;
+  }
+}
+
+function SetCategoryList(catList) {
+  let tempCategories = JSON.parse(catList);
+  let unsortedCategories = [];
+  unsortedCategories.push(new Category("Uncategorized", "#174793", 0));
+
+  tempCategories.forEach((cat) => {
+    if (cat.name != undefined) {
+      let newCategory = new Category(cat.name, cat.color, cat.id);
+      unsortedCategories.push(newCategory);
+    }
+  })
+
+  Categories = Array.from(new Set(unsortedCategories.map(a => a.name))).map(name => {
+   return unsortedCategories.find(a => a.name === name)
+  })
+}
+
+function EditKeywordCategory(keyword, category) {
+  let keyIndex = Keywords.findIndex(key => key.name == keyword);
+  let catIndex = Categories.map((category) => { return category.name }).indexOf(category);
+
+  Keywords[keyIndex].category = Categories[catIndex];
 }
 
 function GetDataLoading() {
@@ -473,5 +500,8 @@ export {
   edgeExists,
   GetDataLoading,
   AjaxCallAssignments,
-  Keyword,
+  AddCategory,
+  RemoveCategory,
+  EditKeywordCategory,
+  SetCategoryList,
 };

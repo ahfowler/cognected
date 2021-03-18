@@ -1,25 +1,19 @@
 <template>
   <div class="container">
     <p class="title">{{ this.keyword.name }}</p>
-    <p class="mini-header">Category</p>
+    <p class="mini-header">Category - {{this.keyword.category.name}}</p>
     <br />
     <input
       type="text"
       class="category-input"
       v-model="category"
       list="categories"
-      placeholder="(WORK IN PROGRESS) Type a category to add..."
-      @keyup="CategoryFound"
+      placeholder="Type a category to add..."
+      @change="CategoryFound"
     />
     <datalist id="categories">
-      <option v-for="cat in this.categoryList" :key="cat">{{ cat }}</option>
+      <option v-for="cat in this.categoryList" :key="cat.name">{{ cat.name }}</option>
     </datalist>
-    <a
-      style="margin-left:25px;text-decoration:none;"
-      v-if="displayAddCategory"
-      href="#"
-      >Create New category called "{{ category }}"?</a
-    >
     <hr />
 
     <p class="mini-header">Keyword Average</p>
@@ -43,7 +37,7 @@
     </div>
     <hr />
 
-    <p class="mini-header">Mentioned Keywords</p>
+    <p class="mini-header">Connected Keywords</p>
     <br />
     <div
       v-if="keyword != undefined"
@@ -57,7 +51,7 @@
 </template>
 
 <script>
-import { Assignments } from "../script/parseCanvasData.js";
+import { Assignments, Categories, EditKeywordCategory} from "../script/parseCanvasData.js";
 
 export default {
   name: "NodeInfo",
@@ -69,17 +63,20 @@ export default {
       keyword: this.propkeywordData,
       assignmentsList: Assignments,
       category: "",
-      categoryList: ["ex1", "ex2", "ex3"],
+      categoryList: Categories,
       displayAddCategory: false,
     };
   },
   methods: {
     CategoryFound() {
-      this.displayAddCategory =
-        this.category.length != 0 && !this.categoryList.includes(this.category);
+      if(this.categoryList.some(cat => cat.name == this.category)){
+        EditKeywordCategory(this.keyword.name, this.category)
+      }
     },
   },
-  mounted() {},
+  mounted() {
+    this.categoryList = Categories;
+  },
 };
 </script>
 
@@ -91,7 +88,7 @@ export default {
   max-width: 35%;
   max-height: 70%;
   position: absolute;
-  overflow-y: scroll;
+  overflow-y: auto;
   top: 70px;
   left: 30px;
 }

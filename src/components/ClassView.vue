@@ -13,6 +13,7 @@
         @clicked="SettingsReturn"
         :propCanvasURL="this.userData[0]"
         :propToken="this.userData[1]"
+        style="margin-bottom:8%;margin-top:5%"
       ></UserSettings>
       <ClassGraph
         v-if="!this.viewUserSettings"
@@ -209,7 +210,7 @@
               <div
                 class="selected-item"
                 v-for="category in selectedCategories"
-                :key="category"
+                :key="category.id"
               >
                 <a class="selected-item-name">
                   {{ findCategoryName(category) }}
@@ -258,7 +259,7 @@
                 <div
                   id="assignment-dropdown-list"
                   v-for="student in studentFilteredList"
-                  :key="student.id"
+                  :key="student.id+'-'+student.name"
                   v-show="studentFilteredList.length > 0"
                 >
                   <input
@@ -275,7 +276,7 @@
               <div
                 class="selected-item"
                 v-for="student in selectedStudents"
-                :key="student"
+                :key="student.id+'-'+student.name"
               >
                 <a class="selected-item-name">
                   {{ findStudentName(student) }}
@@ -342,7 +343,7 @@ export default {
       keyword: Object,
       categoriesClicked: false,
       categoriesSearch: "",
-      categories: [],
+      categories: Categories,
       currentCategory: {},
       studentsClicked: false,
       studentSearch: "",

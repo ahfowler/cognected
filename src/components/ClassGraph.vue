@@ -198,7 +198,7 @@ export default {
           edgeJson.length = Math.round(102 - edgeAverage + 1) + 100;
           edgeJson.title = "<b>Class Grade Average: </b>" + edgeAverage + "%";
         }
-        5;
+
         if (!edgeExists(edgeJson, this.edges)) {
           this.edges.push(edgeJson);
         }
