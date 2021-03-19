@@ -9,6 +9,7 @@
       v-if="this.nodeClicked != -1 && !this.viewUserSettings"
       :key="this.nodeClicked"
       :propkeywordData="this.nodeClickData[1]"
+      @clicked="NodeInfoAddCategoryClick"
     ></NodeInfo>
     <div id="cognected-graph">
       <UserSettings
@@ -220,7 +221,7 @@
               @click="clearSelectedCategories()"
               >Clear</a
             >
-            <CategoryController v-if="showCategories"/>
+            <CategoryController v-if="showCategories" :propAddCategory="nodeInfoReturnCategory"/>
             <a class="myApplyButton" @click="showCategories = !showCategories;if(showCategories){manageCategoriesStatus='Hide'}else{manageCategoriesStatus='Show'}">{{manageCategoriesStatus}} Manage Categories</a>
           </div>
         </div>
@@ -347,6 +348,7 @@ export default {
       currentStudent: {},
       showCategories: false,
       manageCategoriesStatus: "Show",
+      nodeInfoReturnCategory: "",
     };
   },
   methods: {
@@ -387,6 +389,12 @@ export default {
       }
 
       this.nodeClicked = this.nodeClickData[0];
+    },
+    NodeInfoAddCategoryClick(value){
+      this.categoriesClicked = true;
+      this.showCategories = true;
+
+      this.nodeInfoReturnCategory = value;
     },
     removeSelectedAssignment(assignmentId) {
       this.currentAssignment[assignmentId] = false;

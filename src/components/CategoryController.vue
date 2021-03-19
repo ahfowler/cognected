@@ -57,6 +57,9 @@ export default {
   components:{
       ColorPicker,
   },
+  props: {
+    propAddCategory: String,
+  },
   data() {
     return {
       categoryName: "",
@@ -82,6 +85,7 @@ export default {
     },
   },
   mounted() {
+    this.categoryName = this.propAddCategory;
     this.categoryList = Categories;
   },
 };

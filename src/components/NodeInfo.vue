@@ -10,10 +10,19 @@
       list="categories"
       placeholder="Type a category to add..."
       @change="CategoryFound"
+      @keyup="CategoryFound"
     />
     <datalist id="categories">
       <option v-for="cat in this.categoryList" :key="cat.name">{{ cat.name }}</option>
     </datalist>
+
+    <a
+      style="margin-left:25px;text-decoration:none;"
+      v-if="displayAddCategory"
+      href="#"
+      @click="AddNewCategoryClick"
+      >Create New category called "{{ category }}"?
+    </a>
     <hr />
 
     <p class="mini-header">Keyword Average</p>
@@ -69,10 +78,15 @@ export default {
   },
   methods: {
     CategoryFound() {
+      this.displayAddCategory = this.category.length != 0 && !this.categoryList.some(cat => cat.name == this.category);
+
       if(this.categoryList.some(cat => cat.name == this.category)){
         EditKeywordCategory(this.keyword.name, this.category)
       }
     },
+    AddNewCategoryClick(){
+      this.$emit("clicked", this.category)
+    }
   },
   mounted() {
     this.categoryList = Categories;
