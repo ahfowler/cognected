@@ -89,7 +89,7 @@
       </div>
     </div>
     <transition name="fade">
-      <div class="wrapper" v-show="assignmentClicked">
+      <div class="wrapper" v-show="assignmentClicked" style="max-height:70%;margin-top:10%;margin-bottom:10%;overflow-y:auto;">
         <div class="dropdown-background-box">
           <h2>Select an Assignment:</h2>
           <div class="dropdown-box">
@@ -227,7 +227,7 @@
       </div>
     </transition>
     <transition name="fade">
-      <div class="wrapper" v-show="studentsClicked">
+      <div class="wrapper" v-show="studentsClicked" style="max-height:70%;margin-top:10%;margin-bottom:10%;overflow-y:auto;">
         <div class="dropdown-background-box">
           <h2>Select Students:</h2>
           <div class="dropdown-box">

@@ -86,7 +86,7 @@ export default {
   border: 1px solid #e5e5e5;
   border-radius: 1px;
   max-width: 35%;
-  max-height: 70%;
+  max-height: 80%;
   position: absolute;
   overflow-y: auto;
   top: 70px;
