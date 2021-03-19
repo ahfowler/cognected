@@ -1,6 +1,9 @@
 <template>
   <div id="class-view">
-    <div class="pane-id">Class View</div>
+    <div class="pane-id">
+      Class View
+      <span style="color:black">{{ this.userData[3] }}</span>
+    </div>
     <NodeInfo
       style="z-index:2;"
       v-if="this.nodeClicked != -1 && !this.viewUserSettings"
@@ -139,7 +142,10 @@
                 </a>
               </div>
             </div>
-            <a class="apply-button" @click="applyAssignments()">Apply</a>
+            <div class="input-group">
+              <a class="myCancelButton" @click="assignmentClicked = false">Cancel</a>
+              <a class="myApplyButton" @click="applyAssignments()">Apply</a>
+            </div>
             <a
               class="clear-button"
               v-show="selectedAssignments.length > 0"
@@ -151,7 +157,7 @@
       </div>
     </transition>
     <transition name="fade">
-      <div class="wrapper" v-show="categoriesClicked">
+      <div class="wrapper" v-show="categoriesClicked" style="max-height:70%;margin-top:10%;margin-bottom:10%;overflow-y:auto;width:30%">
         <div class="dropdown-background-box">
           <h2>Select a Category:</h2>
           <div class="dropdown-box">
@@ -204,13 +210,18 @@
                 </a>
               </div>
             </div>
-            <a class="apply-button" @click="applyCategories()">Apply</a>
+            <div class="input-group">
+              <a class="myCancelButton" @click="categoriesClicked = false">Cancel</a>
+              <a class="myApplyButton" @click="applyCategories()">Apply</a>
+            </div>
             <a
               class="clear-button"
               v-show="selectedCategories.length > 0"
               @click="clearSelectedCategories()"
               >Clear</a
             >
+            <CategoryController v-if="showCategories"/>
+            <a class="myApplyButton" @click="showCategories = !showCategories;if(showCategories){manageCategoriesStatus='Hide'}else{manageCategoriesStatus='Show'}">{{manageCategoriesStatus}} Manage Categories</a>
           </div>
         </div>
       </div>
@@ -269,7 +280,10 @@
                 </a>
               </div>
             </div>
-            <a class="apply-button" @click="studentsClicked = false">Apply</a>
+            <div>
+              <a class="myCancelButton" @click="studentsClicked = false">Cancel</a>
+              <a class="myApplyButton" @click="studentsClicked = false">Apply</a>
+            </div>
             <a
               class="clear-button"
               v-show="selectedStudents.length > 0"
@@ -299,6 +313,7 @@ import {
   StudentObjects,
 } from "../script/parseCanvasData.js";
 import NodeInfo from "../components/NodeInfo.vue";
+import CategoryController from "../components/CategoryController.vue"
 
 export default {
   name: "ClassView",
@@ -307,13 +322,14 @@ export default {
     Tooltip,
     UserSettings,
     NodeInfo,
+    CategoryController,
   },
   data() {
     return {
       importedAssignmentsDictionary: Assignments,
       settingsOpened: false,
       viewUserSettings: true,
-      userData: ["", "", ""],
+      userData: ["", "", "", ""],
       assignmentClicked: false,
       assignmentSearch: "",
       assignments: [],
@@ -329,6 +345,8 @@ export default {
       studentSearch: "",
       students: [],
       currentStudent: {},
+      showCategories: false,
+      manageCategoriesStatus: "Show",
     };
   },
   methods: {
@@ -351,11 +369,12 @@ export default {
           "https://drive.google.com/file/d/1A1CjziR9ubyikiGY9IDMDBHchp1gpLa6/view?usp=sharing",
       }).click();
     },
-    SettingsReturn(value) {
+    SettingsReturn(data) {
       this.viewUserSettings = false;
 
-      if (value != "Canceled") {
-        this.userData = value;
+      if (data != "Canceled") {
+        this.userData = data;
+        console.log(data)
       }
     },
     NodeClickedEvent(nodeData) {
@@ -569,7 +588,6 @@ export default {
 
 .wrapper {
   text-align: center;
-  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -686,19 +704,28 @@ export default {
   margin: 10px 15px 10px 10px;
 }
 
-.apply-button {
-  background: #174793;
-  border-radius: 20px;
-  font-family: "Roboto", sans-serif;
-  font-style: normal;
-  font-weight: 300;
-  font-size: 12px;
-  line-height: 15px;
-  text-align: center;
+.myApplyButton {
+  background-color: #174793;
+  border-radius: 28px;
+  border: 1px solid #ffffff;
+  display: inline-block;
+  cursor: pointer;
   color: #ffffff;
-  padding: 10px 30px;
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+  padding: 10px 31px;
+  text-decoration: none;
+  margin-left:10px;
   margin-bottom: 15px;
-  width: fit-content;
+  text-shadow: 0px 1px 0px #2f6627;
+}
+
+.myApplyButton:hover {
+  background-color: #246bd6;
+}
+.myApplyButton:active {
+  position: relative;
+  top: 1px;
 }
 
 .selected-items {
@@ -768,5 +795,29 @@ export default {
 
 .clear-button:hover {
   color: #000000a4;
+}
+
+.myCancelButton {
+  background-color: #f3442c;
+  border-radius: 28px;
+  border: 1px solid #ffffff;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+  padding: 10px 31px;
+  margin-right:10px;
+  margin-bottom: 15px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #2f6627;
+}
+
+.myCancelButton:hover {
+  background-color: #ee6250;
+}
+.myCancelButton:active {
+  position: relative;
+  top: 1px;
 }
 </style>

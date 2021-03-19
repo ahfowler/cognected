@@ -66,10 +66,6 @@
         <a class="myButton" @click="ApplyClick">Apply</a>
       </div>
     </div>
-
-    <hr /> <br> <br>
-
-    <CategoryController/>
   </div>
 </template>
 
@@ -82,13 +78,8 @@ import {
 } from "../script/parseCanvasData.js";
 import $cookies from "vue-cookies";
 
-import CategoryController from "../components/CategoryController.vue"
-
 export default {
   name: "UserSettings",
-  components: {
-    CategoryController,
-  },
   props: {
     propCanvasURL: String,
     propToken: String,
@@ -133,6 +124,7 @@ export default {
           this.canvasURL,
           this.token,
           this.GetCourseId(this.currentCourse),
+          this.currentCourse
         ]);
       } else {
         this.dataLoading = true;

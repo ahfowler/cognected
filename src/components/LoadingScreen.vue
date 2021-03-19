@@ -4,9 +4,6 @@
       <img id="loading-logo" src="../assets/logo.png" />
       <div id="loading-text">
         <div id="loading-cognected-title">Cognect<span>Ed</span></div>
-        <div id="loading-cognected-subtitle">
-          The Systems Curriculum Gradebook
-        </div>
         <div id="loading-message">
           Hang tight! <br />
           We’re cognecting your students....
