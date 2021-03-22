@@ -227,12 +227,12 @@ export default {
       this.createStudentKeywordNodes();
     });
 
-    this.$root.$on("applyAssignments", (selectedAssignments) => {
+    this.$root.$on("applyAssignments_StudentView", (selectedAssignments) => {
       this.selectedAssignments = selectedAssignments;
       this.createStudentKeywordNodes();
     });
 
-    this.$root.$on("applyCategories", (selectedCategories) => {
+    this.$root.$on("applyCategories_StudentView", (selectedCategories) => {
       this.selectedCategories = selectedCategories;
       this.createStudentKeywordNodes();
     });

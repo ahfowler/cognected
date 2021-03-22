@@ -865,21 +865,6 @@ export default {
   cursor: pointer;
 }
 
-.cancel-button {
-  font-family: "Roboto", sans-serif;
-  color: #000000;
-  font-style: normal;
-  font-weight: 300;
-  font-size: 12px;
-  line-height: 15px;
-  margin-bottom: 10px;
-}
-
-.cancel-button:hover {
-  color: #f3442c;
-  cursor: pointer;
-}
-
 .myCancelButton {
   background-color: #f3442c;
   border-radius: 28px;
