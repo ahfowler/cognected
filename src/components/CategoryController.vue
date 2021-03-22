@@ -15,7 +15,6 @@
       />
     </div>
 
-
     <a class="myApplyButton" @click="AddCat" style="text-align:center; max-width:100px">Add Category</a>
 
     <hr/>
@@ -39,7 +38,7 @@
           </div>
         </div>
 
-        <a class="myDeleteButton" @click="DeleteCat" style="text-align:center; max-width:100px">Delete Category</a>
+        <a class="myDeleteButton" @click="DeleteCat" style="text-align:center;max-width:100px">Delete Category</a>
       </div>
   </div>
   </div>
@@ -57,6 +56,9 @@ export default {
   name: "CategoryControl",
   components:{
       ColorPicker,
+  },
+  props: {
+    propAddCategory: String,
   },
   data() {
     return {
@@ -83,6 +85,7 @@ export default {
     },
   },
   mounted() {
+    this.categoryName = this.propAddCategory;
     this.categoryList = Categories;
   },
 };
@@ -123,7 +126,6 @@ a {
 input {
   border: 1px solid #e5e5e5;
   border-radius: 1px;
-  min-width: 80%;
   height: 30px;
   padding: 5px 10px 5px 10px;
   font-family: "Roboto", sans-serif;
@@ -177,11 +179,8 @@ h3 {
   font-size: 16px;
   line-height: 18px;
   text-align: left;
-  width: 75%;
+  width: 70%;
   color: #000000;
-  margin-right: 25px;
-  margin-left: 25px;
-  margin-bottom: 5px;
 }
 
 .mini-header {
@@ -242,6 +241,7 @@ h3 {
   padding: 10px 31px;
   text-decoration: none;
   text-shadow: 0px 1px 0px #2f6627;
+  margin-top:10px
 }
 
 .myDeleteButton:hover {

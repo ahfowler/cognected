@@ -6,9 +6,6 @@
         <!-- Top Right Logo -->
         <div id="top-right-logo">
           <div id="cognected-title">Cognect<span>Ed</span></div>
-          <div id="cognected-subtitle">
-            The Systems Curriculum Gradebook
-          </div>
         </div>
         <multipane layout="vertical">
           <div :style="{ width: '80%', 'min-width': '0%' }" id="student-view">
