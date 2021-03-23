@@ -2,11 +2,18 @@
   <div id="student-view">
     <div class="pane-id">
       Student View
-      <span v-show="applyClicked || reselectStudent">{{
+      <span style="color:black" v-show="applyClicked || reselectStudent">{{
         currentStudent.name
       }}</span>
     </div>
     <transition name="fade">
+      <NodeInfo
+        style="z-index:2;"
+        v-if="this.nodeClicked != -1 && !this.viewUserSettings"
+        :key="this.nodeClicked"
+        :propkeywordData="this.nodeClickData[1]"
+        @clicked="NodeInfoAddCategoryClick"
+      ></NodeInfo>
       <div
         id="student-cognected-graph"
         v-show="applyClicked || reselectStudent"
@@ -64,10 +71,18 @@
               />
             </Tooltip>
             <Tooltip text="Categories">
-              <img src="../assets/categories-icon.png" />
-            </Tooltip>
-            <Tooltip text="Configure">
-              <img src="../assets/graph-settings-icon.png" />
+              <img
+                src="../assets/categories-icon-active.png"
+                v-show="selectedCategories.length > 0"
+                style="cursor: pointer;"
+                @click="Categories_Click"
+              />
+              <img
+                src="../assets/categories-icon.png"
+                v-show="selectedCategories.length == 0"
+                style="cursor: pointer;"
+                @click="Categories_Click"
+              />
             </Tooltip>
           </div>
         </div>
@@ -193,6 +208,96 @@
       </div>
     </transition>
     <transition name="fade">
+      <div
+        class="wrapper"
+        v-show="categoriesClicked"
+        style="max-height:70%;margin-top:10%;margin-bottom:10%;overflow-y:auto;width:30%"
+      >
+        <div class="dropdown-background-box">
+          <h2>Select a Category:</h2>
+          <div class="dropdown-box">
+            <p>
+              Search for a category or select a category from the drop down
+              list.
+            </p>
+            <div class="dropdown">
+              <input
+                id="category-search-box"
+                v-model="categoriesSearch"
+                placeholder="Type a category name..."
+              />
+              <div class="dropdown-area">
+                <div
+                  class="dropdown-message"
+                  v-show="categoryFilteredList.length == 0"
+                >
+                  No categories found.
+                </div>
+                <div
+                  id="assignment-dropdown-list"
+                  v-for="category in categoryFilteredList"
+                  :key="category.id"
+                  v-show="categoryFilteredList.length > 0"
+                >
+                  <input
+                    name="categoryList"
+                    type="checkbox"
+                    :id="category.id + '-checkbox'"
+                    v-model="currentCategory[category.id]"
+                  />
+                  <label :for="category.id">{{ category.name }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="selected-items" v-show="selectedCategories.length > 0">
+              <div
+                class="selected-item"
+                v-for="category in selectedCategories"
+                :key="category.id"
+              >
+                <a class="selected-item-name">
+                  {{ findCategoryName(category) }}
+                  <div
+                    style="margin-left:5px;"
+                    class="close"
+                    @click="removeSelectedCategory(category)"
+                  />
+                </a>
+              </div>
+            </div>
+            <div class="input-group">
+              <a class="myCancelButton" @click="categoriesClicked = false"
+                >Cancel</a
+              >
+              <a class="myApplyButton" @click="applyCategories()">Apply</a>
+            </div>
+            <a
+              class="clear-button"
+              v-show="selectedCategories.length > 0"
+              @click="clearSelectedCategories()"
+              >Clear</a
+            >
+            <CategoryController
+              v-if="showCategories"
+              :propAddCategory="nodeInfoReturnCategory"
+            />
+            <a
+              class="myApplyButton"
+              @click="
+                showCategories = !showCategories;
+                if (showCategories) {
+                  manageCategoriesStatus = 'Hide';
+                } else {
+                  manageCategoriesStatus = 'Show';
+                }
+              "
+              >{{ manageCategoriesStatus }} Manage Categories</a
+            >
+          </div>
+        </div>
+      </div>
+    </transition>
+    <transition name="fade">
       <div class="overlay" v-show="!applyClicked && reselectStudent"></div>
     </transition>
   </div>
@@ -203,18 +308,24 @@ import {
   StudentObjects,
   ParseGradeJsonRespectToStudent,
   Assignments,
+  Categories,
 } from "../script/parseCanvasDataForStudent.js";
 import Tooltip from "../components/Tooltip.vue";
 import StudentGraph from "../components/StudentGraph.vue";
+import CategoryController from "../components/CategoryController.vue";
+import NodeInfo from "../components/NodeInfo.vue";
 
 export default {
   name: "StudentView",
   components: {
     Tooltip,
     StudentGraph,
+    CategoryController,
+    NodeInfo,
   },
   data() {
     return {
+      viewUserSettings: true,
       userData: ["", "", ""],
       applyClicked: false,
       reselectStudent: false,
@@ -227,6 +338,15 @@ export default {
       assignments: [],
       currentAssignment: {},
       importedAssignmentsDictionary: Assignments,
+      categoriesClicked: false,
+      categoriesSearch: "",
+      categories: Categories,
+      currentCategory: {},
+      showCategories: false,
+      manageCategoriesStatus: "Show",
+      nodeInfoReturnCategory: "",
+      nodeClicked: -1,
+      nodeClickData: [-1, undefined, undefined],
     };
   },
   computed: {
@@ -253,8 +373,49 @@ export default {
       }
       return activeAssignments;
     },
+    categoryFilteredList() {
+      return this.categories.filter((category) => {
+        return category.name
+          .toLowerCase()
+          .includes(this.categoriesSearch.toLowerCase());
+      });
+    },
+    selectedCategories() {
+      let activeCategories = [];
+      for (let k in this.currentCategory) {
+        if (this.currentCategory[k]) {
+          activeCategories.push(k);
+        }
+      }
+      return activeCategories;
+    },
   },
   methods: {
+    SettingsReturn(data) {
+      this.viewUserSettings = false;
+
+      if (data != "Canceled") {
+        this.userData = data;
+        this.$root.$emit("updateStudentGraph", data);
+      }
+    },
+    NodeClickedEvent(nodeData) {
+      this.nodeClickData = nodeData;
+
+      if (this.nodeClickData[0] != -1) {
+        this.keyword = this.nodeClickData[1];
+      } else {
+        this.keyword = undefined;
+      }
+
+      this.nodeClicked = this.nodeClickData[0];
+    },
+    NodeInfoAddCategoryClick(value) {
+      this.categoriesClicked = true;
+      this.showCategories = true;
+
+      this.nodeInfoReturnCategory = value;
+    },
     applyStudent() {
       this.applyClicked = true;
       this.reselectStudent = false;
@@ -281,6 +442,31 @@ export default {
         "applyAssignments_StudentView",
         this.selectedAssignments
       );
+    },
+    Categories_Click() {
+      this.categoriesClicked = !this.categoriesClicked;
+      this.categories = Categories;
+    },
+    clearSelectedCategories() {
+      for (let k in this.currentCategory) {
+        this.currentCategory[k] = false;
+        document.getElementById(k + "-checkbox").checked = false;
+      }
+    },
+    removeSelectedCategory(categoryId) {
+      this.currentCategory[categoryId] = false;
+      document.getElementById(categoryId + "-checkbox").checked = false;
+    },
+    applyCategories() {
+      this.categoriesClicked = false;
+      this.$root.$emit("applyCategories_StudentView", this.selectedCategories);
+    },
+    findCategoryName(categoryId) {
+      for (let i = 0; i < this.categories.length; i++) {
+        if (this.categories[i].id == categoryId) {
+          return this.categories[i].name;
+        }
+      }
     },
   },
   mounted() {
