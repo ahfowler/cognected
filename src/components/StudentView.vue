@@ -6,14 +6,14 @@
         currentStudent.name
       }}</span>
     </div>
-    <transition name="fade">
       <NodeInfo
         style="z-index:2;"
-        v-if="this.nodeClicked != -1 && !this.viewUserSettings"
+        v-if="this.nodeClicked != -1"
         :key="this.nodeClicked"
         :propkeywordData="this.nodeClickData[1]"
         @clicked="NodeInfoAddCategoryClick"
       ></NodeInfo>
+    <transition name="fade">
       <div
         id="student-cognected-graph"
         v-show="applyClicked || reselectStudent"
@@ -23,6 +23,7 @@
           :token="this.userData[1]"
           :courseID="this.userData[2]"
           :selectedStudent="this.currentStudent"
+          @clicked="NodeClickedEvent"
         ></StudentGraph>
         <div
           id="student-settings-menu"
