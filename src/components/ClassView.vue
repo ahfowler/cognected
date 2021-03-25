@@ -4,13 +4,15 @@
       Class View
       <span style="color:black">{{ this.userData[3] }}</span>
     </div>
-    <NodeInfo
-      style="z-index:2;"
-      v-if="this.nodeClicked != -1 && !this.viewUserSettings"
-      :key="this.nodeClicked"
-      :propkeywordData="this.nodeClickData[1]"
-      @clicked="NodeInfoAddCategoryClick"
-    ></NodeInfo>
+    <div>
+      <NodeInfo
+        style="z-index:2;"
+        v-if="this.nodeClicked != -1 && !this.viewUserSettings"
+        :key="this.nodeClicked"
+        :propkeywordData="this.nodeClickData[1]"
+        @clicked="NodeInfoAddCategoryClick"
+      ></NodeInfo>
+    </div>
     <div id="cognected-graph">
       <UserSettings
         v-if="this.viewUserSettings"
@@ -34,8 +36,16 @@
           'opened-settings': settingsOpened,
         }"
       >
-        <img src="../assets/settings-icon.png" v-show="!settingsOpened" />
-        <img src="../assets/settings-icon-active.png" v-show="settingsOpened" />
+        <img
+          src="../assets/settings-icon.png"
+          v-show="!settingsOpened"
+          style="cursor: pointer;"
+        />
+        <img
+          src="../assets/settings-icon-active.png"
+          v-show="settingsOpened"
+          style="cursor: pointer;"
+        />
         <div
           class="settings-menu"
           v-bind:class="{
@@ -47,10 +57,12 @@
             <img
               src="../assets/assignments-applied-icon.png"
               v-show="selectedAssignments.length > 0"
+              style="cursor: pointer;"
             />
             <img
               src="../assets/assignments-icon.png"
               v-show="selectedAssignments.length == 0"
+              style="cursor: pointer;"
             />
           </Tooltip>
 
@@ -58,10 +70,12 @@
             <img
               src="../assets/categories-icon-active.png"
               v-show="selectedCategories.length > 0"
+              style="cursor: pointer;"
             />
             <img
               src="../assets/categories-icon.png"
               v-show="selectedCategories.length == 0"
+              style="cursor: pointer;"
             />
           </Tooltip>
 
@@ -69,10 +83,12 @@
             <img
               src="../assets/students-icon-active.png"
               v-show="selectedStudents.length > 0"
+              style="cursor: pointer;"
             />
             <img
               src="../assets/students-icon.png"
               v-show="selectedStudents.length == 0"
+              style="cursor: pointer;"
             />
           </Tooltip>
 
@@ -80,17 +96,24 @@
             text="Configure"
             @click.native="viewUserSettings = !viewUserSettings"
           >
-            <img src="../assets/graph-settings-icon.png" />
+            <img
+              src="../assets/graph-settings-icon.png"
+              style="cursor: pointer;"
+            />
           </Tooltip>
 
           <Tooltip text="User Guide" @click.native="UserGuide_Click">
-            <img src="../assets/info-icon.png" />
+            <img src="../assets/info-icon.png" style="cursor: pointer;" />
           </Tooltip>
         </div>
       </div>
     </div>
     <transition name="fade">
-      <div class="wrapper" v-show="assignmentClicked" style="max-height:70%;margin-top:10%;margin-bottom:10%;overflow-y:auto;">
+      <div
+        class="wrapper"
+        v-show="assignmentClicked"
+        style="max-height:70%;margin-top:10%;margin-bottom:10%;overflow-y:auto;"
+      >
         <div class="dropdown-background-box">
           <h2>Select an Assignment:</h2>
           <div class="dropdown-box">
@@ -144,7 +167,9 @@
               </div>
             </div>
             <div class="input-group">
-              <a class="myCancelButton" @click="assignmentClicked = false">Cancel</a>
+              <a class="myCancelButton" @click="assignmentClicked = false"
+                >Cancel</a
+              >
               <a class="myApplyButton" @click="applyAssignments()">Apply</a>
             </div>
             <a
@@ -158,7 +183,11 @@
       </div>
     </transition>
     <transition name="fade">
-      <div class="wrapper" v-show="categoriesClicked" style="max-height:70%;margin-top:10%;margin-bottom:10%;overflow-y:auto;width:30%">
+      <div
+        class="wrapper"
+        v-show="categoriesClicked"
+        style="max-height:70%;margin-top:10%;margin-bottom:10%;overflow-y:auto;width:30%"
+      >
         <div class="dropdown-background-box">
           <h2>Select a Category:</h2>
           <div class="dropdown-box">
@@ -212,7 +241,9 @@
               </div>
             </div>
             <div class="input-group">
-              <a class="myCancelButton" @click="categoriesClicked = false">Cancel</a>
+              <a class="myCancelButton" @click="categoriesClicked = false"
+                >Cancel</a
+              >
               <a class="myApplyButton" @click="applyCategories()">Apply</a>
             </div>
             <a
@@ -221,14 +252,32 @@
               @click="clearSelectedCategories()"
               >Clear</a
             >
-            <CategoryController v-if="showCategories" :propAddCategory="nodeInfoReturnCategory"/>
-            <a class="myApplyButton" @click="showCategories = !showCategories;if(showCategories){manageCategoriesStatus='Hide'}else{manageCategoriesStatus='Show'}">{{manageCategoriesStatus}} Manage Categories</a>
+            <CategoryController
+              v-if="showCategories"
+              :propAddCategory="nodeInfoReturnCategory"
+            />
+            <a
+              class="myApplyButton"
+              @click="
+                showCategories = !showCategories;
+                if (showCategories) {
+                  manageCategoriesStatus = 'Hide';
+                } else {
+                  manageCategoriesStatus = 'Show';
+                }
+              "
+              >{{ manageCategoriesStatus }} Manage Categories</a
+            >
           </div>
         </div>
       </div>
     </transition>
     <transition name="fade">
-      <div class="wrapper" v-show="studentsClicked" style="max-height:70%;margin-top:10%;margin-bottom:10%;overflow-y:auto;">
+      <div
+        class="wrapper"
+        v-show="studentsClicked"
+        style="max-height:70%;margin-top:10%;margin-bottom:10%;overflow-y:auto;"
+      >
         <div class="dropdown-background-box">
           <h2>Select Students:</h2>
           <div class="dropdown-box">
@@ -252,7 +301,7 @@
                 <div
                   id="assignment-dropdown-list"
                   v-for="student in studentFilteredList"
-                  :key="student.id+'-'+student.name"
+                  :key="student.id + '-' + student.name"
                   v-show="studentFilteredList.length > 0"
                 >
                   <input
@@ -269,7 +318,7 @@
               <div
                 class="selected-item"
                 v-for="student in selectedStudents"
-                :key="student.id+'-'+student.name"
+                :key="student.id + '-' + student.name"
               >
                 <a class="selected-item-name">
                   {{ findStudentName(student) }}
@@ -282,8 +331,12 @@
               </div>
             </div>
             <div>
-              <a class="myCancelButton" @click="studentsClicked = false">Cancel</a>
-              <a class="myApplyButton" @click="studentsClicked = false">Apply</a>
+              <a class="myCancelButton" @click="studentsClicked = false"
+                >Cancel</a
+              >
+              <a class="myApplyButton" @click="studentsClicked = false"
+                >Apply</a
+              >
             </div>
             <a
               class="clear-button"
@@ -314,7 +367,7 @@ import {
   StudentObjects,
 } from "../script/parseCanvasData.js";
 import NodeInfo from "../components/NodeInfo.vue";
-import CategoryController from "../components/CategoryController.vue"
+import CategoryController from "../components/CategoryController.vue";
 
 export default {
   name: "ClassView",
@@ -376,7 +429,7 @@ export default {
 
       if (data != "Canceled") {
         this.userData = data;
-        console.log(data)
+        this.$root.$emit("updateStudentGraph", data);
       }
     },
     NodeClickedEvent(nodeData) {
@@ -390,7 +443,7 @@ export default {
 
       this.nodeClicked = this.nodeClickData[0];
     },
-    NodeInfoAddCategoryClick(value){
+    NodeInfoAddCategoryClick(value) {
       this.categoriesClicked = true;
       this.showCategories = true;
 
@@ -450,6 +503,11 @@ export default {
     applyCategories() {
       this.categoriesClicked = false;
       this.$root.$emit("applyCategories", this.selectedCategories);
+    },
+    cancelSelection() {
+      this.assignmentClicked = false;
+      this.categoriesClicked = false;
+      this.studentsClicked = false;
     },
   },
   computed: {
@@ -723,8 +781,10 @@ export default {
   font-size: 12px;
   padding: 10px 31px;
   text-decoration: none;
-  margin-left:10px;
+  margin-left: 10px;
   margin-bottom: 15px;
+  width: fit-content;
+  cursor: pointer;
   text-shadow: 0px 1px 0px #2f6627;
 }
 
@@ -768,6 +828,7 @@ export default {
 .close:hover {
   background: url("../assets/close-red.png") no-repeat;
   background-size: cover;
+  cursor: pointer;
 }
 
 .overlay {
@@ -803,6 +864,7 @@ export default {
 
 .clear-button:hover {
   color: #000000a4;
+  cursor: pointer;
 }
 
 .myCancelButton {
@@ -815,7 +877,7 @@ export default {
   font-family: "Roboto", sans-serif;
   font-size: 12px;
   padding: 10px 31px;
-  margin-right:10px;
+  margin-right: 10px;
   margin-bottom: 15px;
   text-decoration: none;
   text-shadow: 0px 1px 0px #2f6627;

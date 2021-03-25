@@ -76,6 +76,7 @@ import {
   GetDataLoading,
   AjaxCallAssignments,
 } from "../script/parseCanvasData.js";
+import { AjaxCallAssignments as studentAjaxCall } from "../script/parseCanvasDataForStudent.js";
 import $cookies from "vue-cookies";
 
 export default {
@@ -108,6 +109,12 @@ export default {
         this.currentCourse != ""
       ) {
         AjaxCallAssignments(
+          this.GetCourseId(this.currentCourse),
+          this.token,
+          this.canvasURL
+        );
+
+        studentAjaxCall(
           this.GetCourseId(this.currentCourse),
           this.token,
           this.canvasURL
