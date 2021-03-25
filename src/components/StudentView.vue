@@ -575,7 +575,6 @@ export default {
   align-items: left;
   height: 97vh;
   width: 100%;
-  max-width: 650px;
   overflow: hidden;
   position: absolute;
   z-index: 2;
@@ -588,7 +587,6 @@ export default {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  position: absolute;
   min-width: 70%;
 }
 
