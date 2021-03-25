@@ -59,9 +59,6 @@ export default {
             inherit: "both",
           },
         },
-        groups: {
-          one: { color: { background: "#fcc100" } },
-        },
         physics: {
           barnesHut: {
             avoidOverlap: 1,
@@ -69,7 +66,7 @@ export default {
             centralGravity: 1,
           },
           maxVelocity: 2,
-          minVelocity: 1,
+          minVelocity: 1.5,
         },
         interaction: {
           hover: false,

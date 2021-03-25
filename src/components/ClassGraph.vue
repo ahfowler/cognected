@@ -110,7 +110,6 @@ export default {
           this.nodeClicked = -1;
           this.createKeywordNodes();
           this.$refs.network.redraw();
-
           this.$emit("clicked", [-1, undefined, undefined]);
         }
       }
@@ -221,6 +220,8 @@ export default {
   },
   mounted() {
     this.createKeywordNodes();
+    this.$refs.network.fit();
+
     //this.createEdges();
     this.$root.$on("applyAssignments", (selectedAssignments) => {
       this.selectedAssignments = selectedAssignments;

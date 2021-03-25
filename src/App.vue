@@ -8,7 +8,7 @@
           <div id="cognected-title">Cognect<span>Ed</span></div>
         </div>
         <multipane layout="vertical">
-          <div :style="{ width: '80%', 'min-width': '0%' }" id="student-view">
+          <div :style="{ width: '40%', 'min-width': '0%' }" id="student-view">
             <StudentView></StudentView>
           </div>
           <multipane-resizer>
@@ -46,7 +46,7 @@
 import LoadingScreen from "./components/LoadingScreen.vue";
 import StudentView from "./components/StudentView.vue";
 import ClassView from "./components/ClassView.vue";
-import { SetCategoryList } from "./script/parseCanvasData.js"
+import { SetCategoryList } from "./script/parseCanvasData.js";
 import $cookies from "vue-cookies";
 
 export default {
@@ -72,9 +72,9 @@ export default {
     this.updateIsLoading();
 
     let cookieCategories = $cookies.get("Categories");
-    if(cookieCategories.toString() != "undefined"){
-        SetCategoryList(cookieCategories);
-      }
+    if (cookieCategories.toString() != "undefined") {
+      SetCategoryList(cookieCategories);
+    }
   },
 };
 </script>

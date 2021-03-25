@@ -4,13 +4,15 @@
       Class View
       <span style="color:black">{{ this.userData[3] }}</span>
     </div>
-    <NodeInfo
-      style="z-index:2;"
-      v-if="this.nodeClicked != -1 && !this.viewUserSettings"
-      :key="this.nodeClicked"
-      :propkeywordData="this.nodeClickData[1]"
-      @clicked="NodeInfoAddCategoryClick"
-    ></NodeInfo>
+    <div>
+      <NodeInfo
+        style="z-index:2;"
+        v-if="this.nodeClicked != -1 && !this.viewUserSettings"
+        :key="this.nodeClicked"
+        :propkeywordData="this.nodeClickData[1]"
+        @clicked="NodeInfoAddCategoryClick"
+      ></NodeInfo>
+    </div>
     <div id="cognected-graph">
       <UserSettings
         v-if="this.viewUserSettings"

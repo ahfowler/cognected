@@ -6,13 +6,13 @@
         currentStudent.name
       }}</span>
     </div>
-      <NodeInfo
-        style="z-index:2;"
-        v-if="this.nodeClicked != -1"
-        :key="this.nodeClicked"
-        :propkeywordData="this.nodeClickData[1]"
-        @clicked="NodeInfoAddCategoryClick"
-      ></NodeInfo>
+    <NodeInfo
+      style="z-index:2;"
+      v-if="this.nodeClicked != -1"
+      :key="this.nodeClicked"
+      :propkeywordData="this.nodeClickData[1]"
+      @clicked="NodeInfoAddCategoryClick"
+    ></NodeInfo>
     <transition name="fade">
       <div
         id="student-cognected-graph"
@@ -111,8 +111,8 @@
                 </div>
                 <div
                   id="assignment-dropdown-list"
-                  v-for="student in studentFilteredList"
-                  :key="student.id"
+                  v-for="(student, index) in studentFilteredList"
+                  :key="index"
                   v-show="studentFilteredList.length > 0"
                 >
                   <input
@@ -162,8 +162,8 @@
                 </div>
                 <div
                   id="assignment-dropdown-list"
-                  v-for="assignment in assignmentFilteredList"
-                  :key="assignment.id"
+                  v-for="(assignment, index) in assignmentFilteredList"
+                  :key="index"
                   v-show="assignmentFilteredList.length > 0"
                 >
                   <input
@@ -179,8 +179,8 @@
             <div class="selected-items" v-show="selectedAssignments.length > 0">
               <div
                 class="selected-item"
-                v-for="assignment in selectedAssignments"
-                :key="assignment.id"
+                v-for="(assignment, index) in selectedAssignments"
+                :key="index"
               >
                 <a class="selected-item-name">
                   {{ importedAssignmentsDictionary[assignment].name }}
@@ -223,7 +223,7 @@
             </p>
             <div class="dropdown">
               <input
-                id="category-search-box"
+                id="student-category-search-box"
                 v-model="categoriesSearch"
                 placeholder="Type a category name..."
               />
@@ -236,8 +236,8 @@
                 </div>
                 <div
                   id="assignment-dropdown-list"
-                  v-for="category in categoryFilteredList"
-                  :key="category.id"
+                  v-for="(category, index) in categoryFilteredList"
+                  :key="index"
                   v-show="categoryFilteredList.length > 0"
                 >
                   <input
@@ -253,8 +253,8 @@
             <div class="selected-items" v-show="selectedCategories.length > 0">
               <div
                 class="selected-item"
-                v-for="category in selectedCategories"
-                :key="category.id"
+                v-for="(category, index) in selectedCategories"
+                :key="index"
               >
                 <a class="selected-item-name">
                   {{ findCategoryName(category) }}
