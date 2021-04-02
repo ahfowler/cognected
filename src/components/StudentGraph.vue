@@ -165,7 +165,7 @@ export default {
         nodeJson.title =
           "<b>" +
           keyword.name +
-          "</b><br/><b>Class Grade Average: </b>" +
+          "</b><br/><b>" + this.selectedStudent.name + " Grade Average: </b>" +
           keyword.keyword_Avg +
           "%";
         nodeJson.value = keyword.keyword_Avg;
@@ -193,7 +193,7 @@ export default {
             keyword.associatedKeys[keywordName]
           );
           edgeJson.length = Math.round(102 - edgeAverage + 1) + 100;
-          edgeJson.title = "<b>Class Grade Average: </b>" + edgeAverage + "%";
+          edgeJson.title = "<b>" + this.selectedStudent.name + " Average: </b>" + edgeAverage + "%";
         }
         5;
         if (!edgeExists(edgeJson, this.edges)) {
