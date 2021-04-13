@@ -176,28 +176,26 @@ export default {
       this.createEdges();
     },
     createEdges() {
-      // console.log("ASSIGNMENTS: ");
-      // console.log(this.importedAssignments);
-      // console.log("KEYWORDS: ");
-      // console.log(this.importedKeywords);
-
       this.edges = [];
+      //loop through all keywords
       this.importedKeywords.forEach((keyword) => {
         let edgeJson = {};
         edgeJson.from = KeywordIndex(keyword.name);
 
+        //loop through all the associated keywords
         for (let keywordName in keyword.associatedKeys) {
           edgeJson.to = KeywordIndex(keywordName);
           // Calculate the edge average.
           let edgeAverage = CalcAssignmentListAvg(
             keyword.associatedKeys[keywordName]
           );
-          edgeJson.length = Math.round(102 - edgeAverage + 1) + 100;
-          edgeJson.title = "<b>" + this.selectedStudent.name + " Average: </b>" + edgeAverage + "%";
-        }
-        5;
-        if (!edgeExists(edgeJson, this.edges)) {
-          this.edges.push(edgeJson);
+
+          edgeJson.length = Math.max(Math.round(102 - edgeAverage + 1) + 105, 130);
+          edgeJson.title = "<b>Class Grade Average: </b>" + edgeAverage + "%";
+
+          if (!edgeExists(edgeJson, this.edges) && edgeAverage >= 0) {
+            this.edges.push(edgeJson);
+          }
         }
       });
     },

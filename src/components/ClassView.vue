@@ -186,7 +186,7 @@
       <div
         class="wrapper"
         v-show="categoriesClicked"
-        style="max-height:70%;margin-top:10%;margin-bottom:10%;overflow-y:auto;width:30%"
+        style="max-height:70%;margin-top:10%;margin-bottom:10%;overflow-y:auto;width:30%;min-width:350px"
       >
         <div class="dropdown-background-box">
           <h2>Select a Category:</h2>
@@ -224,7 +224,7 @@
                 </div>
               </div>
             </div>
-            <div class="selected-items" v-show="selectedCategories.length > 0">
+            <div class="selected-items" v-show="selectedCategories.length > 0" >
               <div
                 class="selected-item"
                 v-for="category in selectedCategories"

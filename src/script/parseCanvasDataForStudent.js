@@ -398,7 +398,7 @@ function ParseJsonToAssignment() {
 function ParseGradeJsonRespectToStudent(studentID) {
   ParseJsonToAssignment();
   if (courseGradeData != undefined) {
-    console.log(studentID);
+    //console.log(studentID);
     courseGradeData.forEach((item) => {
       if (item.user_id == studentID) {
         Assignments[item.assignment_id].AppendGrade(item);
@@ -441,20 +441,20 @@ function ParseGradeJsonRespectToStudent(studentID) {
       Keywords[i].assignments = [...new Set(Keywords[i].assignments)];
     }
 
-    console.log("STUDENT ASSIGNMENT OBJECTS");
-    console.log(Assignments);
+    // console.log("STUDENT ASSIGNMENT OBJECTS");
+    // console.log(Assignments);
 
-    console.log("STUDENT KEYWORD OBJECTS");
-    console.log(Keywords);
+    // console.log("STUDENT KEYWORD OBJECTS");
+    // console.log(Keywords);
 
-    console.log("STUDENT CATEGORIES");
+    // console.log("STUDENT CATEGORIES");
     const seen = new Set();
     Categories = Categories.filter((el) => {
       const duplicate = seen.has(el.id);
       seen.add(el.id);
       return !duplicate;
     });
-    console.log(Categories);
+    //console.log(Categories);
 
     dataLoading = false;
   }
@@ -463,7 +463,7 @@ function ParseGradeJsonRespectToStudent(studentID) {
 //Parse the grade data for the course
 function ParseGradeJson() {
   if (courseGradeData != undefined) {
-    console.log(courseGradeData);
+    //console.log(courseGradeData);
     courseGradeData.forEach((item) => {
       Assignments[item.assignment_id].AppendGrade(item);
       if (!Students.includes(item.user_name)) {
@@ -504,20 +504,20 @@ function ParseGradeJson() {
       Keywords[i].assignments = [...new Set(Keywords[i].assignments)];
     }
 
-    console.log("ASSIGNMENT OBJECTS");
-    console.log(Assignments);
+    // console.log("ASSIGNMENT OBJECTS");
+    // console.log(Assignments);
 
-    console.log("KEYWORD OBJECTS");
-    console.log(Keywords);
+    // console.log("KEYWORD OBJECTS");
+    // console.log(Keywords);
 
-    console.log("CATEGORIES");
+    // console.log("CATEGORIES");
     const seen = new Set();
     Categories = Categories.filter((el) => {
       const duplicate = seen.has(el.id);
       seen.add(el.id);
       return !duplicate;
     });
-    console.log(Categories);
+    //console.log(Categories);
 
     dataLoading = false;
   }
