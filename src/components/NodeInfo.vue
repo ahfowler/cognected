@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <p class="title">{{ this.keyword.name }}</p>
-    <p class="mini-header">Category - {{this.keyword.category.name}}</p>
+    <p class="mini-header">Category - {{ this.keyword.category.name }}</p>
     <br />
     <input
       type="text"
@@ -13,7 +13,9 @@
       @keyup="CategoryFound"
     />
     <datalist id="categories">
-      <option v-for="cat in this.categoryList" :key="cat.name">{{ cat.name }}</option>
+      <option v-for="cat in this.categoryList" :key="cat.name">{{
+        cat.name
+      }}</option>
     </datalist>
 
     <a
@@ -21,7 +23,7 @@
       v-if="displayAddCategory"
       href="#"
       @click="AddNewCategoryClick"
-      >Create New category called "{{ category }}"?
+      >Create a new category called "{{ category }}"?
     </a>
     <hr />
 
@@ -60,7 +62,11 @@
 </template>
 
 <script>
-import { Assignments, Categories, EditKeywordCategory} from "../script/parseCanvasData.js";
+import {
+  Assignments,
+  Categories,
+  EditKeywordCategory,
+} from "../script/parseCanvasData.js";
 
 export default {
   name: "NodeInfo",
@@ -78,15 +84,17 @@ export default {
   },
   methods: {
     CategoryFound() {
-      this.displayAddCategory = this.category.length != 0 && !this.categoryList.some(cat => cat.name == this.category);
+      this.displayAddCategory =
+        this.category.length != 0 &&
+        !this.categoryList.some((cat) => cat.name == this.category);
 
-      if(this.categoryList.some(cat => cat.name == this.category)){
-        EditKeywordCategory(this.keyword.name, this.category)
+      if (this.categoryList.some((cat) => cat.name == this.category)) {
+        EditKeywordCategory(this.keyword.name, this.category);
       }
     },
-    AddNewCategoryClick(){
-      this.$emit("clicked", this.category)
-    }
+    AddNewCategoryClick() {
+      this.$emit("clicked", this.category);
+    },
   },
   mounted() {
     this.categoryList = Categories;

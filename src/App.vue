@@ -1,16 +1,21 @@
 <template>
   <div id="app" data-app app-data="true" light>
     <transition name="fade">
+      <!-- Loading Screen Component -->
       <LoadingScreen v-if="this.isLoading"></LoadingScreen>
+      <!-- Main Page Component -->
       <div id="content" v-if="!this.isLoading">
         <!-- Top Right Logo -->
         <div id="top-right-logo">
           <div id="cognected-title">Cognect<span>Ed</span></div>
         </div>
+        <!-- Multipane Component -->
         <multipane layout="vertical">
+          <!-- Student View (Left Side) -->
           <div :style="{ width: '30%', 'min-width': '0%' }" id="student-view">
             <StudentView></StudentView>
           </div>
+          <!-- Resizer -->
           <multipane-resizer>
             <div id="slider-bar"></div>
             <div id="slider-icon">
@@ -33,7 +38,8 @@
               </div>
             </div>
           </multipane-resizer>
-          <div :style="{ flexGrow: 1, 'min-width': '1%' }" id="class-view">
+          <!-- Class View (Right Side) -->
+          <div :style="{ flexGrow: 1, 'min-width': '0%' }" id="class-view">
             <ClassView></ClassView>
           </div>
         </multipane>

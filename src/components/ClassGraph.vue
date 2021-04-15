@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Network Graph Component -->
     <network
       ref="network"
       :nodes="nodes"
@@ -189,7 +190,10 @@ export default {
             keyword.associatedKeys[keywordName]
           );
 
-          edgeJson.length = Math.max(Math.round(102 - edgeAverage + 1) + 105, 125);
+          edgeJson.length = Math.max(
+            Math.round(102 - edgeAverage + 1) + 105,
+            125
+          );
           edgeJson.title = "<b>Class Grade Average: </b>" + edgeAverage + "%";
 
           if (!edgeExists(edgeJson, this.edges) && edgeAverage >= 0) {
@@ -217,7 +221,7 @@ export default {
     this.createKeywordNodes();
     this.$refs.network.fit();
 
-    //this.createEdges();
+    // this.createEdges();
     this.$root.$on("applyAssignments", (selectedAssignments) => {
       this.selectedAssignments = selectedAssignments;
       this.createKeywordNodes();
@@ -283,12 +287,12 @@ export default {
 
             // For each filter parameter...
             if (filters[j] == "assignments" && keywordFound) {
-              return false; // Doesn't match filter.
+              return false; // Doesn't match entire filter.
             } else if (filters[j] == "categories" && keywordFound) {
-              return false;
+              return false; // Doesn't match entire filter.
             }
           }
-          return true;
+          return true; // Passed all filter parameters.
         });
       } else {
         return this.importedKeywords;
